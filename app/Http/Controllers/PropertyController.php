@@ -13,7 +13,8 @@ use App\Models\Contacts;
 use App\Models\Properties;
 use App\Models\Products;
 
-use Yajra\DataTables\Facades\Datatables;
+use DataTables;
+//use Yajra\DataTables\Facades\Datatables;
 
 
 class PropertyController extends Controller
@@ -33,7 +34,7 @@ class PropertyController extends Controller
             'properties.accountid As AID','properties.contactid as CID','products.productname as Package')
             ->get();
             //dd($data);
-            return datatables::of($data)
+            return DataTables::of($data)
                 ->addIndexColumn()
                 ->editColumn('Package', function ($row) {
                     return $row->Package ?: '-';

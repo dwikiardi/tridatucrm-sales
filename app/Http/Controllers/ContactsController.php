@@ -10,7 +10,8 @@ use App\Models\User;
 use App\Models\AccountLogs;
 use App\Models\Contacts;
 
-use Yajra\DataTables\Facades\Datatables;
+use DataTables;
+//use Yajra\DataTables\Facades\Datatables;
 
 class ContactsController extends Controller
 {
@@ -22,7 +23,7 @@ class ContactsController extends Controller
             ->select('contacts.id as ID','contacts.contactname as Name' , 'contacts.email AS Email','contacts.mobile As Mobile','contacts.phone as Phone','accounts.fullname AS Accounts','contacts.accountid AS AID','users.last_name AS Owners')
             ->get();
             //echo json_encode($data);
-            return datatables::of($data)
+            return DataTables::of($data)
                 ->addIndexColumn()
                 // ->addColumn('action', function($row){
                 //     $actionBtn = '<a class="edit btn btn-success btn-sm" data-id="'.$row->ID.'">Edit</a> <a  class="delete btn btn-danger btn-sm" data-id="'.$row->ID.'">DeActive</a>';

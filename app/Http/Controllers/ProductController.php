@@ -11,7 +11,8 @@ use App\Models\Vendors;
 use App\Models\Products;
 use App\Models\ProductsSN;
 
-use Yajra\DataTables\Facades\Datatables;
+use DataTables;
+//use Yajra\DataTables\Facades\Datatables;
 
 class ProductController extends Controller
 {
@@ -26,7 +27,7 @@ class ProductController extends Controller
             END) AS Serial'))
             ->get();
             //dd($data);
-            return datatables::of($data)
+            return DataTables::of($data)
                 ->addIndexColumn()
                 // ->addColumn('action', function($row){
                 //     $actionBtn = '<a class="edit btn btn-success btn-sm" data-id="'.$row->ID.'">Edit</a> <a  class="delete btn btn-danger btn-sm" data-id="'.$row->ID.'">DeActive</a>';
@@ -115,7 +116,7 @@ class ProductController extends Controller
             //$data = Accounts::select('*');
             $data = Products::where('producttype','=',0)->select('products.id as ID','products.productname as Name' , 'products.description AS Description','products.note AS Note')->get();
             //dd($data);
-            return datatables::of($data)
+            return DataTables::of($data)
                 ->addIndexColumn()
                 // ->addColumn('action', function($row){
                 //     $actionBtn = '<a class="edit btn btn-success btn-sm" data-id="'.$row->ID.'">Edit</a> <a  class="delete btn btn-danger btn-sm" data-id="'.$row->ID.'">DeActive</a>';
