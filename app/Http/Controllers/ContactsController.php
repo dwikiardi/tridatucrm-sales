@@ -22,7 +22,7 @@ class ContactsController extends Controller
             ->select('contacts.id as ID','contacts.contactname as Name' , 'contacts.email AS Email','contacts.mobile As Mobile','contacts.phone as Phone','accounts.fullname AS Accounts','contacts.accountid AS AID','users.last_name AS Owners')
             ->get();
             //echo json_encode($data);
-            return Datatables::of($data)
+            return datatables::of($data)
                 ->addIndexColumn()
                 // ->addColumn('action', function($row){
                 //     $actionBtn = '<a class="edit btn btn-success btn-sm" data-id="'.$row->ID.'">Edit</a> <a  class="delete btn btn-danger btn-sm" data-id="'.$row->ID.'">DeActive</a>';

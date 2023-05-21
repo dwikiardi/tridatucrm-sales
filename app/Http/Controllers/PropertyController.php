@@ -33,7 +33,7 @@ class PropertyController extends Controller
             'properties.accountid As AID','properties.contactid as CID','products.productname as Package')
             ->get();
             //dd($data);
-            return Datatables::of($data)
+            return datatables::of($data)
                 ->addIndexColumn()
                 ->editColumn('Package', function ($row) {
                     return $row->Package ?: '-';

@@ -26,7 +26,7 @@ class VendorController extends Controller
             END) AS Type'),'users.last_name AS Owners')
             ->get();
             //dd($data);
-            return Datatables::of($data)
+            return datatables::of($data)
                 ->addIndexColumn()
                 // ->addColumn('action', function($row){
                 //     $actionBtn = '<a class="edit btn btn-success btn-sm" data-id="'.$row->ID.'">Edit</a> <a  class="delete btn btn-danger btn-sm" data-id="'.$row->ID.'">DeActive</a>';
