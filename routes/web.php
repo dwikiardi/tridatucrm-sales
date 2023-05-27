@@ -7,6 +7,7 @@ use App\Http\Controllers\ContactsController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\LeadController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,6 +30,18 @@ Route::post('actionlogin', [AuthController::class, 'actionlogin'])->name('action
 Route::group(['middleware' => 'auth'], function () {
     Route::get('home', [AuthController::class, 'index'])->name('home');//Dashboard
     Route::get('actionlogout', [AuthController::class, 'actionlogout'])->name('actionlogout');//Logouts
+
+    //Leads Part
+    Route::get('leads', [LeadController::class, 'index'])->name('index');
+    Route::get('leads', [LeadController::class, 'index'])->name('leads.index');
+    Route::get('leads/create', [LeadController::class, 'create'])->name('create');
+    Route::post('leads/store', [LeadController::class, 'store'])->name('leads.store');
+    Route::get('leads/view/{id}', [LeadController::class, 'view'])->name('view');
+    Route::get('leads/edit/{id}', [LeadController::class, 'edit'])->name('edit');
+    Route::post('leads/update/', [LeadController::class, 'update'])->name('leads.update');
+
+    // Route::get('leads/view/{id}', [LeadController::class, 'contact'])->name('leads.contact');
+    // Route::get('leads/contact/{id}', [LeadController::class, 'contact'])->name('leads.contact');
     
     //Account Part
     Route::get('accounts', [AccountsController::class, 'index'])->name('index');

@@ -79,7 +79,7 @@
           <div class="collapse navbar-collapse" id="navbar-menu">
             <div class="navbar navbar-light">
               <div class="container-xl">
-                <ul class="navbar-nav">
+                <ul class="navbar-nav menuheader">
                   <li class="nav-item active">
                     <a class="nav-link" href="{{route('home')}}" >
                       <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
@@ -90,7 +90,7 @@
                       </span>
                     </a>
                   </li>
-                  <li class="nav-item dropdown ">
+                  <li class="nav-item dropdown crm">
                     <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
                       <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
                       <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-book-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M19 4v16h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12z"></path><path d="M19 16h-12a2 2 0 0 0 -2 2"></path><path d="M9 8h6"></path></svg>
@@ -100,6 +100,9 @@
                       </span>
                     </a>
                     <div class="dropdown-menu">
+                      <a class="dropdown-item" href="{{url('leads')}}" >
+                        Lead's
+                      </a>
                       <a class="dropdown-item" href="{{url('accounts')}}" >
                         Account's
                       </a>
@@ -111,7 +114,7 @@
                       </a>
                     </div>
                   </li>
-                  <li class="nav-item dropdown ">
+                  <li class="nav-item dropdown inventory">
                     <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
                       <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
                       <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-topology-star-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -149,7 +152,7 @@
                           </a> 
                     </div>
                   </li>
-                  <li class="nav-item dropdown">
+                  <li class="nav-item dropdown orders">
                                      <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
                       <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
                       <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-shopping-cart" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -161,7 +164,7 @@
 </svg>
                       </span>
                       <span class="nav-link-title">
-                        Order 
+                        Order's
                       </span>
                     </a>
                     <div class="dropdown-menu">
@@ -180,7 +183,7 @@
                     </div>
                   </li>
                  
-                  <li class="nav-item dropdown">
+                  <li class="nav-item dropdown support">
                     <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
                       <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
                       <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-book-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M19 4v16h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12z"></path><path d="M19 16h-12a2 2 0 0 0 -2 2"></path><path d="M9 8h6"></path></svg>
@@ -195,7 +198,7 @@
                           </a>
                     </div>
                   </li>
-                  <li class="nav-item dropdown">
+                  <li class="nav-item dropdown users">
                   <a class="nav-link dropdown-toggle" href="#navbar-layout" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
                       <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/file-text -->
                       <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -206,7 +209,7 @@
    <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
 </svg></span>
                       <span class="nav-link-title"> 
-                        User
+                        User's
                       </span>
                     </a>
                     <div class="dropdown-menu">
@@ -218,6 +221,29 @@
                           </a>
                     </div>
                   </li>
+
+                  <li class="nav-item settings">
+                    <a class="nav-link" href="{{route('home')}}" >
+                      <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-settings-cog" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M12.003 21c-.732 .001 -1.465 -.438 -1.678 -1.317a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c.886 .215 1.325 .957 1.318 1.694"></path>
+                        <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"></path>
+                        <path d="M19.001 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                        <path d="M19.001 15.5v1.5"></path>
+                        <path d="M19.001 21v1.5"></path>
+                        <path d="M22.032 17.25l-1.299 .75"></path>
+                        <path d="M17.27 20l-1.3 .75"></path>
+                        <path d="M15.97 17.25l1.3 .75"></path>
+                        <path d="M20.733 20l1.3 .75"></path>
+                      </svg>
+                      </span>
+                      <span class="nav-link-title">
+                        Settings
+                      </span>
+                    </a>
+                  </li>
+
                 </ul>
                 <div class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last">
                   <form action="." method="get">
