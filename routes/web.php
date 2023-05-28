@@ -39,7 +39,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('leads/view/{id}', [LeadController::class, 'view'])->name('view');
     Route::get('leads/edit/{id}', [LeadController::class, 'edit'])->name('edit');
     Route::post('leads/update/', [LeadController::class, 'update'])->name('leads.update');
-
+    Route::get('leads/convert/{id}', [LeadController::class, 'convert'])->name('convert');
     // Route::get('leads/view/{id}', [LeadController::class, 'contact'])->name('leads.contact');
     // Route::get('leads/contact/{id}', [LeadController::class, 'contact'])->name('leads.contact');
     
@@ -61,6 +61,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('contacts/view/{id}', [ContactsController::class, 'view'])->name('contacts.view');
     Route::get('contacts/edit/{id}', [ContactsController::class, 'edit'])->name('edit');
     Route::post('contacts/update/', [ContactsController::class, 'update'])->name('contacts.update');
+    Route::get('contacts/properties/{id}', [ContactsController::class, 'properties'])->name('contacts.properties');
 
     //Properties
     Route::get('properties', [PropertyController::class, 'index'])->name('properties.index');

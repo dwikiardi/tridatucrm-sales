@@ -9,8 +9,6 @@ class Accounts extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'firstname',
-        'lastname',
         'fullname',
         'ownerid',
         'address',
@@ -35,6 +33,8 @@ class Accounts extends Model
         'active',
         'createbyid',
         'updatebyid',
+        'note',
+        'leadid'
     ];
     protected $table = "accounts";
 }

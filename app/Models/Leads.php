@@ -10,6 +10,8 @@ class Leads extends Model
     use HasFactory;
     protected $fillable = [
         'leadsname',
+        'first_name',
+        'last_name',
         'company',
         'ownerid',
         'address',
@@ -28,6 +30,7 @@ class Leads extends Model
         'mapurl',
         'note',
         'active',
+        'convert',
         'createbyid',
         'updatebyid'
     ];

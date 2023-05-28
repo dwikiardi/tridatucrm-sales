@@ -50,147 +50,228 @@
         <div class="tab-pane fade active show" id="tabs-home-17">
           <div class="container-xl" style="padding: 0!important;">
             <div class="row row-cards" data-masonry='{"percentPosition": true }'>
-                <div class="col-12">
-                  <div class="card">
-                    <div class="card-header ">
-                      <h3 class="card-title"> Propery Information </h3>
-                      <div class="col-auto ms-auto d-print-none"> 
-                        <a class="btn btn-light" data-bs-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-layout-bottombar-collapse" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M20 6v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2z"></path>
-                            <path d="M20 15h-16"></path>
-                            <path d="M14 8l-2 2l-2 -2"></path>
-                          </svg>
-                        </a>   
+              <div class="card col-12 col-md-5">
+                <div class="card-header ">
+                  <h3 class="card-title"> Account Information </h3>
+                  <div class="col-auto ms-auto d-print-none"> 
+                      <a class="btn btn-light" data-bs-toggle="collapse" href="#infowrap" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-layout-bottombar-collapse" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                          <path d="M20 6v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2z"></path>
+                          <path d="M20 15h-16"></path>
+                          <path d="M14 8l-2 2l-2 -2"></path>
+                        </svg>
+                      </a>   
+                    </div>
+                </div>
+                <div class="card-body row collapse multi-collapse show" id="infowrap">
+                  <div class="col-md-6">
+                    <div class="form-group mb-12 row">
+                      <label class="form-label col-6 col-form-label">Account Name</label>
+                      <div class="col" style="padding: 10px!important;">
+                      {{ $accounts[0]->fullname }}
                       </div>
                     </div>
-                    
-                    <div class="card-body row collapse multi-collapse show" id="multiCollapseExample1">
-                      
-                    <div class="col-md-6">
-                      <div class="form-group mb-3 row">
-                        <label class="form-label col-3 col-form-label">Property Owner</label>
-                        <div class="col" style="padding: 10px!important;">
-                          {{ $owner[0]->first_name }} {{ $owner[0]->last_name }}
-                        </div>
+                    <div class="form-group mb-12 row">
+                      <label class="form-label col-6 col-form-label">Address</label>
+                      <div class="col" style="padding: 10px!important;">
+                      {{ $accounts[0]->address }}, {{ $accounts[0]->city }},{{ $accounts[0]->province }},{{ $accounts[0]->country }}
                       </div>
-                      <div class="form-group mb-3 row">
-                        <label class="form-label col-3 col-form-label">Account </label>
-                        <div class="col" style="padding: 10px!important;">
-                          {{ $accounts[0]->fullname }}
-                        </div>
-                      </div>
-                      <div class="form-group mb-3 row">
-                        <label class="form-label col-3 col-form-label">Contact </label>
-                        <div class="col" style="padding: 10px!important;">
-                          {{ $contacts[0]->contactname }}
-                        </div>
-                      </div>
-                      <div class="form-group mb-3 row">
-                        <label class="form-label col-3 col-form-label">Property Name</label>
-                        <div class="col" style="padding: 10px!important;">
-                          {{ $properties[0]->propertyname }}
-                        </div>
-                      </div>
-                      <div class="form-group mb-3 row">
-                        <label class="form-label col-3 col-form-label">Address</label>
-                        <div class="col" style="padding: 10px!important;">
-                          {{ $properties[0]->address }}
-                        </div>
-                      </div>  
-                      <div class="form-group mb-3 row">
-                        <label class="form-label col-3 col-form-label">City</label>
-                        <div class="col" style="padding: 10px!important;">
-                          {{ $properties[0]->city }}
-                        </div>
-                      </div>
-                      <div class="form-group mb-3 row">
-                        <label class="form-label col-3 col-form-label">State/Province</label>
-                        <div class="col" style="padding: 10px!important;">
-                          {{ $properties[0]->province }}
-                        </div>
-                      </div>  
-                      <div class="form-group mb-3 row">
-                        <label class="form-label col-3 col-form-label">Country</label>
-                        <div class="col" style="padding: 10px!important;">
-                          {{ $properties[0]->country }}
-                        </div>
-                      </div>  
-                      <div class="form-group mb-3 row">
-                        <label class="form-label col-3 col-form-label">ZIP Code</label>
-                        <div class="col" style="padding: 10px!important;">
-                          {{ $properties[0]->zipcode }}
-                        </div>
-                      </div>  
-                      <div class="form-group mb-3 row">
-                        <label class="form-label col-3 col-form-label">Mobile</label>
-                        <div class="col" style="padding: 10px!important;">
-                          {{ $properties[0]->mobile }}
-                        </div>
-                      </div> 
-                      <div class="form-group mb-3 row">
-                        <label class="form-label col-3 col-form-label">Phone</label>
-                        <div class="col" style="padding: 10px!important;">
-                          {{ $properties[0]->phone }}
-                        </div>
-                      </div>  
-                      <div class="form-group mb-3 row">
-                        <label class="form-label col-3 col-form-label">FAX</label>
-                        <div class="col" style="padding: 10px!important;">
-                          {{ $properties[0]->fax }}
-                        </div>
-                      </div>  
                     </div>
-                    <div class="col-md-6">
-                      <div class="form-group mb-3 row">
-                        <label class="form-label col-3 col-form-label">E-mail</label>
-                        <div class="col" style="padding: 10px!important;">
-                          {{ $properties[0]->email }}
-                        </div>
-                      </div>  
-                      <div class="form-group mb-3 row">
-                        <label class="form-label col-3 col-form-label">Website</label>
-                        <div class="col" style="padding: 10px!important;">
-                          {{ $properties[0]->website }}
-                        </div>
-                      </div>  
-                      <div class="form-group mb-3 row">
-                        <label class="form-label col-3 col-form-label">Google Map Url</label>
-                        <div class="col" style="padding: 10px!important;">
-                          {{ $properties[0]->mapurl }}
-                        </div>
-                      </div>  
-                      <div class="form-group mb-3 row">
-                        <label class="form-label col-3 col-form-label">Map Latitude</label>
-                        <div class="col" style="padding: 10px!important;">
-                          {{ $properties[0]->maplat }}
-                        </div>
-                      </div> 
-                      <div class="form-group mb-3 row">
-                        <label class="form-label col-3 col-form-label">Map Longitude</label>
-                        <div class="col" style="padding: 10px!important;">
-                          {{ $properties[0]->maplong }}
-                        </div>
+                    <div class="form-group mb-12 row">
+                      <label class="form-label col-6 col-form-label">Mobile</label>
+                      <div class="col" style="padding: 10px!important;">
+                      {{ $accounts[0]->mobile }}
                       </div>
-                      <div class="form-group mb-3 row">
-                        <label class="form-label col-3 col-form-label">Package Request</label>
-                        <div class="col" style="padding: 10px!important;">
-                          {{ $product }}
-                        </div>
-                      </div>
-                      <div class="form-group mb-3 row">
-                        <label class="form-label col-3 col-form-label">Note</label>
-                        <div class="col" style="padding: 10px!important;">
-                          {{ $properties[0]->note }}
-                        </div>
-                      </div>  
-                      
                     </div>
-                      
+                    <div class="form-group mb-12 row">
+                      <a href="{{ url('accounts/view',$accounts[0]->id)}}" class="btn btn-light">« Kembali ke Account</a>
                     </div>
                   </div>
                 </div>
+              </div>
+              <div class="card col-12 col-md-5" style="margin-left:15px;">
+                <div class="card-header ">
+                  <h3 class="card-title"> Contact Information </h3>
+                  <div class="col-auto ms-auto d-print-none"> 
+                      <a class="btn btn-light" data-bs-toggle="collapse" href="#infowrap" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-layout-bottombar-collapse" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                          <path d="M20 6v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2z"></path>
+                          <path d="M20 15h-16"></path>
+                          <path d="M14 8l-2 2l-2 -2"></path>
+                        </svg>
+                      </a>   
+                  </div>
+                </div>
+                <div class="card-body row collapse multi-collapse show" id="infowrap">
+                  <div class="col-md-6">
+                    <div class="form-group mb-12 row">
+                      <label class="form-label col-6 col-form-label">Contact Name</label>
+                      <div class="col" style="padding: 10px!important;">
+                      {{ $contacts[0]->contactname }}
+                      </div>
+                    </div>
+                    <div class="form-group mb-12 row">
+                      <label class="form-label col-6 col-form-label">Address</label>
+                      <div class="col" style="padding: 10px!important;">
+                      {{ $contacts[0]->address }}, {{ $contacts[0]->city }},{{ $contacts[0]->province }},{{ $contacts[0]->country }}
+                      </div>
+                    </div>
+                    <div class="form-group mb-12 row">
+                      <label class="form-label col-6 col-form-label">Mobile</label>
+                      <div class="col" style="padding: 10px!important;">
+                      {{ $contacts[0]->mobile }}
+                      </div>
+                    </div>
+                    <div class="form-group mb-12 row">
+                      <a href="{{ url('contacts/view',$contacts[0]->id)}}" class="btn btn-light">« Kembali ke Contact</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <br>&nbsp;
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-header ">
+                    <h3 class="card-title"> Propery Information </h3>
+                    <div class="col-auto ms-auto d-print-none"> 
+                      <a class="btn btn-light" data-bs-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-layout-bottombar-collapse" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                          <path d="M20 6v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2z"></path>
+                          <path d="M20 15h-16"></path>
+                          <path d="M14 8l-2 2l-2 -2"></path>
+                        </svg>
+                      </a>   
+                    </div>
+                  </div>
+                  
+                  <div class="card-body row collapse multi-collapse show" id="multiCollapseExample1">
+                    
+                  <div class="col-md-6">
+                    <div class="form-group mb-3 row">
+                      <label class="form-label col-3 col-form-label">Property Owner</label>
+                      <div class="col" style="padding: 10px!important;">
+                        {{ $owner[0]->first_name }} {{ $owner[0]->last_name }}
+                      </div>
+                    </div>
+                    <div class="form-group mb-3 row">
+                      <label class="form-label col-3 col-form-label">Account </label>
+                      <div class="col" style="padding: 10px!important;">
+                        {{ $accounts[0]->fullname }}
+                      </div>
+                    </div>
+                    <div class="form-group mb-3 row">
+                      <label class="form-label col-3 col-form-label">Contact </label>
+                      <div class="col" style="padding: 10px!important;">
+                        {{ $contacts[0]->contactname }}
+                      </div>
+                    </div>
+                    <div class="form-group mb-3 row">
+                      <label class="form-label col-3 col-form-label">Property Name</label>
+                      <div class="col" style="padding: 10px!important;">
+                        {{ $properties[0]->propertyname }}
+                      </div>
+                    </div>
+                    <div class="form-group mb-3 row">
+                      <label class="form-label col-3 col-form-label">Address</label>
+                      <div class="col" style="padding: 10px!important;">
+                        {{ $properties[0]->address }}
+                      </div>
+                    </div>  
+                    <div class="form-group mb-3 row">
+                      <label class="form-label col-3 col-form-label">City</label>
+                      <div class="col" style="padding: 10px!important;">
+                        {{ $properties[0]->city }}
+                      </div>
+                    </div>
+                    <div class="form-group mb-3 row">
+                      <label class="form-label col-3 col-form-label">State/Province</label>
+                      <div class="col" style="padding: 10px!important;">
+                        {{ $properties[0]->province }}
+                      </div>
+                    </div>  
+                    <div class="form-group mb-3 row">
+                      <label class="form-label col-3 col-form-label">Country</label>
+                      <div class="col" style="padding: 10px!important;">
+                        {{ $properties[0]->country }}
+                      </div>
+                    </div>  
+                    <div class="form-group mb-3 row">
+                      <label class="form-label col-3 col-form-label">ZIP Code</label>
+                      <div class="col" style="padding: 10px!important;">
+                        {{ $properties[0]->zipcode }}
+                      </div>
+                    </div>  
+                    <div class="form-group mb-3 row">
+                      <label class="form-label col-3 col-form-label">Mobile</label>
+                      <div class="col" style="padding: 10px!important;">
+                        {{ $properties[0]->mobile }}
+                      </div>
+                    </div> 
+                    <div class="form-group mb-3 row">
+                      <label class="form-label col-3 col-form-label">Phone</label>
+                      <div class="col" style="padding: 10px!important;">
+                        {{ $properties[0]->phone }}
+                      </div>
+                    </div>  
+                    <div class="form-group mb-3 row">
+                      <label class="form-label col-3 col-form-label">FAX</label>
+                      <div class="col" style="padding: 10px!important;">
+                        {{ $properties[0]->fax }}
+                      </div>
+                    </div>  
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group mb-3 row">
+                      <label class="form-label col-3 col-form-label">E-mail</label>
+                      <div class="col" style="padding: 10px!important;">
+                        {{ $properties[0]->email }}
+                      </div>
+                    </div>  
+                    <div class="form-group mb-3 row">
+                      <label class="form-label col-3 col-form-label">Website</label>
+                      <div class="col" style="padding: 10px!important;">
+                        {{ $properties[0]->website }}
+                      </div>
+                    </div>  
+                    <div class="form-group mb-3 row">
+                      <label class="form-label col-3 col-form-label">Google Map Url</label>
+                      <div class="col" style="padding: 10px!important;">
+                        {{ $properties[0]->mapurl }}
+                      </div>
+                    </div>  
+                    <div class="form-group mb-3 row">
+                      <label class="form-label col-3 col-form-label">Map Latitude</label>
+                      <div class="col" style="padding: 10px!important;">
+                        {{ $properties[0]->maplat }}
+                      </div>
+                    </div> 
+                    <div class="form-group mb-3 row">
+                      <label class="form-label col-3 col-form-label">Map Longitude</label>
+                      <div class="col" style="padding: 10px!important;">
+                        {{ $properties[0]->maplong }}
+                      </div>
+                    </div>
+                    <div class="form-group mb-3 row">
+                      <label class="form-label col-3 col-form-label">Package Request</label>
+                      <div class="col" style="padding: 10px!important;">
+                        {{ $product }}
+                      </div>
+                    </div>
+                    <div class="form-group mb-3 row">
+                      <label class="form-label col-3 col-form-label">Note</label>
+                      <div class="col" style="padding: 10px!important;">
+                        {{ $properties[0]->note }}
+                      </div>
+                    </div>  
+                    
+                  </div>
+                    
+                  </div>
+                </div>
+              </div>
             
             </div> <!-- END Container-XL -->
           </div>

@@ -36,7 +36,7 @@
         </div>
         <!-- Page title actions -->
         <div class="col-auto ms-auto d-print-none"> 
-          <a href="{{ url('contacts')}}" class="btn btn-light">« Kembali</a>    
+          <a href="{{ url('contacts')}}" class="btn btn-light">« Kembali</a>
           <a href="{{ url('contacts/edit',$contacts[0]->id)}}" class="btn btn-primary d-none d-sm-inline-block" >
              Update Account
             </a>  
@@ -56,6 +56,47 @@
               <div class="container-xl" style="padding: 0!important;">
                 <div class="row row-cards" data-masonry='{"percentPosition": true }'>
                     <div class="col-12">
+                      <div class="card col-12 col-md-6">
+                        <div class="card-header ">
+                          <h3 class="card-title"> Account Information </h3>
+                          <div class="col-auto ms-auto d-print-none"> 
+                            <a class="btn btn-light" data-bs-toggle="collapse" href="#infowrap" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-layout-bottombar-collapse" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M20 6v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2z"></path>
+                                <path d="M20 15h-16"></path>
+                                <path d="M14 8l-2 2l-2 -2"></path>
+                              </svg>
+                            </a>   
+                          </div>
+                        </div>
+                        <div class="card-body row collapse multi-collapse show" id="infowrap">
+                          <div class="col-md-6">
+                            <div class="form-group mb-12 row">
+                              <label class="form-label col-6 col-form-label">Account Name</label>
+                              <div class="col" style="padding: 10px!important;">
+                              {{ $accounts[0]->fullname }}
+                              </div>
+                            </div>
+                            <div class="form-group mb-12 row">
+                              <label class="form-label col-6 col-form-label">Address</label>
+                              <div class="col" style="padding: 10px!important;">
+                              {{ $accounts[0]->address }}, {{ $accounts[0]->city }},{{ $accounts[0]->province }},{{ $accounts[0]->country }}
+                              </div>
+                            </div>
+                            <div class="form-group mb-12 row">
+                              <label class="form-label col-6 col-form-label">Mobile</label>
+                              <div class="col" style="padding: 10px!important;">
+                              {{ $accounts[0]->mobile }}
+                              </div>
+                            </div>
+                            <div class="form-group mb-12 row">
+                              <a href="{{ url('accounts/view',$accounts[0]->id)}}" class="btn btn-light">« Kembali ke Account</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <br>&nbsp;
                       <div class="card">
                         <div class="card-header ">
                           <h3 class="card-title"> Contacts Information </h3>
@@ -342,22 +383,22 @@
     var table = $('.datatable').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('properties.index') }}",
+        ajax: "{{ route('contacts.properties',$contacts[0]->id) }}",
         columns: [
             {data: 'ID', name: 'ID'},
             {data: 'Name', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('properties/sview')}}/"+oData.ID+"'>"+oData.Name+"</a>");
+                $(nTd).html("<a href='{{ url('properties/view')}}/"+oData.ID+"'>"+oData.Name+"</a>");
               }
             },
             {data: 'Address',  "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('properties/sview')}}/"+oData.ID+"'>"+oData.Address+"</a>");
+                $(nTd).html("<a href='{{ url('properties/view')}}/"+oData.ID+"'>"+oData.Address+"</a>");
               }},
             
             {data: 'Package', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('properties/sview')}}/"+oData.AID+"'>"+oData.Package+"</a>");
+                $(nTd).html("<a href='{{ url('properties/view')}}/"+oData.AID+"'>"+oData.Package+"</a>");
               }
             }
         ]

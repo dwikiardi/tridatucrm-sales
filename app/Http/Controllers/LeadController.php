@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\Leads;
+use App\Models\Accounts;
+use App\Models\Contacts;
+use App\Models\Properties;
 use App\Models\User;
 use App\Models\AccountLogs;
 use DataTables;
@@ -15,15 +18,16 @@ class LeadController extends Controller
     public function index(Request $request){
         if ($request->ajax()) {
             $data = Leads::join('users', 'leads.ownerid', '=', 'users.id')
-            ->select('leads.id as ID','leads.leadsname as Name' , 'leads.email AS Email','leads.phone As Phone','leads.website as Website','leads.website as Company',
+            ->select('leads.id as ID','leads.leadsname as Name' , 'leads.email AS Email','leads.phone As Phone','leads.website as Website','leads.company as Company',
             \DB::raw('(CASE 
-            WHEN leads.leadstatus = "1" THEN "Akan Dihibungi" 
-            WHEN leads.leadstatus = "2" THEN "Segera Dihubungi" 
-            WHEN leads.leadstatus = "3" THEN "Sudah Dihibungi" 
-            WHEN leads.leadstatus = "4" THEN "Menunggu Keputusan" 
-            WHEN leads.leadstatus = "5" THEN "Tidak dapat dihubungi" 
+            WHEN leads.leadstatus = "1" THEN "Future Contact" 
+            WHEN leads.leadstatus = "2" THEN "Tobe Contact" 
+            WHEN leads.leadstatus = "3" THEN "Contacted" 
+            WHEN leads.leadstatus = "4" THEN "Waiting for Response" 
+            WHEN leads.leadstatus = "5" THEN "Cannot be Contacted" 
             ELSE "None" 
             END) AS Status'),'users.last_name AS Owners')
+            ->where('convert','=','0')
             ->get();
             //dd($data);
             return DataTables::of($data)
@@ -42,6 +46,9 @@ class LeadController extends Controller
                 })
                 ->editColumn('Website', function ($row) {
                     return $row->Website ?: '-';
+                })
+                ->editColumn('Company', function ($row) {
+                    return $row->Company ?: '-';
                 })
                 ->make(true);
         }
@@ -82,8 +89,13 @@ class LeadController extends Controller
         $updatebyid=User::where('id','=',$leads[0]->updatebyid)->get();
         $logs=AccountLogs::where('moduleid','=',$id)->where('module','=','Leads')->orderBy('created_at', 'DESC')->join('users', 'accountlogs.userid', '=', 'users.id')
         ->select('accountlogs.*' ,'users.first_name as firstname', 'users.last_name as lastname')->get();
+        if($leads[0]->convert == 0 ){
+            return view('leads.view',compact('leads','owner','createbyid','updatebyid','logs'));
+        }else{
+            $accounts = Accounts::where('leadid','=',$leads[0]->id)->get();
+            return view('leads.convert',compact('accounts'));
+        }
         
-        return view('leads.view',compact('leads','owner','createbyid','updatebyid','logs'));
     }
 
     public function edit($id){
@@ -91,6 +103,7 @@ class LeadController extends Controller
         $leads=Leads::where('id','=',$id)->get();
         return view('leads.edit',compact('Users','leads'));
     }
+    
     public function update(Request $request){
         //var_dump($request->all());
         $data=$request->all();
@@ -112,5 +125,122 @@ class LeadController extends Controller
          return redirect('leads/view/'.$request->id);
     }
 
+    public function convert($id){
+        
+        $lead=Leads::where('id','=',$id)->get();
+        $owners=Auth::user()->id;
+        $cAccounts=[
+            'fullname'=>$lead[0]->leadsname,
+            'ownerid'=>$lead[0]->ownerid,
+            'address'=>$lead[0]->address,
+            'city'=>$lead[0]->city,
+            'province'=>$lead[0]->province,
+            'country'=>$lead[0]->country,
+            'zipcode'=>$lead[0]->zipcode,
+            'website'=>$lead[0]->website,
+            'email'=>$lead[0]->email,
+            'fax'=>$lead[0]->fax,
+            'phone'=>$lead[0]->phone,
+            'description'=>$lead[0]->description,
+            'accounttype'=>1,
+            'createbyid'=>$owners,
+            'updatebyid'=>$owners,
+            'leadid'=>$id,
+        ];
+        $accID = Accounts::create($cAccounts);
+        $cContacts=[
+            'contactname'=>$lead[0]->first_name." ".$lead[0]->last_name,
+            'ownerid'=>$lead[0]->ownerid,
+            'accountid'=>$accID->id,
+            'email'=>$lead[0]->email,
+            'address'=>$lead[0]->address,
+            'city'=>$lead[0]->city,
+            'province'=>$lead[0]->province,
+            'country'=>$lead[0]->country,
+            'zipcode'=>$lead[0]->zipcode,
+            'fax'=>$lead[0]->fax,
+            'phone'=>$lead[0]->phone,
+            'mobile'=>$lead[0]->mobile,
+            'note'=>$lead[0]->description,
+            'createbyid'=>$owners,
+            'updatebyid'=>$owners,
+        ];
+        $contID=Contacts::create($cContacts);
+        $cProperties=[
+            'propertyname'=>$lead[0]->leadsname,
+            'ownerid'=>$lead[0]->ownerid,
+            'accountid'=>$accID->id,
+            'contactid'=>$contID->id,
+            'address'=>$lead[0]->address,
+            'city'=>$lead[0]->city,
+            'province'=>$lead[0]->province,
+            'country'=>$lead[0]->country,
+            'zipcode'=>$lead[0]->zipcode,
+            'fax'=>$lead[0]->fax,
+            'phone'=>$lead[0]->phone,
+            'mobile'=>$lead[0]->mobile,
+            'email'=>$lead[0]->email,
+            'maplat'=>$lead[0]->maplat,
+            'maplong'=>$lead[0]->maplong,
+            'mapurl'=>$lead[0]->mapurl,
+            'note'=>$lead[0]->description,
+            'createbyid'=>$owners,
+            'updatebyid'=>$owners,
+        ];
+        $prop=Properties::create($cProperties);
+        $prevdata=['Modules'=>'Leads','id'=>$id];
+        $newdata=[
+            'Accounts'=>[
+                'Modules'=>'Accounts','id'=>$accID->id,
+                
+            ],
+            'Contacts'=>[
+                'Modules'=>'Contacts','id'=>$contID->id,
+            ],
+            'Properties'=>[
+                'Modules'=>'Properties','id'=>$prop->id
+            ],
+        ];
+        $logs=[
+            'module'=>'Leads',
+            'moduleid'=>$id,
+            'userid'=>Auth::user()->id,
+            'subject'=>'Convert to Contact',
+            'prevdata'=>json_encode($prevdata),
+            'newdata'=>json_encode($newdata)
+        ];
+        $ids=AccountLogs::create($logs);
+        $logs=[
+            'module'=>'Accounts',
+            'moduleid'=>$accID->id,
+            'userid'=>Auth::user()->id,
+            'subject'=>'Convert to Accounts',
+            'prevdata'=>json_encode($prevdata),
+            'newdata'=>json_encode($newdata)
+        ];
+        $ids=AccountLogs::create($logs);
+        $logs=[
+            'module'=>'Contacts',
+            'moduleid'=>$contID->id,
+            'userid'=>Auth::user()->id,
+            'subject'=>'Convert to Contacts',
+            'prevdata'=>json_encode($prevdata),
+            'newdata'=>json_encode($newdata)
+        ];
+        $ids=AccountLogs::create($logs);
+        $logs=[
+            'module'=>'Properties',
+            'moduleid'=>$prop->id,
+            'userid'=>Auth::user()->id,
+            'subject'=>'Convert to Property ',
+            'prevdata'=>json_encode($prevdata),
+            'newdata'=>json_encode($newdata)
+        ];
+        $ids=AccountLogs::create($logs);
+        $data=[ 'convert'=>1 ];
+        $leads=Leads::where('id','=',$id)->update($data);
+        $accounts = Accounts::where('leadid','=',$id)->get();
+        return view('leads.convert',compact('accounts'));
+    }
     
 }

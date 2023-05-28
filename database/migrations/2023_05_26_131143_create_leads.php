@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('leads', function (Blueprint $table) {
             $table->id();
             $table->string('leadsname');
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
             $table->string('company')->nullable();
             $table->integer('ownerid');
             $table->text('address')->nullable();
@@ -32,6 +34,7 @@ return new class extends Migration
             $table->string('mapurl')->nullable();
             $table->text('note')->nullable();
             $table->boolean('active')->default(1);
+            $table->boolean('convert')->default(0);
             $table->integer('createbyid');
             $table->integer('updatebyid');
             $table->timestamps();

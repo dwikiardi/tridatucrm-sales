@@ -9,6 +9,7 @@ use App\Models\Accounts;
 use App\Models\User;
 use App\Models\AccountLogs;
 use App\Models\Contacts;
+use App\Models\Properties;
 
 use DataTables;
 //use Yajra\DataTables\Facades\Datatables;
@@ -125,4 +126,41 @@ class ContactsController extends Controller
         /// redirect jika sukses menyimpan data
         return redirect('contacts/view/'.$request->id);
     }
+    public function properties(Request $request,$id){
+        if ($request->ajax()) {
+            
+            if ($request->ajax()) {
+                //$data = Accounts::select('*');
+                $data = Properties::join('users', 'properties.ownerid', '=', 'users.id')
+                ->join('accounts', 'properties.accountid', '=', 'accounts.id')
+                ->join('contacts', 'properties.contactid', '=', 'contacts.id')
+                ->leftJoin('products', function($join) {
+                    $join->on('products.id', '=', 'properties.productid');
+                  })
+                //->join('products','products.id','=','properties.productid')
+                ->select('properties.id as ID','properties.propertyname as Name' , 'properties.address AS Address','contacts.contactname As Contacts','accounts.fullname as Accounts',
+                'properties.accountid As AID','properties.contactid as CID','products.productname as Package')
+                ->where('contactid','=',$id)
+                ->get();
+                //dd($data);
+                return DataTables::of($data)
+                    ->addIndexColumn()
+                    ->editColumn('Package', function ($row) {
+                        return $row->Package ?: '-';
+                    })
+                    ->make(true);
+            }
+        }
+
+        $contacts=Contacts::where('id','=',$id)->get();
+        $owner=User::where('id','=',$contacts[0]->ownerid)->get();
+        $accounts=Accounts::where('id','=',$contacts[0]->accountid)->get();
+        $createbyid=User::where('id','=',$contacts[0]->createbyid)->get();
+        $updatebyid=User::where('id','=',$contacts[0]->updatebyid)->get();
+        $logs=AccountLogs::where('moduleid','=',$id)->where('module','=','Contacts')->orderBy('created_at', 'DESC')->join('users', 'accountlogs.userid', '=', 'users.id')
+        ->select('accountlogs.*' ,'users.first_name as firstname', 'users.last_name as lastname')->get();
+        
+        return view('contacts.view',compact('contacts','owner','createbyid','updatebyid','logs','accounts'));
+    }
+
 }
