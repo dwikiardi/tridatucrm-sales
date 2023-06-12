@@ -9,6 +9,16 @@
   .dataTables_length{
     padding-left:15px;
   }
+  .dataTables_length label{
+    display: inline-flex;
+    padding: 5px;
+  }
+  .dataTables_length label select{
+    margin: 0 5px;
+  }
+  .dataTables_info{
+    padding: 5px 15px;
+  }
 </style>
 @stop
 @section('content_header')
@@ -52,11 +62,10 @@
               <table class="table card-table table-vcenter text-nowrap datatable">
                 <thead>
                   <tr>
-                    
-                    <th>#</th>
                     <th>Name</th>
                     <th>Description</th>
                     <th>Have SN</th>
+                    <th>Price</th>
                     <th>Note</th>
                   </tr>
                 </thead>
@@ -84,7 +93,6 @@
         serverSide: true,
         ajax: "{{ route('products.index') }}",
         columns: [
-            {data: 'ID', name: 'ID'},
             {data: 'Name', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
                 $(nTd).html("<a href='{{ url('products/view')}}/"+oData.ID+"'>"+oData.Name+"</a>");
@@ -94,9 +102,13 @@
               {
                 $(nTd).html("<a href='{{ url('products/view')}}/"+oData.ID+"'>"+oData.Description+"</a>");
               }},
-            {data: 'Serial', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+              {data: 'Serial', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
                 $(nTd).html("<a href='{{ url('products/view')}}/"+oData.ID+"'>"+oData.Serial+"</a>");
+              }},
+            {data: 'Price', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+              {
+                $(nTd).html("<a href='{{ url('products/view')}}/"+oData.ID+"'>"+oData.Price+"</a>");
               }},
             {data: 'Note', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {

@@ -20,7 +20,7 @@ class ProductController extends Controller
     public function index(Request $request){
         if ($request->ajax()) {
             //$data = Accounts::select('*');
-            $data = Products::where('producttype','=',1)->select('products.id as ID','products.productname as Name' , 'products.description AS Description','products.note AS Note',
+            $data = Products::where('producttype','=',1)->select('products.id as ID','products.productname as Name' , 'products.description AS Description','products.note AS Note','products.price AS Price',
             \DB::raw('(CASE 
             WHEN products.havesn = "0" THEN "No" 
             WHEN products.havesn = "1" THEN "Yes"
@@ -114,7 +114,7 @@ class ProductController extends Controller
     public function sindex(Request $request){
         if ($request->ajax()) {
             //$data = Accounts::select('*');
-            $data = Products::where('producttype','=',0)->select('products.id as ID','products.productname as Name' , 'products.description AS Description','products.note AS Note')->get();
+            $data = Products::where('producttype','=',0)->select('products.id as ID','products.productname as Name' , 'products.description AS Description','products.note AS Note','products.price AS Price')->get();
             //dd($data);
             return DataTables::of($data)
                 ->addIndexColumn()

@@ -13,7 +13,16 @@
   .dataTables_length{
     padding-left:15px;
   }
-  
+  .dataTables_length label{
+    display: inline-flex;
+    padding: 5px;
+  }
+  .dataTables_length label select{
+    margin: 0 5px;
+  }
+  .dataTables_info{
+    padding: 5px 15px;
+  }
 </style>
 @stop
 @section('content_header')

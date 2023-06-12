@@ -9,6 +9,7 @@ use App\Models\Accounts;
 use App\Models\User;
 use App\Models\Contacts;
 use App\Models\AccountLogs;
+use App\Models\Properties;
 use DataTables;
 //use Yajra\DataTables\Facades\Datatables;
 
@@ -145,5 +146,30 @@ class AccountsController extends Controller
         ->select('accountlogs.*' ,'users.first_name as firstname', 'users.last_name as lastname')->get();
         return view('accounts.view',compact('accounts','owner','createbyid','updatebyid','logs'));
         
+    }
+    public function property(Request $request,$id){
+        if ($request->ajax()) {
+            //$data = Accounts::select('*');
+            $data = Properties::join('users', 'properties.ownerid', '=', 'users.id')
+            ->join('accounts', 'properties.accountid', '=', 'accounts.id')
+            ->join('contacts', 'properties.contactid', '=', 'contacts.id')
+            ->leftJoin('products', function($join) {
+                $join->on('products.id', '=', 'properties.productid');
+              })
+            //->join('products','products.id','=','properties.productid')
+            ->where('properties.accountid', '=', $id)
+            ->select('properties.id as ID','properties.propertyname as Name' , 'properties.address AS Address','contacts.contactname As Contacts','accounts.fullname as Accounts',
+            'properties.accountid As AID','properties.contactid as CID','products.productname as Package')
+            ->get();
+            //dd($data);
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->editColumn('Package', function ($row) {
+                    return $row->Package ?: '-';
+                })
+                ->make(true);
+        }
+
+        return view('properties.index');
     }
 }

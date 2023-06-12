@@ -16,6 +16,7 @@ class ProductsSN extends Model
         'status',
         'createbyid',
         'updatebyid',
+        'price'
     ];
     protected $table = "stocks";
 }

@@ -14,7 +14,16 @@
   .dataTables_length{
     padding-left:15px;
   }
-
+  .dataTables_length label{
+    display: inline-flex;
+    padding: 5px;
+  }
+  .dataTables_length label select{
+    margin: 0 5px;
+  }
+  .dataTables_info{
+    padding: 5px 15px;
+  }
 </style>
 @stop
 @section('content_header')
@@ -94,6 +103,12 @@
                               <label class="form-label col-3 col-form-label">Description</label>
                               <div class="col" style="padding: 10px!important;">
                               {{ $products[0]->description }}
+                              </div>
+                            </div> 
+                            <div class="form-group mb-3 row">
+                              <label class="form-label col-3 col-form-label">Price</label>
+                              <div class="col" style="padding: 10px!important;">
+                              {{ $products[0]->price }}
                               </div>
                             </div>  
                             <div class="form-group mb-3 row">

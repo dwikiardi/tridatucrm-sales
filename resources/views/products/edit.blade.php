@@ -58,6 +58,12 @@
                 </div>
               </div>
               <div class="form-group mb-3 row">
+                <label class="form-label col-3 col-form-label">Price</label>
+                <div class="col">
+                  <input type="number" class="form-control" name="price" placeholder="Price" value="{{$products[0]->price}}">
+                </div>
+              </div>
+              <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Note</label>
                 <div class="col">
                 <textarea class="form-control" name="note" placeholder="">{{ $products[0]->note}}</textarea>

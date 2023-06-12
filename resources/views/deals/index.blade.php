@@ -1,5 +1,5 @@
 @extends('layouts/admin')
-@section('title','Services')
+@section('title','Deals')
 @section('add_css');
 <style>
   .dataTables_filter{
@@ -14,10 +14,7 @@
     padding: 5px;
   }
   .dataTables_length label select{
-    margin: 0 5px;
-  }
-  .dataTables_info{
-    padding: 5px 15px;
+    margin: 0 15px;
   }
 </style>
 @stop
@@ -28,7 +25,7 @@
         <div class="col">
           <!-- Page pre-title -->
           <div class="page-pretitle">
-          <h1 class="m-0 text-dark">Services </h1>
+          <h1 class="m-0 text-dark">Deals </h1>
           </div>
           
         </div>
@@ -40,10 +37,10 @@
                 New view
               </a>
             </span>-->
-            <a href="{{ url('services/create')}}" class="btn btn-primary d-none d-sm-inline-block">
+            <a href="{{ url('deals/create')}}" class="btn btn-primary d-none d-sm-inline-block">
               <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
               <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
-              New Services
+              New Deals
             </a>
            
           </div>
@@ -62,10 +59,12 @@
               <table class="table card-table table-vcenter text-nowrap datatable">
                 <thead>
                   <tr>
+                    <th>Date</th>
                     <th>Name</th>
-                    <th>Description</th>
-                    <th>Price</th>
-                    <th>Note</th>
+                    <th>Product</th>
+                    <th>Deal Amount</th>
+                    <th>Deal By</th>
+                    <!-- <th>Action</th> -->
                   </tr>
                 </thead>
                 <tbody></tbody>
@@ -90,32 +89,37 @@
     var table = $('.datatable').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('services.index') }}",
+        ajax: "{{ route('deals.index') }}",
         columns: [
-            {data: 'Name', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+            {data: 'Date', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('services/view')}}/"+oData.ID+"'>"+oData.Name+"</a>");
+                $(nTd).html("<a href='{{ url('deals/view')}}/"+oData.ID+"'>"+oData.Date+"</a>");
               }
             },
-            {data: 'Description', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+            {data: 'Name', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('services/view')}}/"+oData.ID+"'>"+oData.Description+"</a>");
-              }},
+                $(nTd).html("<a href='{{ url('deals/view')}}/"+oData.ID+"'>"+oData.Name+"</a>");
+              }
+            },
+            {data: 'productname', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+              {
+                $(nTd).html("<a href='{{ url('deals/view')}}/"+oData.ID+"'>"+oData.productname+"</a>");
+              }
+            },
             {data: 'Price', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('products/view')}}/"+oData.ID+"'>"+oData.Price+"</a>");
+                $(nTd).html("<a href='{{ url('deals/view')}}/"+oData.ID+"'>"+oData.Price+"</a>");
               }},
-            {data: 'Note', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
-              {
-                $(nTd).html("<a href='{{ url('services/view')}}/"+oData.ID+"'>"+oData.Note+"</a>");
-              }}
+            
+            {data: 'Owners', name: 'Owners'},
+            // {data: 'action', name: 'action', orderable: false, searchable: false},
         ]
     });
-    $(document).on("click",".edit",function(){
-      var id=$(this).attr("data-id");
-      console.log("click id: " + id);
-      window.location.href = "{{ url('services/edit')}}/" + id;
-    });
+    // $(document).on("click",".edit",function(){
+    //   var id=$(this).attr("data-id");
+    //   console.log("click id: " + id);
+    //   window.location.href = "{{ url('deals/edit')}}/" + id;
+    // });
   });
 </script>
 @endpush

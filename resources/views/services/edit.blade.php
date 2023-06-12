@@ -32,7 +32,8 @@
           </div>
           <div class="card-body row">
             <div class="col-md-6">
-              <input type="hidden" name="updatebyid" value="{{Auth::user()->id}}">
+            <input type="hidden" name="updatebyid" value="{{Auth::user()->id}}">
+            <input type="hidden" name="id" value="{{$products[0]->id}}">
               <input type="hidden" name="producttype" value="0">
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Service Name</label>
@@ -44,13 +45,19 @@
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Description</label>
                 <div class="col">
-                <textarea class="form-control" name="description" placeholder="">{{$products->description}}</textarea>
+                <textarea class="form-control" name="description" placeholder=""> {{ $products[0]->description}} </textarea>
+                </div>
+              </div>
+              <div class="form-group mb-3 row">
+                <label class="form-label col-3 col-form-label">Price</label>
+                <div class="col">
+                  <input type="number" class="form-control" name="price" placeholder="Price"  value="{{ $products[0]->price}}">
                 </div>
               </div>
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Note</label>
                 <div class="col">
-                <textarea class="form-control" name="note" placeholder="">{{$products->note}}</textarea>
+                <textarea class="form-control" name="note" placeholder="">{{ $products[0]->note}}</textarea>
                 </div>
               </div>
                

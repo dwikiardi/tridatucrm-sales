@@ -233,29 +233,29 @@
       
     var URI = "{{ url('/') }}";
     $('#accountid').on("change", function(e) {
-            e.preventDefault();
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                }
-            });
-            var urls = URI + "/properties/getcontact/" + $('#accountid').val();
-            $.ajax({
-                url: urls,
-                method: 'get',
-
-                success: function(result) {
-                    //console.log(result);
-                    $('#contactid').empty();
-                    var data = JSON.parse(result);
-                    //$('#contact').append('<option value="--"> -- Pilih Kabupaten/Kota -- </option>');
-                    $.each(data, function(i, value) {
-                        //console.log(value.name);
-                        $('#contactid').append('<option value="' + value.id + '">' + value.name + '</option>');
-                    });
-                }
-            });
+        e.preventDefault();
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+            }
         });
+        var urls = URI + "/properties/getcontact/" + $('#accountid').val();
+        $.ajax({
+            url: urls,
+            method: 'get',
+
+            success: function(result) {
+                //console.log(result);
+                $('#contactid').empty();
+                var data = JSON.parse(result);
+                //$('#contact').append('<option value="--"> -- Pilih Kabupaten/Kota -- </option>');
+                $.each(data, function(i, value) {
+                    //console.log(value.name);
+                    $('#contactid').append('<option value="' + value.id + '">' + value.name + '</option>');
+                });
+            }
+        });
+      });
 
   });
 </script>

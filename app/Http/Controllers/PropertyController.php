@@ -14,6 +14,7 @@ use App\Models\Properties;
 use App\Models\Products;
 
 use DataTables;
+
 //use Yajra\DataTables\Facades\Datatables;
 
 

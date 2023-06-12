@@ -16,6 +16,7 @@ class Products extends Model
         'note',
         'createbyid',
         'updatebyid',
+        'price'
     ];
     protected $table = "products";
 }

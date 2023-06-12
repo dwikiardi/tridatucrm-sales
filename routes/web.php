@@ -8,6 +8,7 @@ use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\LeadController;
+use App\Http\Controllers\DealController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -47,6 +48,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('accounts', [AccountsController::class, 'index'])->name('index');
     Route::get('accounts', [AccountsController::class, 'index'])->name('accounts.index');
     Route::get('accounts/contact/{id}', [AccountsController::class, 'contact'])->name('accounts.contact');
+    Route::get('accounts/property/{id}', [AccountsController::class, 'property'])->name('accounts.property');
     Route::get('accounts/create', [AccountsController::class, 'create'])->name('create');
     Route::post('accounts/store', [AccountsController::class, 'store'])->name('accounts.store');
     Route::get('accounts/view/{id}', [AccountsController::class, 'view'])->name('view');
@@ -71,7 +73,17 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('properties/view/{id}', [PropertyController::class, 'view'])->name('properties.view');
     Route::get('properties/edit/{id}', [PropertyController::class, 'edit'])->name('edit');
     Route::post('properties/update/', [PropertyController::class, 'update'])->name('properties.update');
-
+    
+    //Deals
+    Route::get('deals', [DealController::class, 'index'])->name('deals.index');
+    Route::get('deals/create/{pid?}', [DealController::class, 'create'])->name('deals.create');
+    Route::get('deals/getlead/{id}', [DealController::class, 'getlead'])->name('getlead');
+    Route::get('deals/getproperty/{id}', [DealController::class, 'getproperty'])->name('getproperty');
+    Route::post('deals/store', [DealController::class, 'store'])->name('deals.store');
+    Route::get('deals/view/{id}', [DealController::class, 'view'])->name('deals.view');
+    Route::get('deals/edit/{id}', [DealController::class, 'edit'])->name('edit');
+    Route::post('deals/update/', [DealController::class, 'update'])->name('deals.update');
+    
 
     //Vendors
     Route::get('vendors', [VendorController::class, 'index'])->name('vendors.index');
@@ -90,7 +102,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('products/update/', [ProductController::class, 'update'])->name('products.update');
     
     //Products => Layanan
-    Route::get('services', [ProductController::class, 'sindex'])->name('services.index');
     Route::get('services', [ProductController::class, 'sindex'])->name('services.index');
     Route::get('services/create', [ProductController::class, 'screate'])->name('services.create');
     Route::post('services/store', [ProductController::class, 'sstore'])->name('services.store');

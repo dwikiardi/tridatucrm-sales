@@ -9,6 +9,16 @@
   .dataTables_length{
     padding-left:15px;
   }
+  .dataTables_length label{
+    display: inline-flex;
+    padding: 5px;
+  }
+  .dataTables_length label select{
+    margin: 0 5px;
+  }
+  .dataTables_info{
+    padding: 5px 15px;
+  }
 </style>
 @stop
 @section('content_header')
@@ -52,8 +62,6 @@
               <table class="table card-table table-vcenter text-nowrap datatable">
                 <thead>
                   <tr>
-                    
-                    <th>#</th>
                     <th>Name</th>
                     <th>Address</th>
                     <th>Contacts</th>
@@ -85,7 +93,6 @@
         serverSide: true,
         ajax: "{{ route('properties.index') }}",
         columns: [
-            {data: 'ID', name: 'ID'},
             {data: 'Name', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
                 $(nTd).html("<a href='{{ url('properties/view')}}/"+oData.ID+"'>"+oData.Name+"</a>");

@@ -9,6 +9,13 @@
   .dataTables_length{
     padding-left:15px;
   }
+  .dataTables_length label{
+    display: inline-flex;
+    padding: 5px;
+  }
+  .dataTables_length label select{
+    margin: 0 5px;
+  }
 </style>
 @stop
 @section('content_header')
@@ -52,8 +59,6 @@
               <table class="table card-table table-vcenter text-nowrap datatable">
                 <thead>
                   <tr>
-                    
-                    <th>#</th>
                     <th>Name</th>
                     <th>Email</th>
                     <th>Phone</th>
@@ -87,7 +92,6 @@
         serverSide: true,
         ajax: "{{ route('accounts.index') }}",
         columns: [
-            {data: 'ID', name: 'ID'},
             {data: 'Name', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
                 $(nTd).html("<a href='{{ url('accounts/view')}}/"+oData.ID+"'>"+oData.Name+"</a>");

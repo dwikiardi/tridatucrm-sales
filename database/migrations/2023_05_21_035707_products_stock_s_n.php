@@ -14,8 +14,8 @@ return new class extends Migration
             $table->id();
             $table->string('stocksn');
             $table->integer('productid');
-            $table->integer('vendorid');
-            $table->integer('propertiesid');
+            $table->integer('vendorid')->nullable();
+            $table->integer('propertiesid')->nullable();
             $table->boolean('status')->default(1);
             $table->integer('createbyid');
             $table->integer('updatebyid');
