@@ -45,7 +45,10 @@
         </div>
         <!-- Page title actions -->
         <div class="col-auto ms-auto d-print-none"> 
-          <a href="{{ url('properties')}}" class="btn btn-light">« Kembali</a>    
+          <a href="{{ url('properties')}}" class="btn btn-light">« Kembali</a>   
+          <a href="{{ url('properties/edit',$properties[0]->id)}}" class="btn btn-primary d-none d-sm-inline-block" >
+             Update Property
+            </a>  
         </div>
       </div>
     </div>
@@ -300,6 +303,7 @@
                 <!-- Page title actions -->
                 <div class="col-auto ms-auto d-print-none"> 
                 <a href="{{ url('properties')}}" class="btn btn-light">« Kembali</a>   
+                <a href="{{ url('properties/edit',$properties[0]->id)}}" class="btn btn-primary d-none d-sm-inline-block" >  
                 </div>
               </div>
             </div>

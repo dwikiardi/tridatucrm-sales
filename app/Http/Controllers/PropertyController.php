@@ -119,18 +119,22 @@ class PropertyController extends Controller
     }
 
     public function edit($id){
-        $Users=User::get();
-        $accounts=Accounts::where('id','=',$id)->get();
-        return view('accounts.edit',compact('Users','accounts'));
+        $properties=Properties::where('id','=',$id)->get();
+        $Users =User::get();
+        $accounts=Accounts::get();
+        $contacts=Contacts::where('accountid','=',$properties[0]->accountid)->get();
+        $products=Products::get();
+        return view('properties.edit',compact('properties','Users','accounts','contacts','products'));
+        
     }
     public function update(Request $request, Accounts $accounts){
         //var_dump($request->all());
         $accounts->update($request->all());
-        $accdata=Accounts::where('id','=',$request->id)->get();
+        $accdata=Properties::where('id','=',$request->id)->get();
         $prevdata = json_encode($accdata[0]);
         $newdata = json_encode($request->all());
         $logs=[
-            'module'=>'Accounts',
+            'module'=>'Properties',
             'moduleid'=>$request->id,
             'userid'=>Auth::user()->id,
             'subject'=>'Account Updated',
