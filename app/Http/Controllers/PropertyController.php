@@ -123,13 +123,14 @@ class PropertyController extends Controller
         $Users =User::get();
         $accounts=Accounts::get();
         $contacts=Contacts::where('accountid','=',$properties[0]->accountid)->get();
-        $products=Products::get();
+        $products=Products::where('producttype','=',0)->get();
         return view('properties.edit',compact('properties','Users','accounts','contacts','products'));
         
     }
-    public function update(Request $request, Accounts $accounts){
-        //var_dump($request->all());
-        $accounts->update($request->all());
+    public function update(Request $request, Properties $Properties){
+        //dd($request->all());
+        $data=$request->all();
+        unset($data['_token']);
         $accdata=Properties::where('id','=',$request->id)->get();
         $prevdata = json_encode($accdata[0]);
         $newdata = json_encode($request->all());
@@ -142,8 +143,10 @@ class PropertyController extends Controller
             'newdata'=>$newdata
         ];
         $ids=AccountLogs::create($logs);
+        $property=Properties::where('id','=',$request->id)->update($data);
         /// redirect jika sukses menyimpan data
-         return redirect('accounts');
+        return redirect('properties/view/'.$request->id);
+        //return route('properties.view',$request->id);
     }
 
     

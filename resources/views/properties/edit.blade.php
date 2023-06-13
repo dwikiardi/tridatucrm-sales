@@ -1,14 +1,14 @@
 @extends('layouts/admin')
-@section('title','Create New Accounts')
+@section('title','Create New Properties')
 
 @section('content_header')
-<form action="{{ route('accounts.update') }}" method="POST">    
+<form action="{{ route('properties.update') }}" method="POST">    
     <div class="page-header d-print-none">
       <div class="row align-items-center">
         <div class="col">
           <!-- Page pre-title -->
           <div class="page-pretitle">
-          <h1 class="m-0 text-dark">Update Account </h1>
+          <h1 class="m-0 text-dark">Update Property </h1>
           </div>
           
         </div>
@@ -28,7 +28,7 @@
       <div class="col-12">
         <div class="card">
           <div class="card-header bg-blue-lt">
-            <h3 class="card-title"> Account Information</h3>
+            <h3 class="card-title"> Property Information</h3>
           </div>
           <div class="card-body row">
           <div class="col-md-6">
@@ -80,89 +80,85 @@
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Property Name</label>
                 <div class="col">
-                  <input type="text" class="form-control" name="propertyname" placeholder="Property Name" required>
+                  <input type="text" class="form-control" name="propertyname" placeholder="Property Name" required value="{{ $properties[0]->propertyname }}">
                 </div>
               </div>
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Address</label>
                 <div class="col">
-                <textarea class="form-control" name="address" placeholder=""></textarea>
+                <textarea class="form-control" name="address" placeholder="">{{ $properties[0]->address }}</textarea>
                 </div>
               </div>  
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">City</label>
                 <div class="col">
-                  <input type="text" class="form-control" name="city" placeholder="City Name">
+                  <input type="text" class="form-control" name="city" placeholder="City Name"value="{{ $properties[0]->city }}">
                 </div>
               </div>
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">State/Province</label>
                 <div class="col">
-                  <input type="text" class="form-control" name="province" aria-describedby="emailHelp" placeholder="Province">
+                  <input type="text" class="form-control" name="province" aria-describedby="emailHelp" placeholder="Province" value="{{ $properties[0]->province }}">
                 </div>
               </div>  
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Country</label>
                 <div class="col">
-                  <input type="text" class="form-control" name="country" aria-describedby="emailHelp" placeholder="">
+                  <input type="text" class="form-control" name="country" aria-describedby="emailHelp" placeholder="" value="{{ $properties[0]->country }}">
                 </div>
               </div>  
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">ZIP Code</label>
                 <div class="col">
-                  <input type="text" class="form-control" name="zicode" aria-describedby="emailHelp" placeholder="">
+                  <input type="text" class="form-control" name="zipcode" aria-describedby="emailHelp" placeholder="" value="{{ $properties[0]->zipcode }}">
                 </div>
               </div>  
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Mobile</label>
                 <div class="col">
-                  <input type="text" class="form-control" name="mobile" aria-describedby="emailHelp" placeholder="">
+                  <input type="text" class="form-control" name="mobile" aria-describedby="emailHelp" placeholder="" value="{{ $properties[0]->mobile }}">
                 </div>
               </div> 
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Phone</label>
                 <div class="col">
-                  <input type="text" class="form-control" name="phone" aria-describedby="emailHelp" placeholder="">
+                  <input type="text" class="form-control" name="phone" aria-describedby="emailHelp" placeholder="" value="{{ $properties[0]->phone }}">
                 </div>
               </div>  
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">FAX</label>
                 <div class="col">
-                <input type="text" class="form-control" name="fax" aria-describedby="emailHelp" placeholder="">
+                <input type="text" class="form-control" name="fax" aria-describedby="emailHelp" placeholder="" value="{{ $properties[0]->fax }}">
                 </div>
               </div>  
               
               <input type="hidden" name="updatebyid" value="{{Auth::user()->id}}">
+              <input type="hidden" name="id" value="{{ $properties[0]->id }}">
             </div>
             <div class="col-md-6">
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">E-mail</label>
                 <div class="col">
-                  <input type="email" class="form-control" name="email" aria-describedby="emailHelp" placeholder="Email">
+                  <input type="email" class="form-control" name="email" aria-describedby="emailHelp" placeholder="Email" value="{{ $properties[0]->email }}">
                 </div>
               </div>  
-              <div class="form-group mb-3 row">
-                <label class="form-label col-3 col-form-label">Website</label>
-                <div class="col">
-                  <input type="text" class="form-control" name="website" aria-describedby="emailHelp" placeholder="">
-                </div>
-              </div>  
+              
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Google Map Url</label>
                 <div class="col">
-                  <input type="email" class="form-control" name="mapurl" aria-describedby="emailHelp" placeholder="Email">
+                  <input type="text" class="form-control" name="mapurl" aria-describedby="emailHelp" placeholder="Email" value="{{ $properties[0]->mapurl }}">
                 </div>
               </div>  
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Map Latitude</label>
                 <div class="col">
-                  <input type="text" class="form-control" name="maplat" aria-describedby="emailHelp" placeholder="">
+                  <input type="text" class="form-control" name="maplat" aria-describedby="emailHelp" placeholder="" value="{{ $properties[0]->maplat }}">
                 </div>
               </div> 
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Map Longitude</label>
                 <div class="col">
-                  <input type="email" class="form-control" name="maplong" aria-describedby="emailHelp" placeholder="Email">
+                  <input type="text" class="form-control" name="maplong" aria-describedby="emailHelp" placeholder="Email" value="{{ $properties[0]->maplong }}">
                 </div>
               </div>
               <div class="form-group mb-3 row">
@@ -171,7 +167,11 @@
                       <select class="form-select" name="productid">
                       <option value=""> -- Select -- </option>
                         @foreach($products as $product)
+                          @if($product->id == $properties[0]->productid)
+                            <option selected value="{{ $product->id }}">{{ $product->productname }} </option>
+                          @else
                             <option  value="{{ $product->id }}">{{ $product->productname }} </option>
+                          @endif
                         @endforeach
                       </select>
                 </div>
@@ -179,7 +179,7 @@
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Note</label>
                 <div class="col">
-                <textarea class="form-control" name="note" placeholder=""></textarea>
+                <textarea class="form-control" name="note" placeholder="">{{ $properties[0]->note }}</textarea>
                 </div>
               </div>  
                
@@ -187,99 +187,7 @@
           </div>
         </div>
       </div>
-      <div class="col-12">
-        <div class="card">
-          <div class="card-header bg-blue-lt">
-            <h3 class="card-title"> Account Information</h3>
-          </div>
-          <div class="card-body row">
-            <div class="col-md-6">
-              <div class="form-group mb-3 row">
-                <label class="form-label col-3 col-form-label">Address</label>
-                <div class="col">
-                <textarea class="form-control" name="address" placeholder="">{{$accounts[0]->address}}</textarea>
-                </div>
-              </div>  
-              <div class="form-group mb-3 row">
-                <label class="form-label col-3 col-form-label">City</label>
-                <div class="col">
-                  <input type="text" class="form-control" name="city" placeholder="City Name" value="{{$accounts[0]->city}}">
-                </div>
-              </div>
-              <div class="form-group mb-3 row">
-                <label class="form-label col-3 col-form-label">State/Province</label>
-                <div class="col">
-                  <input type="text" class="form-control" name="province" aria-describedby="emailHelp" placeholder="Province" value="{{$accounts[0]->province}}">
-                </div>
-              </div>  
-              <div class="form-group mb-3 row">
-                <label class="form-label col-3 col-form-label">Country</label>
-                <div class="col">
-                  <input type="text" class="form-control" name="country" aria-describedby="emailHelp" placeholder="" value="{{$accounts[0]->country}}">
-                </div>
-              </div>  
-              <div class="form-group mb-3 row">
-                <label class="form-label col-3 col-form-label">ZIP Code</label>
-                <div class="col">
-                  <input type="text" class="form-control" name="zipcode" aria-describedby="emailHelp" placeholder="" value="{{$accounts[0]->zipcode}}">
-                </div>
-              </div>  
-              
-              
-            </div>
-            <div class="col-md-6">
-              <div class="form-group mb-3 row">
-                <label class="form-label col-3 col-form-label">Billing Address</label>
-                <div class="col">
-                <textarea class="form-control" name="billingaddress" placeholder="">{{$accounts[0]->billingaddress}}</textarea>
-                </div>
-              </div>  
-              <div class="form-group mb-3 row">
-                <label class="form-label col-3 col-form-label">Billing  City</label>
-                <div class="col">
-                  <input type="text" class="form-control" name="billingcity" placeholder="City Name"value="{{$accounts[0]->billingcity}}">
-                </div>
-              </div>
-              <div class="form-group mb-3 row">
-                <label class="form-label col-3 col-form-label">Billing State/Province</label>
-                <div class="col">
-                  <input type="text" class="form-control" name="billingprovince" aria-describedby="emailHelp" placeholder="Province" value="{{$accounts[0]->province}}">
-                </div>
-              </div>  
-              <div class="form-group mb-3 row">
-                <label class="form-label col-3 col-form-label">Billing Country</label>
-                <div class="col">
-                  <input type="text" class="form-control" name="billingcountry" aria-describedby="emailHelp" placeholder="" value="{{$accounts[0]->country}}">
-                </div>
-              </div>  
-              <div class="form-group mb-3 row">
-                <label class="form-label col-3 col-form-label">Billing ZIP Code</label>
-                <div class="col">
-                  <input type="text" class="form-control" name="billingzipcode" aria-describedby="emailHelp" placeholder="" value="{{$accounts[0]->billingzipcode}}">
-                </div>
-              </div>  
-              <div class="form-group mb-3 row">
-                <label class="form-label col-3 col-form-label">Billing E-Mail</label>
-                <div class="col">
-                  <input type="email" class="form-control" name="billingemail" aria-describedby="emailHelp" placeholder="" value="{{$accounts[0]->billingemail}}">
-                </div>
-              </div>  
-              <div class="form-group mb-3 row">
-                <label class="form-label col-3 col-form-label">Billing Fax</label>
-                <div class="col">
-                  <input type="text" class="form-control" name="billingfax" aria-describedby="emailHelp" placeholder="" value="{{$accounts[0]->billingfax}}">
-                </div>
-              </div>  
-              <div class="form-group mb-3 row">
-                <label class="form-label col-3 col-form-label">Billing Phone</label>
-                <div class="col">
-                  <input type="text" class="form-control" name="billingphone" aria-describedby="emailHelp" placeholder="" value="{{$accounts[0]->billingphone}}">
-                </div>
-              </div>  
-            </div>
-          </div>
-        </div>
-      </div>
+      
    
   </div> <!-- END Container-XL -->
 </div>

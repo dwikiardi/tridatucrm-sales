@@ -246,12 +246,7 @@
                         {{ $properties[0]->email }}
                       </div>
                     </div>  
-                    <div class="form-group mb-3 row">
-                      <label class="form-label col-3 col-form-label">Website</label>
-                      <div class="col" style="padding: 10px!important;">
-                        {{ $properties[0]->website }}
-                      </div>
-                    </div>  
+                      
                     <div class="form-group mb-3 row">
                       <label class="form-label col-3 col-form-label">Google Map Url</label>
                       <div class="col" style="padding: 10px!important;">

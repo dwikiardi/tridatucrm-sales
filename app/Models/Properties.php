@@ -27,6 +27,7 @@ class Properties extends Model
         'mapurl',
         'note',
         'active',
+        'productid',
         'createbyid',
         'updatebyid'
     ];

@@ -122,7 +122,7 @@
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">ZIP Code</label>
                 <div class="col">
-                  <input type="text" class="form-control" name="zicode" aria-describedby="emailHelp" placeholder="">
+                  <input type="text" class="form-control" name="zipcode" aria-describedby="emailHelp" placeholder="">
                 </div>
               </div>  
               <div class="form-group mb-3 row">
@@ -154,16 +154,11 @@
                   <input type="email" class="form-control" name="email" aria-describedby="emailHelp" placeholder="Email">
                 </div>
               </div>  
-              <div class="form-group mb-3 row">
-                <label class="form-label col-3 col-form-label">Website</label>
-                <div class="col">
-                  <input type="text" class="form-control" name="website" aria-describedby="emailHelp" placeholder="">
-                </div>
-              </div>  
+              
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Google Map Url</label>
                 <div class="col">
-                  <input type="email" class="form-control" name="mapurl" aria-describedby="emailHelp" placeholder="Email">
+                  <input type="text" class="form-control" name="mapurl" aria-describedby="emailHelp" placeholder="Email">
                 </div>
               </div>  
               <div class="form-group mb-3 row">
@@ -175,7 +170,7 @@
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Map Longitude</label>
                 <div class="col">
-                  <input type="email" class="form-control" name="maplong" aria-describedby="emailHelp" placeholder="Email">
+                  <input type="text" class="form-control" name="maplong" aria-describedby="emailHelp" placeholder="Email">
                 </div>
               </div>
               <div class="form-group mb-3 row">
