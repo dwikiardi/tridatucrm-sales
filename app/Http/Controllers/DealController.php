@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Http\Request;
 use App\Models\Accounts;
 use App\Models\User;
@@ -50,6 +52,7 @@ class DealController extends Controller
         
         $Users=User::get();
         $leads=Leads::get();
+
         $properties=Properties::join('users', 'properties.ownerid', '=', 'users.id')
         ->join('accounts', 'properties.accountid', '=', 'accounts.id')
         ->join('contacts', 'properties.contactid', '=', 'contacts.id')
@@ -81,29 +84,25 @@ class DealController extends Controller
         //return json_endcode($Contacts);
     }
     public function store(Request $request){
-        /// insert setiap request dari form ke dalam database via model
-        /// jika menggunakan metode ini, maka nama field dan nama form harus sama
+        $data=$request->all();
+        unset($data['_token']);
+        $data['date']=str_replace("/","-",$data['date']);
+        $data['date'] = date("Y-m-d", strtotime($data['date']));
+        //dd($data);
+        $newdata=json_encode($request->all());
+        $ids=Deal::create($data);
+        $logs=[
+            'module'=>'Deals',
+            'moduleid'=>$ids->id,
+            'userid'=>Auth::user()->id,
+            'subject'=>'Deals Created',
+            'prevdata'=>'',
+            'newdata'=>$newdata
+        ];
         
-        // $ids=Properties::create($request->all());
-
-        // $newdata=json_encode($request->all());
-        // $logs=[
-        //     'module'=>'Properties',
-        //     'moduleid'=>$ids->id,
-        //     'userid'=>Auth::user()->id,
-        //     'subject'=>'Property Created',
-        //     'prevdata'=>'',
-        //     'newdata'=>$newdata
-        // ];
-        // $ids=AccountLogs::create($logs);
-        // //echo $newdata;
-        // /// redirect jika sukses menyimpan data
-        // if($request->conts == null) {
-        //     return redirect('properties');
-        // } else{
-        //     return redirect('contacts/view/'.$request->conts);
-        // }
-        //
+        $log=AccountLogs::create($logs);
+        return redirect('deals');
+        
     }
 
     public function view($id){

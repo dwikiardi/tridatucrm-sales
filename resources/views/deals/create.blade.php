@@ -49,8 +49,8 @@
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Deal Date</label>
                 <div class="col">
-                  <div class='input-group date' id='datetimepicker'>
-                      <input type='text' class="form-control" />
+                  <div class='input-group date' id='datetimepicker' >
+                      <input type='text' name='date' class="form-control" />
                       <span class="input-group-addon">
                           <span class="glyphicon glyphicon-calendar"></span>
                       </span>
@@ -60,7 +60,7 @@
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Deal Name</label>
                 <div class="col">
-                  <input type="text" class="form-control" name="fullname" placeholder="Deal Name">
+                  <input type="text" class="form-control" name="dealname" placeholder="Deal Name">
                   
                 </div>
               </div>
@@ -96,16 +96,54 @@
                       </select>
                 </div>
               </div>  
+              <div class="form-group mb-3 row">
+                <label class="form-label col-3 col-form-label">Select Product</label>
+                <div class="col">
+                      <select class="form-select" name="productid" id="productid">
+                      <option>-- Select one --</option>
+                        @foreach($Products as $product)
+                            <option  value="{{ $product->id }}" data-name="{{$product->productname}}" data-price="{{$product->price}}">{{ $product->productname}}</option>
+                        @endforeach
+                      </select>
+                </div>
+              </div>  
+              <div class="form-group mb-3 row">
+                <label class="form-label col-3 col-form-label">Stage</label>
+                <div class="col">
+                      <select class="form-select" name="stage" id="stage">
+                      <option  value="Qualification">Qualification</option>
+                      <option  value="Need Analysis">Need Analysis</option>
+                      <option  value="Quote">Quote</option>
+                      <option  value="Price Review">Price Review</option>
+                      <option  value="Close Won">Close Won</option>
+                      <option  value="Close Lost">Close Lost</option>
+                      </select>
+                </div>
+              </div>  
+              
               <input type="hidden" name="createbyid" value="{{Auth::user()->id}}">
               <input type="hidden" name="updatebyid" value="{{Auth::user()->id}}">
               <input type="hidden" name="leadid" id="leadid" value="">
               <input type="hidden" name="contactid" id="contactid" value="">
               <input type="hidden" name="accountid" id="accountid" value="">
               <input type="hidden" name="propertiesid" id="propertiesid" value="">
+              <input type="hidden" name="price" id="price" value="">
             </div>
-            <div class="col-md-6 details">
-              
-               
+            <div class="card col-md-6" style=" padding: 0!important;width: calc(50% - 5px);">
+              <div class="card-header">
+                <h3 class="card-title"> Information Detail</h3>
+              </div>
+              <div class="card-body">
+                <div class="col-md-12 details">
+                </div>
+              </div>
+              <div class="card-header" style=" border-top: 1px solid rgba(98,105,118,.16);">
+                <h3 class="card-title"> Product Detail</h3>
+              </div>
+              <div class="card-body">
+                <div class="col-md-12 products">
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -140,6 +178,12 @@
   }
   .shows{
     display:flex;
+  }
+  .details .form-group,.products .form-group{
+    margin:0!important;
+  }
+  .details .form-label,.products .form-label{
+    padding:0!important;
   }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -234,6 +278,19 @@
             $('#leadid').val('');
           }
       });
+    });
+    $(document).on('change','#productid', function(e){
+      e.preventDefault();
+      var name=$(this).find(':selected').attr('data-name');
+      var price=$(this).find(':selected').attr('data-price');
+      //console.log(name);
+      $('.products').empty();
+      var htmls="";
+      htmls=htmls+"<div class=\"form-group mb-3 row\"><label class=\"form-label col-3 col-form-label\">Product Name</label><div class=\"col\">" + name +"</div></div>  ";
+      htmls=htmls+"<div class=\"form-group mb-3 row\"><label class=\"form-label col-3 col-form-label\">Price</label><div class=\"col\">" + price  +"</div></div>  ";
+      $('.products').append(htmls);
+      $('#price').val(price);
+      
     });
   });
 </script>

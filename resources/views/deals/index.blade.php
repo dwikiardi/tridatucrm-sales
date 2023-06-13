@@ -16,6 +16,10 @@
   .dataTables_length label select{
     margin: 0 15px;
   }
+  .dataTables_info{
+    margin: 5px 15px;
+  }
+  
 </style>
 @stop
 @section('content_header')
