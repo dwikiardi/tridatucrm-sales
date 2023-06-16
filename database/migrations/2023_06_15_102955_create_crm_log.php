@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('useraccess', function (Blueprint $table) {
+        Schema::create('datalogs', function (Blueprint $table) {
             $table->id();
-            $table->integer('userid');
-            $table->string('modulename');
-            $table->tinyInteger('accessStatus');
+            $table->string('module');
+            $table->bigInteger('moduleid');
+            $table->string('logname')->nullable();
+            $table->text('olddata')->nullable();
+            $table->text('newdata')->nullable();
+            $table->bigInteger('createbyid');
             $table->timestamps();
         });
     }
@@ -25,7 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
-        Schema::dropIfExists('useraccess');
+        Schema::dropIfExists('datalogs');
     }
 };

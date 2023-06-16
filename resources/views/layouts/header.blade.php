@@ -103,17 +103,27 @@
                       <a class="dropdown-item" href="{{url('leads')}}" >
                         Lead's
                       </a>
+                      <a class="dropdown-item" href="{{url('quotes')}}" >
+                        Quote's
+                      </a>
+                      <a class="dropdown-item" href="{{url('surveys')}}" >
+                        Survey's
+                      </a>
+                      <a class="dropdown-item" href="{{url('installasi')}}" >
+                        Instalations
+                      </a>
+                      <hr style="padding:0!important;margin:0!important">
                       <a class="dropdown-item" href="{{url('accounts')}}" >
-                        Account's
+                        Customer's
                       </a>
-                      <a class="dropdown-item" href="{{url('contacts')}}" >
-                        Contact's
-                      </a>
-                      <a class="dropdown-item" href="{{url('properties')}}" >
+                      <a class="dropdown-item" href="{{url('property')}}" >
                         Properties
                       </a>
-                      <a class="dropdown-item" href="{{url('deals')}}" >
-                        Deals
+                      <a class="dropdown-item" href="{{url('maintenance')}}" >
+                        Maintenance's
+                      </a>
+                      <a class="dropdown-item" href="{{url('billing')}}" >
+                        Bill's
                       </a>
                     </div>
                   </li>

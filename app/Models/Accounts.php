@@ -9,32 +9,23 @@ class Accounts extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'fullname',
         'ownerid',
+        'account_name',
         'address',
         'city',
-        'province',
-        'country',
+        'state',
         'zipcode',
+        'country',
+        'billing_address',
+        'billing_city',
+        'billing_state',
+        'billing_zipcode',
+        'billing_country',
         'website',
         'email',
-        'fax',
         'phone',
-        'billingaddress',
-        'billingcity',
-        'billingprovince',
-        'billingcountry',
-        'billingzipcode',
-        'billingemail',
-        'billingfax',
-        'billingphone',
-        'description',
-        'accounttype',
-        'active',
         'createbyid',
         'updatebyid',
-        'note',
-        'leadid'
     ];
-    protected $table = "accounts";
+    protected $table = "leads";
 }

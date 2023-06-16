@@ -5,11 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class AccountLogs extends Model
+class DataLogs extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'created_at','module','moduleid','userid','subject','prevdata','newdata'
+        'module',
+        'moduleid',
+        'logname',
+        'olddata',
+        'newdata',
+        'createbyid',
     ];
-    protected $table = "accountlogs";
+    protected $table = "datalogs";
 }

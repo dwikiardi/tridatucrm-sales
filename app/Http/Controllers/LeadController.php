@@ -7,10 +7,8 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Models\Leads;
 use App\Models\Accounts;
-use App\Models\Contacts;
-use App\Models\Properties;
 use App\Models\User;
-use App\Models\AccountLogs;
+use App\Models\DataLogs;
 use DataTables;
 
 class LeadController extends Controller
@@ -18,16 +16,8 @@ class LeadController extends Controller
     public function index(Request $request){
         if ($request->ajax()) {
             $data = Leads::join('users', 'leads.ownerid', '=', 'users.id')
-            ->select('leads.id as ID','leads.leadsname as Name' , 'leads.email AS Email','leads.phone As Phone','leads.website as Website','leads.company as Company',
-            \DB::raw('(CASE 
-            WHEN leads.leadstatus = "1" THEN "Future Contact" 
-            WHEN leads.leadstatus = "2" THEN "Tobe Contact" 
-            WHEN leads.leadstatus = "3" THEN "Contacted" 
-            WHEN leads.leadstatus = "4" THEN "Waiting for Response" 
-            WHEN leads.leadstatus = "5" THEN "Cannot be Contacted" 
-            ELSE "None" 
-            END) AS Status'),'users.last_name AS Owners')
-            ->where('convert','=','0')
+            ->select('leads.id as ID','leads.leadsname as Name' , 'leads.email AS Email','leads.phone As Phone','leads.website as Website','leads.account_name as Company','leads.status AS Status','users.last_name AS Owners')
+            ->where('type','=','lead')
             ->get();
             //dd($data);
             return DataTables::of($data)
@@ -71,12 +61,12 @@ class LeadController extends Controller
         $logs=[
             'module'=>'Leads',
             'moduleid'=>$ids->id,
-            'userid'=>Auth::user()->id,
-            'subject'=>'Account Created',
+            'createbyid'=>Auth::user()->id,
+            'logname'=>'Lead Created',
             'prevdata'=>'',
             'newdata'=>$newdata
         ];
-        $ids=AccountLogs::create($logs);
+        $ids=DataLogs::create($logs);
         //echo $newdata;
         /// redirect jika sukses menyimpan data
          return redirect('leads');
@@ -87,8 +77,8 @@ class LeadController extends Controller
         $owner=User::where('id','=',$leads[0]->ownerid)->get();
         $createbyid=User::where('id','=',$leads[0]->createbyid)->get();
         $updatebyid=User::where('id','=',$leads[0]->updatebyid)->get();
-        $logs=AccountLogs::where('moduleid','=',$id)->where('module','=','Leads')->orderBy('created_at', 'DESC')->join('users', 'accountlogs.userid', '=', 'users.id')
-        ->select('accountlogs.*' ,'users.first_name as firstname', 'users.last_name as lastname')->get();
+        $logs=DataLogs::where('moduleid','=',$id)->where('module','=','Leads')->orderBy('created_at', 'DESC')->join('users', 'DataLogs.createbyid', '=', 'users.id')
+        ->select('DataLogs.*' ,'users.first_name as firstname', 'users.last_name as lastname')->get();
         if($leads[0]->convert == 0 ){
             return view('leads.view',compact('leads','owner','createbyid','updatebyid','logs'));
         }else{
@@ -109,18 +99,19 @@ class LeadController extends Controller
         $data=$request->all();
         unset($data['_token']);
         $accdata=Leads::where('id','=',$request->id)->get();
+        //dd($accdata);
         $leads=Leads::where('id',$request->id)->update($data);
         $prevdata = json_encode($accdata[0]);
         $newdata = json_encode($request->all());
         $logs=[
             'module'=>'Leads',
             'moduleid'=>$request->id,
-            'userid'=>Auth::user()->id,
-            'subject'=>'Account Updated',
+            'createbyid'=>Auth::user()->id,
+            'logname'=>'Leads Updated',
             'prevdata'=>$prevdata,
             'newdata'=>$newdata
         ];
-        $ids=AccountLogs::create($logs);
+        $ids=DataLogs::create($logs);
         /// redirect jika sukses menyimpan data
          return redirect('leads/view/'.$request->id);
     }
@@ -209,7 +200,7 @@ class LeadController extends Controller
             'prevdata'=>json_encode($prevdata),
             'newdata'=>json_encode($newdata)
         ];
-        $ids=AccountLogs::create($logs);
+        $ids=DataLogs::create($logs);
         $logs=[
             'module'=>'Accounts',
             'moduleid'=>$accID->id,
@@ -218,7 +209,7 @@ class LeadController extends Controller
             'prevdata'=>json_encode($prevdata),
             'newdata'=>json_encode($newdata)
         ];
-        $ids=AccountLogs::create($logs);
+        $ids=DataLogs::create($logs);
         $logs=[
             'module'=>'Contacts',
             'moduleid'=>$contID->id,
@@ -227,7 +218,7 @@ class LeadController extends Controller
             'prevdata'=>json_encode($prevdata),
             'newdata'=>json_encode($newdata)
         ];
-        $ids=AccountLogs::create($logs);
+        $ids=DataLogs::create($logs);
         $logs=[
             'module'=>'Properties',
             'moduleid'=>$prop->id,
@@ -236,7 +227,7 @@ class LeadController extends Controller
             'prevdata'=>json_encode($prevdata),
             'newdata'=>json_encode($newdata)
         ];
-        $ids=AccountLogs::create($logs);
+        $ids=DataLogs::create($logs);
         $data=[ 'convert'=>1 ];
         $leads=Leads::where('id','=',$id)->update($data);
         $accounts = Accounts::where('leadid','=',$id)->get();
