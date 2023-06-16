@@ -17,6 +17,8 @@ class Quotes extends Model
         'toperson',
         'toaddress',
         'approve',
+        'status',
+        'aprrovedate',
         'approvedbyid',
         'note',
         'attcfile',

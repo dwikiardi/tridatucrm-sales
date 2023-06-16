@@ -213,7 +213,15 @@
               
             </div>
           </div>
-          <div class="card-body row">
+          
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header bg-blue-lt">
+            <h3 class="card-title"> Other Information </h3>
+          </div>
+          <div class="card-body row" >
             <div class="col-md-6">
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Map Latitude</label>
@@ -258,7 +266,6 @@
           </div>
         </div>
       </div>
-   
   </div> <!-- END Container-XL -->
 </div>
   

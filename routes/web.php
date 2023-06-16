@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AccountsController;
 use App\Http\Controllers\LeadController;
+use App\Http\Controllers\QuoteController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -36,6 +37,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('leads/edit/{id}', [LeadController::class, 'edit'])->name('edit');
     Route::post('leads/update/', [LeadController::class, 'update'])->name('leads.update');
     Route::get('leads/convert/{id}', [LeadController::class, 'convert'])->name('convert');
+    Route::get('leads/getquote/{id}', [LeadController::class, 'getquote'])->name('leads.getquote');
     // Route::get('leads/view/{id}', [LeadController::class, 'contact'])->name('leads.contact');
     // Route::get('leads/contact/{id}', [LeadController::class, 'contact'])->name('leads.contact');
     
@@ -51,11 +53,17 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('accounts/update/', [AccountsController::class, 'update'])->name('accounts.update');
     
     //Contacts
-    Route::get('contacts', [ContactsController::class, 'index'])->name('contacts.index');
-    Route::get('contacts/view/{id}', [ContactsController::class, 'view'])->name('contacts.view');
-    Route::get('contacts/edit/{id}', [ContactsController::class, 'edit'])->name('edit');
-    Route::post('contacts/update/', [ContactsController::class, 'update'])->name('contacts.update');
+    Route::get('contacts', [LeadController::class, 'cindex'])->name('contacts.cindex');
+    Route::get('contacts/view/{id}', [LeadController::class, 'cview'])->name('contacts.cview');
+    Route::get('contacts/edit/{id}', [LeadController::class, 'cedit'])->name('edit');
+    Route::post('contacts/update/', [LeadController::class, 'cupdate'])->name('contacts.cupdate');
 
-   
-
+    // Quotes
+    Route::get('quotes', [QuoteController::class, 'index'])->name('index');
+    Route::get('quotes', [QuoteController::class, 'index'])->name('quotes.index');
+    Route::get('quotes/create/{id?}', [QuoteController::class, 'create'])->name('quotes.create');
+    Route::post('quotes/store', [QuoteController::class, 'store'])->name('quotes.store');
+    Route::get('quotes/view/{id}', [QuoteController::class, 'view'])->name('quotes.view');
+    Route::get('quotes/edit/{id}', [QuoteController::class, 'edit'])->name('quotes.edit');
+    Route::post('quotes/update/', [QuoteController::class, 'update'])->name('quotes.update');
 });

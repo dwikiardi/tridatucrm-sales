@@ -1,5 +1,5 @@
 @extends('layouts/admin')
-@section('title','Create New Leads')
+@section('title','Leads Already Converted')
 @section('add_css')
 <style>
 .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active{
@@ -42,7 +42,7 @@
   <div class="row row-cards">
     <div class="col-12">
       
-    <a href="{{ url('accounts/view',$accounts[0]->id)}}" class="btn btn-success d-none d-sm-inline-block">Already Convert To Accounts</a>  
+    <a href="{{ url('contacts/view',$leads[0]->id)}}" class="btn btn-success d-none d-sm-inline-block">Already Convert To Accounts</a>  
           
     </div>
   </div>

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Models\Leads;
 use App\Models\Accounts;
+use App\Models\Quotes;
 use App\Models\User;
 use App\Models\DataLogs;
 use DataTables;
@@ -63,7 +64,7 @@ class LeadController extends Controller
             'moduleid'=>$ids->id,
             'createbyid'=>Auth::user()->id,
             'logname'=>'Lead Created',
-            'prevdata'=>'',
+            'olddata'=>'',
             'newdata'=>$newdata
         ];
         $ids=DataLogs::create($logs);
@@ -82,8 +83,9 @@ class LeadController extends Controller
         if($leads[0]->convert == 0 ){
             return view('leads.view',compact('leads','owner','createbyid','updatebyid','logs'));
         }else{
-            $accounts = Accounts::where('leadid','=',$leads[0]->id)->get();
-            return view('leads.convert',compact('accounts'));
+            // $accounts = Accounts::where('leadid','=',$leads[0]->id)->get();
+            // return view('leads.convert',compact('accounts'));
+            return view('leads.convert',compact('leads'));
         }
         
     }
@@ -101,20 +103,78 @@ class LeadController extends Controller
         $accdata=Leads::where('id','=',$request->id)->get();
         //dd($accdata);
         $leads=Leads::where('id',$request->id)->update($data);
-        $prevdata = json_encode($accdata[0]);
+        $olddata = json_encode($accdata[0]);
         $newdata = json_encode($request->all());
         $logs=[
             'module'=>'Leads',
             'moduleid'=>$request->id,
             'createbyid'=>Auth::user()->id,
             'logname'=>'Leads Updated',
-            'prevdata'=>$prevdata,
+            'olddata'=>$olddata,
             'newdata'=>$newdata
         ];
         $ids=DataLogs::create($logs);
         /// redirect jika sukses menyimpan data
          return redirect('leads/view/'.$request->id);
     }
+
+    public function getQuote(Request $request,$id){
+        if ($request->ajax()) {
+            $data = Quotes::join('users', 'quotes.ownerid', '=', 'users.id')
+            ->join('leads', 'quotes.leadid', '=', 'leads.id')
+            ->select('quotes.id as ID','quotes.quotenumber as QuoteNo' , 'quotes.quotedate AS Date','quotes.approve As Approve','quotes.toperson as To','quotes.status AS Status','users.last_name AS Owners')
+            ->where('leadid','=',$id)
+            ->get();
+            //dd($data);
+            return DataTables::of($data)
+                ->addIndexColumn()
+                // ->addColumn('action', function($row){
+                //     $actionBtn = '<a class="edit btn btn-success btn-sm" data-id="'.$row->ID.'">Edit</a> <a  class="delete btn btn-danger btn-sm" data-id="'.$row->ID.'">DeActive</a>';
+                //     //$actionBtn=$row->ID;
+                //     return $actionBtn;
+                // })
+                // ->rawColumns(['action'])
+                ->editColumn('Date', function ($row) {
+                    $date=date('d/m/Y',strtotime($row->Date));
+                    return $date;
+                })
+                ->editColumn('Approve', function ($row) {
+                    //return $row->Phone ?: '-';
+                    if($row->Approve==1){
+                        return "Approved";
+                    }else{
+                        return "Waiting to Aprroval";
+                    }
+                })
+                ->editColumn('Status', function ($row) {
+                    //return $row->Website ?: '-';
+                    switch ($row->Status) {
+                        case '1':
+                            return "Waiting For Approve";
+                            break;
+                        case '2':
+                            return "Approved";
+                            break;
+                        case '3':
+                            return "Rejected";
+                            break;
+                        case '4':
+                            return "Request Revision";
+                            break;
+                        
+                            
+                        default:
+                        //1: Waiting For Apporove; 2: Approved; 3:Rejected; 4: Need Revision
+                            break;
+                    }
+                })
+                
+                ->make(true);
+        }
+
+        return view('quotes.index');
+    }
+
 
     public function convert($id){
         
@@ -179,7 +239,7 @@ class LeadController extends Controller
             'updatebyid'=>$owners,
         ];
         $prop=Properties::create($cProperties);
-        $prevdata=['Modules'=>'Leads','id'=>$id];
+        $olddata=['Modules'=>'Leads','id'=>$id];
         $newdata=[
             'Accounts'=>[
                 'Modules'=>'Accounts','id'=>$accID->id,
@@ -197,7 +257,7 @@ class LeadController extends Controller
             'moduleid'=>$id,
             'userid'=>Auth::user()->id,
             'subject'=>'Convert to Contact',
-            'prevdata'=>json_encode($prevdata),
+            'olddata'=>json_encode($olddata),
             'newdata'=>json_encode($newdata)
         ];
         $ids=DataLogs::create($logs);
@@ -206,7 +266,7 @@ class LeadController extends Controller
             'moduleid'=>$accID->id,
             'userid'=>Auth::user()->id,
             'subject'=>'Convert to Accounts',
-            'prevdata'=>json_encode($prevdata),
+            'olddata'=>json_encode($olddata),
             'newdata'=>json_encode($newdata)
         ];
         $ids=DataLogs::create($logs);
@@ -215,7 +275,7 @@ class LeadController extends Controller
             'moduleid'=>$contID->id,
             'userid'=>Auth::user()->id,
             'subject'=>'Convert to Contacts',
-            'prevdata'=>json_encode($prevdata),
+            'olddata'=>json_encode($olddata),
             'newdata'=>json_encode($newdata)
         ];
         $ids=DataLogs::create($logs);
@@ -224,7 +284,7 @@ class LeadController extends Controller
             'moduleid'=>$prop->id,
             'userid'=>Auth::user()->id,
             'subject'=>'Convert to Property ',
-            'prevdata'=>json_encode($prevdata),
+            'olddata'=>json_encode($olddata),
             'newdata'=>json_encode($newdata)
         ];
         $ids=DataLogs::create($logs);

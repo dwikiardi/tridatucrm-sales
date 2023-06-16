@@ -348,10 +348,23 @@
                             {{$leads[0]->note}}
                             </div>
                           </div> 
+                          <div class="form-group mb-3 row">
+                            <label class="form-label col-3 col-form-label">Created By</label>
+                            <div class="col" style="padding: 10px!important;">
+                            {{ $createbyid[0]->first_name}} {{ $createbyid[0]->last_name}}
+                            <br>{{ $leads[0]->created_at }}
+                            </div>
+                          </div>  
+                          <div class="form-group mb-3 row">
+                            <label class="form-label col-3 col-form-label">Last Modified By</label>
+                            <div class="col" style="padding: 10px!important;">
+                            {{ $updatebyid[0]->first_name}} {{ $updatebyid[0]->last_name}}
+                            <br>{{ $leads[0]->updated_at }}
+                            </div>
+                          </div> 
                         </div>
                       </div>
                           
-                        </div>
                         
                       </div>
                       
@@ -362,7 +375,10 @@
                       <div class="card-header bg-blue-lt">
                         <h3 class="card-title"> Quote History </h3>
                         <div class="col-auto ms-auto d-print-none"> 
-                            <a class="btn btn-light" data-bs-toggle="collapse" href="#c2" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
+                            <a href="{{route('quotes.create',$leads[0]->id)}}" class="btn btn-success d-none d-sm-inline-block" >
+                              Create Quote
+                            </a>  
+                            <a class="btn btn-light" data-bs-toggle="collapse" href="#c4" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-layout-bottombar-collapse" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                 <path d="M20 6v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2z"></path>
@@ -373,10 +389,24 @@
                           </div>
                         </div>
                        
-                        <div class="card-body row collapse multi-collapse show" id="c2">
+                        <div class="card-body row collapse multi-collapse show" id="c4">
                         <div class="col-md-12">
-                          
-                          
+                          <div class="table-responsive"  style="min-height: 550px;">
+                            <table class="table card-table table-vcenter text-nowrap datatable">
+                              <thead>
+                                <tr>
+                                  <th>Quote No.</th>
+                                  <th>Date</th>
+                                  <th>To</th>
+                                  <th>Approve</th>
+                                  <th>Status</th>
+                                  <th>Owners</th>
+                                  <!-- <th>Action</th> -->
+                                </tr>
+                              </thead>
+                              <tbody></tbody>
+                            </table>
+                          </div>
                         </div>
                         
                       </div>
@@ -414,7 +444,7 @@
                       <div class="card-header bg-blue-lt">
                         <h3 class="card-title"> Instalation </h3>
                         <div class="col-auto ms-auto d-print-none"> 
-                            <a class="btn btn-light" data-bs-toggle="collapse" href="#c2" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
+                            <a class="btn btn-light" data-bs-toggle="collapse" href="#c5" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-layout-bottombar-collapse" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                 <path d="M20 6v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2z"></path>
@@ -425,7 +455,7 @@
                           </div>
                         </div>
                        
-                        <div class="card-body row collapse multi-collapse show" id="c2">
+                        <div class="card-body row collapse multi-collapse show" id="c5">
                         <div class="col-md-12">
                           
                           
@@ -457,46 +487,46 @@
               
             </div>
             <div class="tab-pane fade" id="tabs-profile-17">
-            <div class="col-12">
-              <div class="card">
-                <div class="card-header bg-blue-lt">
-                  <h3 class="card-title"> History </h3>
-                </div>
-                <div class="card-body row">
-                  <ul class="list list-timeline">
-                    @foreach($logs as $log)
-                    <li>
-                      <div class="list-timeline-icon"><!-- Download SVG icon from http://tabler-icons.io/i/brand-twitter -->
-                        <!-- SVG icon code -->
-                        @if (strpos($log->logname, 'Create') !== FALSE)
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-circle-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
-                            <path d="M9 12l6 0"></path>
-                            <path d="M12 9l0 6"></path>
-                          </svg>
-                        @endif
-                        @if (strpos($log->logname, 'Update') !== FALSE)
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4"></path>
-                            <path d="M13.5 6.5l4 4"></path>
-                          </svg>
-                        @endif
-                       
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-header bg-blue-lt">
+                    <h3 class="card-title"> History </h3>
+                  </div>
+                  <div class="card-body row">
+                    <ul class="list list-timeline">
+                      @foreach($logs as $log)
+                      <li>
+                        <div class="list-timeline-icon"><!-- Download SVG icon from http://tabler-icons.io/i/brand-twitter -->
+                          <!-- SVG icon code -->
+                          @if (strpos($log->logname, 'Create') !== FALSE)
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-circle-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                              <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
+                              <path d="M9 12l6 0"></path>
+                              <path d="M12 9l0 6"></path>
+                            </svg>
+                          @endif
+                          @if (strpos($log->logname, 'Update') !== FALSE)
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                              <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4"></path>
+                              <path d="M13.5 6.5l4 4"></path>
+                            </svg>
+                          @endif
                         
-                      </div>
-                      <div class="list-timeline-content">
-                        <div class="list-timeline-time">{{ $log->created_at }}</div>
-                        <p class="list-timeline-title">{{$log->logname}}</p>
-                        <p class="text-muted">{{ $log->firstname }} {{ $log->lastname }}</p>
-                      </div>
-                    </li>
-                    @endforeach
-                  </ul>
+                          
+                        </div>
+                        <div class="list-timeline-content">
+                          <div class="list-timeline-time">{{ $log->created_at }}</div>
+                          <p class="list-timeline-title">{{$log->logname}}</p>
+                          <p class="text-muted">{{ $log->firstname }} {{ $log->lastname }}</p>
+                        </div>
+                      </li>
+                      @endforeach
+                    </ul>
+                  </div>
                 </div>
               </div>
-            </div>
             </div>
             
           </div>
@@ -515,7 +545,40 @@
 
 <script type="text/javascript">
   $(function () {
-      
+    var table = $('.datatable').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: "{{ route('leads.getquote',$leads[0]->id) }}",
+        columns: [
+            {data: 'QuoteNo', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+              {
+                $(nTd).html("<a href='{{ url('quotes/view')}}/"+oData.ID+"'>"+oData.QuoteNo+"</a>");
+              }
+            },
+            {data: 'Date', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+              {
+                $(nTd).html("<a href='{{ url('quotes/view')}}/"+oData.ID+"'>"+oData.Date+"</a>");
+              }
+            },
+            {data: 'To', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+              {
+                $(nTd).html("<a href='{{ url('quotes/view')}}/"+oData.ID+"'>"+oData.To+"</a>");
+              }
+            },
+            {data: 'Approve', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+              {
+                $(nTd).html("<a href='{{ url('quotes/view')}}/"+oData.ID+"'>"+oData.Approve+"</a>");
+              }
+            },
+            {data: 'Status', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+              {
+                $(nTd).html("<a href='{{ url('quotes/view')}}/"+oData.ID+"'>"+oData.Status+"</a>");
+              }
+            },
+            {data: 'Owners', name: 'Owners'},
+            // {data: 'action', name: 'action', orderable: false, searchable: false},
+        ]
+    });
   
   });
 </script>
