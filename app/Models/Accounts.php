@@ -27,5 +27,5 @@ class Accounts extends Model
         'createbyid',
         'updatebyid',
     ];
-    protected $table = "leads";
+    protected $table = "accounts";
 }

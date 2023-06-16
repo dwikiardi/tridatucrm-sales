@@ -178,120 +178,58 @@ class LeadController extends Controller
 
     public function convert($id){
         
-        $lead=Leads::where('id','=',$id)->get();
-        $owners=Auth::user()->id;
-        $cAccounts=[
-            'fullname'=>$lead[0]->leadsname,
-            'ownerid'=>$lead[0]->ownerid,
-            'address'=>$lead[0]->address,
-            'city'=>$lead[0]->city,
-            'province'=>$lead[0]->province,
-            'country'=>$lead[0]->country,
-            'zipcode'=>$lead[0]->zipcode,
-            'website'=>$lead[0]->website,
-            'email'=>$lead[0]->email,
-            'fax'=>$lead[0]->fax,
-            'phone'=>$lead[0]->phone,
-            'description'=>$lead[0]->description,
-            'accounttype'=>1,
-            'createbyid'=>$owners,
-            'updatebyid'=>$owners,
-            'leadid'=>$id,
-        ];
-        $accID = Accounts::create($cAccounts);
-        $cContacts=[
-            'contactname'=>$lead[0]->first_name." ".$lead[0]->last_name,
-            'ownerid'=>$lead[0]->ownerid,
-            'accountid'=>$accID->id,
-            'email'=>$lead[0]->email,
-            'address'=>$lead[0]->address,
-            'city'=>$lead[0]->city,
-            'province'=>$lead[0]->province,
-            'country'=>$lead[0]->country,
-            'zipcode'=>$lead[0]->zipcode,
-            'fax'=>$lead[0]->fax,
-            'phone'=>$lead[0]->phone,
-            'mobile'=>$lead[0]->mobile,
-            'note'=>$lead[0]->description,
-            'createbyid'=>$owners,
-            'updatebyid'=>$owners,
-        ];
-        $contID=Contacts::create($cContacts);
-        $cProperties=[
-            'propertyname'=>$lead[0]->leadsname,
-            'ownerid'=>$lead[0]->ownerid,
-            'accountid'=>$accID->id,
-            'contactid'=>$contID->id,
-            'address'=>$lead[0]->address,
-            'city'=>$lead[0]->city,
-            'province'=>$lead[0]->province,
-            'country'=>$lead[0]->country,
-            'zipcode'=>$lead[0]->zipcode,
-            'fax'=>$lead[0]->fax,
-            'phone'=>$lead[0]->phone,
-            'mobile'=>$lead[0]->mobile,
-            'email'=>$lead[0]->email,
-            'maplat'=>$lead[0]->maplat,
-            'maplong'=>$lead[0]->maplong,
-            'mapurl'=>$lead[0]->mapurl,
-            'note'=>$lead[0]->description,
-            'createbyid'=>$owners,
-            'updatebyid'=>$owners,
-        ];
-        $prop=Properties::create($cProperties);
-        $olddata=['Modules'=>'Leads','id'=>$id];
-        $newdata=[
-            'Accounts'=>[
-                'Modules'=>'Accounts','id'=>$accID->id,
-                
-            ],
-            'Contacts'=>[
-                'Modules'=>'Contacts','id'=>$contID->id,
-            ],
-            'Properties'=>[
-                'Modules'=>'Properties','id'=>$prop->id
-            ],
-        ];
+        $accdata=Leads::where('id','=',$id)->get();
+        $olddata = json_encode($accdata[0]);
+        $data=[ 'type'=>"contact" ];
+        $leads=Leads::where('id','=',$id)->update($data);
+
+        $newdata = json_encode($accdata=Leads::where('id','=',$id)->get());
+        if($accdata[0]->accountid==null){
+            $accs=[
+                'ownerid'=>$accdata[0]->ownerid,
+                'account_name'=>$accdata[0]->account_name,
+                'address'=>$accdata[0]->address,
+                'city'=>$accdata[0]->city,
+                'state'=>$accdata[0]->state,
+                'zipcode'=>$accdata[0]->zipcode,
+                'country'=>$accdata[0]->country,
+                'billing_address'=>$accdata[0]->billing_address,
+                'billing_city'=>$accdata[0]->billing_city,
+                'billing_state'=>$accdata[0]->billing_state,
+                'billing_zipcode'=>$accdata[0]->billing_zipcode,
+                'billing_country'=>$accdata[0]->billing_country,
+                'website'=>$accdata[0]->website,
+                'email'=>$accdata[0]->email,
+                'phone'=>$accdata[0]->phone,
+                'createbyid'=>$accdata[0]->createbyid,
+                'updatebyid'=>$accdata[0]->updatebyid,
+            ];
+            
+            $ids=Accounts::create($accs);
+            //dd($ids);
+            $accslog=[
+                'module'=>'Accounts',
+                'moduleid'=>$ids->id,
+                'createbyid'=>Auth::user()->id,
+                'logname'=>'Accounts Created ',
+                'olddata'=>($olddata),
+                'newdata'=>($newdata)
+            ];
+            $ids=DataLogs::create($accslog);
+        }
         $logs=[
             'module'=>'Leads',
             'moduleid'=>$id,
-            'userid'=>Auth::user()->id,
-            'subject'=>'Convert to Contact',
-            'olddata'=>json_encode($olddata),
-            'newdata'=>json_encode($newdata)
+            'createbyid'=>Auth::user()->id,
+            'logname'=>'Convert to Contact ',
+            'olddata'=>($olddata),
+            'newdata'=>($newdata)
         ];
         $ids=DataLogs::create($logs);
-        $logs=[
-            'module'=>'Accounts',
-            'moduleid'=>$accID->id,
-            'userid'=>Auth::user()->id,
-            'subject'=>'Convert to Accounts',
-            'olddata'=>json_encode($olddata),
-            'newdata'=>json_encode($newdata)
-        ];
-        $ids=DataLogs::create($logs);
-        $logs=[
-            'module'=>'Contacts',
-            'moduleid'=>$contID->id,
-            'userid'=>Auth::user()->id,
-            'subject'=>'Convert to Contacts',
-            'olddata'=>json_encode($olddata),
-            'newdata'=>json_encode($newdata)
-        ];
-        $ids=DataLogs::create($logs);
-        $logs=[
-            'module'=>'Properties',
-            'moduleid'=>$prop->id,
-            'userid'=>Auth::user()->id,
-            'subject'=>'Convert to Property ',
-            'olddata'=>json_encode($olddata),
-            'newdata'=>json_encode($newdata)
-        ];
-        $ids=DataLogs::create($logs);
-        $data=[ 'convert'=>1 ];
-        $leads=Leads::where('id','=',$id)->update($data);
-        $accounts = Accounts::where('leadid','=',$id)->get();
-        return view('leads.convert',compact('accounts'));
+        
+        $return=['status'=>'success','message'=>'Lead Success Converted'];
+        echo json_encode($return);
+        
     }
     
 }

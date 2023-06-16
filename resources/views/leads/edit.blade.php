@@ -213,7 +213,50 @@
               
             </div>
           </div>
+          
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header bg-blue-lt">
+            <h3 class="card-title"> Property Information</h3>
+          </div>
           <div class="card-body row">
+          <div class="col-md-6">
+              
+              <div class="form-group mb-3 row">
+                <label class="form-label col-3 col-form-label">Property Address</label>
+                <div class="col">
+                <textarea class="form-control" name="property_address" placeholder="">{{$leads[0]->property_address}}</textarea>
+                </div>
+              </div>  
+              <div class="form-group mb-3 row">
+                <label class="form-label col-3 col-form-label">Property City</label>
+                <div class="col">
+                  <input type="text" class="form-control" name="property_city" placeholder="City Name" value="{{$leads[0]->property_city}}">
+                </div>
+              </div>
+              <div class="form-group mb-3 row">
+                <label class="form-label col-3 col-form-label">Property State/Province</label>
+                <div class="col">
+                  <input type="text" class="form-control" name="property_state" aria-describedby="emailHelp" placeholder="Province" value="{{$leads[0]->property_state}}">
+                </div>
+              </div>  
+              
+              <div class="form-group mb-3 row">
+                <label class="form-label col-3 col-form-label">Property Country</label>
+                <div class="col">
+                  <input type="text" class="form-control" name="property_country" aria-describedby="emailHelp" placeholder="" value="{{$leads[0]->property_country}}">
+                </div>
+              </div>  
+              <div class="form-group mb-3 row">
+                <label class="form-label col-3 col-form-label">Property ZIP Code</label>
+                <div class="col">
+                  <input type="text" class="form-control" name="property_zipcode" aria-describedby="emailHelp" placeholder="" value="{{$leads[0]->property_zipcode}}">
+                </div>
+              </div>
+            </div>
+            
             <div class="col-md-6">
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Map Latitude</label>
@@ -233,8 +276,7 @@
                 <input type="text" class="form-control" name="gmapurl" aria-describedby="emailHelp" placeholder="Google Map URL" value="{{$leads[0]->gmapurl}}">
                 </div>
               </div>
-            </div> 
-            <div class="col-md-6">
+            
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Lead Status</label>
                 <div class="col">
@@ -282,7 +324,6 @@
           </div>
         </div>
       </div>
-   
   </div> <!-- END Container-XL -->
 </div>
   

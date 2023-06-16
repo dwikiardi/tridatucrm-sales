@@ -144,7 +144,7 @@ class QuoteController extends Controller
         $olddata=Quotes::where('id','=',$request->id)->get();
         $dates=date('Y-m-d H:i:s');
         if(isset($file)){
-            //unlink( public_path($olddata[0]->attcfile));
+            unlink( public_path($olddata[0]->attcfile));
             //dd(assets());
             $path = "public/attach_file/".str_replace('/','_',$request->quotenumber);
             $file->move($path,$file->getClientOriginalName());

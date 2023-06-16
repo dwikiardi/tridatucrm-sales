@@ -51,7 +51,7 @@
         <!-- Page title actions -->
         <div class="col-auto ms-auto d-print-none"> 
           <a href="{{ url('leads')}}" class="btn btn-light">« Kembali</a>  
-          <a href="{{ url('leads/convert',$leads[0]->id)}}" class="btn btn-success d-none d-sm-inline-block" >
+          <a href="#" data-id="{{$leads[0]->id}}" class="btn btn-success d-none d-sm-inline-block" id="convert">
              Convert to Accounts
           </a>  
           <a href="{{ url('leads/edit',$leads[0]->id)}}" class="btn btn-primary d-none d-sm-inline-block" >
@@ -299,7 +299,7 @@
                   <div class="col-12">
                     <div class="card">
                       <div class="card-header bg-blue-lt">
-                        <h3 class="card-title"> Other Information </h3>
+                        <h3 class="card-title"> Property Information </h3>
                         <div class="col-auto ms-auto d-print-none"> 
                             <a class="btn btn-light" data-bs-toggle="collapse" href="#c3" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-layout-bottombar-collapse" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -313,60 +313,95 @@
                         </div>
                        
                         <div class="card-body row collapse multi-collapse show" id="c3">
-                        <div class="card-body row">
-                        <div class="col-md-6">
-                          <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">Map Latitude</label>
-                            <div class="col">
-                            {{$leads[0]->maplat}}
+                          <div class="col-md-6">
+                            
+                            <div class="form-group mb-3 row">
+                              <label class="form-label col-3 col-form-label">Property Address</label>
+                              <div class="col">
+                              
+                              {{$leads[0]->property_address}}
+                              </div>
+                            </div>  
+                            <div class="form-group mb-3 row">
+                              <label class="form-label col-3 col-form-label">Property City</label>
+                              <div class="col">
+                                
+                                {{$leads[0]->property_city}}
+                              </div>
                             </div>
-                          </div>  
-                          <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">Map Longitude</label>
-                            <div class="col">
-                            {{$leads[0]->maplong}}
-                            </div>
-                          </div>  
-                          <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">Google Map URL</label>
-                            <div class="col">
-                            {{$leads[0]->gmapurl}}
+                            <div class="form-group mb-3 row">
+                              <label class="form-label col-3 col-form-label">Property State/Province</label>
+                              <div class="col">
+                                
+                                {{$leads[0]->property_state}}
+                              </div>
+                            </div>  
+                            
+                            <div class="form-group mb-3 row">
+                              <label class="form-label col-3 col-form-label">Property Country</label>
+                              <div class="col">
+                                
+                                {{$leads[0]->property_country}}
+                              </div>
+                            </div>  
+                            <div class="form-group mb-3 row">
+                              <label class="form-label col-3 col-form-label">Property ZIP Code</label>
+                              <div class="col">
+                                
+                                {{$leads[0]->property_zipcode}}
+                              </div>
                             </div>
                           </div>
-                        </div> 
-                        <div class="col-md-6">
-                          <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">Lead Status</label>
-                            <div class="col">
-                            {{$leads[0]->status}}
+                          <div class="col-md-6">
+                            <div class="form-group mb-3 row">
+                              <label class="form-label col-3 col-form-label">Map Latitude</label>
+                              <div class="col">
+                              {{$leads[0]->maplat}}
+                              </div>
+                            </div>  
+                            <div class="form-group mb-3 row">
+                              <label class="form-label col-3 col-form-label">Map Longitude</label>
+                              <div class="col">
+                              {{$leads[0]->maplong}}
+                              </div>
+                            </div>  
+                            <div class="form-group mb-3 row">
+                              <label class="form-label col-3 col-form-label">Google Map URL</label>
+                              <div class="col">
+                              {{$leads[0]->gmapurl}}
+                              </div>
                             </div>
-                          </div> 
-                          <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">Note</label>
-                            <div class="col">
-                            
-                            {{$leads[0]->note}}
-                            </div>
-                          </div> 
-                          <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">Created By</label>
-                            <div class="col" style="padding: 10px!important;">
-                            {{ $createbyid[0]->first_name}} {{ $createbyid[0]->last_name}}
-                            <br>{{ $leads[0]->created_at }}
-                            </div>
-                          </div>  
-                          <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">Last Modified By</label>
-                            <div class="col" style="padding: 10px!important;">
-                            {{ $updatebyid[0]->first_name}} {{ $updatebyid[0]->last_name}}
-                            <br>{{ $leads[0]->updated_at }}
-                            </div>
-                          </div> 
-                        </div>
-                      </div>
                           
+                            <div class="form-group mb-3 row">
+                              <label class="form-label col-3 col-form-label">Lead Status</label>
+                              <div class="col">
+                              {{$leads[0]->status}}
+                              </div>
+                            </div> 
+                            <div class="form-group mb-3 row">
+                              <label class="form-label col-3 col-form-label">Note</label>
+                              <div class="col">
+                              
+                              {{$leads[0]->note}}
+                              </div>
+                            </div> 
+                            <div class="form-group mb-3 row">
+                              <label class="form-label col-3 col-form-label">Created By</label>
+                              <div class="col" style="padding: 10px!important;">
+                              {{ $createbyid[0]->first_name}} {{ $createbyid[0]->last_name}}
+                              <br>{{ $leads[0]->created_at }}
+                              </div>
+                            </div>  
+                            <div class="form-group mb-3 row">
+                              <label class="form-label col-3 col-form-label">Last Modified By</label>
+                              <div class="col" style="padding: 10px!important;">
+                              {{ $updatebyid[0]->first_name}} {{ $updatebyid[0]->last_name}}
+                              <br>{{ $leads[0]->updated_at }}
+                              </div>
+                            </div> 
+                          </div>
+                        </div>
                         
-                      </div>
                       
                     </div>
                   </div>
@@ -390,26 +425,26 @@
                         </div>
                        
                         <div class="card-body row collapse multi-collapse show" id="c4">
-                        <div class="col-md-12">
-                          <div class="table-responsive"  style="min-height: 550px;">
-                            <table class="table card-table table-vcenter text-nowrap datatable">
-                              <thead>
-                                <tr>
-                                  <th>Quote No.</th>
-                                  <th>Date</th>
-                                  <th>To</th>
-                                  <th>Approve</th>
-                                  <th>Status</th>
-                                  <th>Owners</th>
-                                  <!-- <th>Action</th> -->
-                                </tr>
-                              </thead>
-                              <tbody></tbody>
-                            </table>
+                          <div class="col-md-12">
+                            <div class="table-responsive"  style="min-height: 550px;">
+                              <table class="table card-table table-vcenter text-nowrap datatable">
+                                <thead>
+                                  <tr>
+                                    <th>Quote No.</th>
+                                    <th>Date</th>
+                                    <th>To</th>
+                                    <th>Approve</th>
+                                    <th>Status</th>
+                                    <th>Owners</th>
+                                    <!-- <th>Action</th> -->
+                                  </tr>
+                                </thead>
+                                <tbody></tbody>
+                              </table>
+                            </div>
                           </div>
                         </div>
-                        
-                      </div>
+                     
                       
                     </div>
                   </div>
@@ -418,7 +453,7 @@
                       <div class="card-header bg-blue-lt">
                         <h3 class="card-title"> Survey </h3>
                         <div class="col-auto ms-auto d-print-none"> 
-                            <a class="btn btn-light" data-bs-toggle="collapse" href="#c2" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
+                            <a class="btn btn-light" data-bs-toggle="collapse" href="#s1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-layout-bottombar-collapse" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                 <path d="M20 6v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2z"></path>
@@ -429,13 +464,14 @@
                           </div>
                         </div>
                        
-                        <div class="card-body row collapse multi-collapse show" id="c2">
-                        <div class="col-md-12">
-                          
-                          
+                        <div class="card-body row collapse multi-collapse show" id="s1">
+                          <div class="col-md-12">
+                            
+                            
+                          </div>
                         </div>
                         
-                      </div>
+                     
                       
                     </div>
                   </div>
@@ -463,9 +499,8 @@
                         
                       </div>
                       
-                    </div>
+                    
                   </div>
-                  </div> <!-- END Container-XL -->
                 </div>
               
 
@@ -483,7 +518,7 @@
                   </div>
                 </div>
               </div>
-
+              </div></div>
               
             </div>
             <div class="tab-pane fade" id="tabs-profile-17">
@@ -513,7 +548,15 @@
                               <path d="M13.5 6.5l4 4"></path>
                             </svg>
                           @endif
-                        
+                          @if (strpos($log->logname, 'Convert') !== FALSE)
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-transform-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                              <path d="M18 14a4 4 0 1 1 -3.995 4.2l-.005 -.2l.005 -.2a4 4 0 0 1 3.995 -3.8z" stroke-width="0" fill="currentColor"></path>
+                              <path d="M16.707 2.293a1 1 0 0 1 .083 1.32l-.083 .094l-1.293 1.293h3.586a3 3 0 0 1 2.995 2.824l.005 .176v3a1 1 0 0 1 -1.993 .117l-.007 -.117v-3a1 1 0 0 0 -.883 -.993l-.117 -.007h-3.585l1.292 1.293a1 1 0 0 1 -1.32 1.497l-.094 -.083l-3 -3a.98 .98 0 0 1 -.28 -.872l.036 -.146l.04 -.104c.058 -.126 .14 -.24 .245 -.334l2.959 -2.958a1 1 0 0 1 1.414 0z" stroke-width="0" fill="currentColor"></path>
+                              <path d="M3 12a1 1 0 0 1 .993 .883l.007 .117v3a1 1 0 0 0 .883 .993l.117 .007h3.585l-1.292 -1.293a1 1 0 0 1 -.083 -1.32l.083 -.094a1 1 0 0 1 1.32 -.083l.094 .083l3 3a.98 .98 0 0 1 .28 .872l-.036 .146l-.04 .104a1.02 1.02 0 0 1 -.245 .334l-2.959 2.958a1 1 0 0 1 -1.497 -1.32l.083 -.094l1.291 -1.293h-3.584a3 3 0 0 1 -2.995 -2.824l-.005 -.176v-3a1 1 0 0 1 1 -1z" stroke-width="0" fill="currentColor"></path>
+                              <path d="M6 2a4 4 0 1 1 -3.995 4.2l-.005 -.2l.005 -.2a4 4 0 0 1 3.995 -3.8z" stroke-width="0" fill="currentColor"></path>
+                            </svg>
+                          @endif
                           
                         </div>
                         <div class="list-timeline-content">
@@ -545,6 +588,7 @@
 
 <script type="text/javascript">
   $(function () {
+    var URI = "{{ url('/') }}";
     var table = $('.datatable').DataTable({
         processing: true,
         serverSide: true,
@@ -579,7 +623,30 @@
             // {data: 'action', name: 'action', orderable: false, searchable: false},
         ]
     });
-  
+    $(document).on("click","#convert", function(e){
+      e.preventDefault();
+      var id=$(this).attr("data-id");
+      $.ajaxSetup({
+          headers: {
+              'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+          }
+      });
+      var urls = URI + "/leads/convert/" + id;
+      $.ajax({
+          url: urls,
+          method: 'get',
+
+          success: function(result) {
+            console.log(result);
+            var data = JSON.parse(result);
+            if(data['status']=="success"){
+              var url="{{url('contact/view')}}/" + id;
+              window.location.href = url; 
+            }
+            
+          }
+      });
+    });
   });
 </script>
 @endpush

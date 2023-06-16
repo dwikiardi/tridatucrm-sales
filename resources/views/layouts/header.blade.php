@@ -114,6 +114,9 @@
                       </a>
                       <hr style="padding:0!important;margin:0!important">
                       <a class="dropdown-item" href="{{url('accounts')}}" >
+                        Accounts's
+                      </a>
+                      <a class="dropdown-item" href="{{url('contacts')}}" >
                         Customer's
                       </a>
                       <a class="dropdown-item" href="{{url('property')}}" >

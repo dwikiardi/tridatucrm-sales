@@ -62,8 +62,6 @@
               <table class="table card-table table-vcenter text-nowrap datatable">
                 <thead>
                   <tr>
-                    
-                    <th>#</th>
                     <th>Name</th>
                     <th>Email</th>
                     <th>Phone</th>
@@ -98,7 +96,6 @@
         serverSide: true,
         ajax: "{{ route('leads.index') }}",
         columns: [
-            {data: 'ID', name: 'ID'},
             {data: 'Name', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
                 $(nTd).html("<a href='{{ url('leads/view')}}/"+oData.ID+"'>"+oData.Name+"</a>");

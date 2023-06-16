@@ -51,7 +51,7 @@
         <!-- Page title actions -->
         <div class="col-auto ms-auto d-print-none"> 
           <a href="{{ url('quotes')}}" class="btn btn-light">« Kembali</a>  
-          <a href="{{ url('quotes/approve',$quotes[0]->id)}}" class="btn btn-success d-none d-sm-inline-block" >
+          <a href="#" data-id="$quotes[0]->id)}}" class="btn btn-success d-none d-sm-inline-block" id="approved">
              Approve This Quote
           </a>  
           <a href="{{ url('quotes/edit',$quotes[0]->id)}}" class="btn btn-primary d-none d-sm-inline-block" >
