@@ -47,7 +47,6 @@ class LeadController extends Controller
         return view('leads.index');
     }
 
-
     public function create()
     {
         $Users=User::get();
@@ -75,18 +74,20 @@ class LeadController extends Controller
 
     public function view($id){
         $leads=Leads::where('id','=',$id)->get();
-        $owner=User::where('id','=',$leads[0]->ownerid)->get();
-        $createbyid=User::where('id','=',$leads[0]->createbyid)->get();
-        $updatebyid=User::where('id','=',$leads[0]->updatebyid)->get();
-        $logs=DataLogs::where('moduleid','=',$id)->where('module','=','Leads')->orderBy('created_at', 'DESC')->join('users', 'DataLogs.createbyid', '=', 'users.id')
-        ->select('DataLogs.*' ,'users.first_name as firstname', 'users.last_name as lastname')->get();
-        if($leads[0]->convert == 0 ){
+        if($leads[0]->type=="lead"){
+            $owner=User::where('id','=',$leads[0]->ownerid)->get();
+            $createbyid=User::where('id','=',$leads[0]->createbyid)->get();
+            $updatebyid=User::where('id','=',$leads[0]->updatebyid)->get();
+            $logs=DataLogs::where('moduleid','=',$id)->where('module','=','Leads')->orderBy('created_at', 'DESC')->join('users', 'DataLogs.createbyid', '=', 'users.id')
+            ->select('DataLogs.*' ,'users.first_name as firstname', 'users.last_name as lastname')->get();
             return view('leads.view',compact('leads','owner','createbyid','updatebyid','logs'));
         }else{
             // $accounts = Accounts::where('leadid','=',$leads[0]->id)->get();
             // return view('leads.convert',compact('accounts'));
             return view('leads.convert',compact('leads'));
+        
         }
+        
         
     }
 
@@ -215,6 +216,8 @@ class LeadController extends Controller
                 'olddata'=>($olddata),
                 'newdata'=>($newdata)
             ];
+            $data=[ 'accountid'=> $ids->id ];
+            $leads=Leads::where('id','=',$id)->update($data);
             $ids=DataLogs::create($accslog);
         }
         $logs=[
@@ -232,4 +235,75 @@ class LeadController extends Controller
         
     }
     
+    public function cindex(Request $request){
+        if ($request->ajax()) {
+            $data = Leads::join('users', 'leads.ownerid', '=', 'users.id')
+            ->select('leads.id as ID','leads.leadsname as Name' , 'leads.email AS Email','leads.phone As Phone','leads.website as Website','leads.account_name as Company','leads.status AS Status','users.last_name AS Owners')
+            ->where('type','=','contact')
+            ->get();
+            //dd($data);
+            return DataTables::of($data)
+                ->addIndexColumn()
+                // ->addColumn('action', function($row){
+                //     $actionBtn = '<a class="edit btn btn-success btn-sm" data-id="'.$row->ID.'">Edit</a> <a  class="delete btn btn-danger btn-sm" data-id="'.$row->ID.'">DeActive</a>';
+                //     //$actionBtn=$row->ID;
+                //     return $actionBtn;
+                // })
+                // ->rawColumns(['action'])
+                ->editColumn('Email', function ($row) {
+                    return $row->Email ?: '-';
+                })
+                ->editColumn('Phone', function ($row) {
+                    return $row->Phone ?: '-';
+                })
+                ->editColumn('Website', function ($row) {
+                    return $row->Website ?: '-';
+                })
+                ->editColumn('Company', function ($row) {
+                    return $row->Company ?: '-';
+                })
+                ->make(true);
+        }
+
+        return view('contacts.index');
+    }
+
+    public function cview($id){
+        $leads=Leads::where('id','=',$id)->get();
+        $owner=User::where('id','=',$leads[0]->ownerid)->get();
+        $createbyid=User::where('id','=',$leads[0]->createbyid)->get();
+        $updatebyid=User::where('id','=',$leads[0]->updatebyid)->get();
+        $logs=DataLogs::where('moduleid','=',$id)->where('module','=','Leads')->orderBy('created_at', 'DESC')->join('users', 'DataLogs.createbyid', '=', 'users.id')
+        ->select('DataLogs.*' ,'users.first_name as firstname', 'users.last_name as lastname')->get();
+        return view('contacts.view',compact('leads','owner','createbyid','updatebyid','logs'));
+        
+    }
+
+    public function cedit($id){
+        $Users=User::get();
+        $leads=Leads::where('id','=',$id)->get();
+        return view('contacts.edit',compact('Users','leads'));
+    }
+    
+    public function cupdate(Request $request){
+        //var_dump($request->all());
+        $data=$request->all();
+        unset($data['_token']);
+        $accdata=Leads::where('id','=',$request->id)->get();
+        //dd($accdata);
+        $leads=Leads::where('id',$request->id)->update($data);
+        $olddata = json_encode($accdata[0]);
+        $newdata = json_encode($request->all());
+        $logs=[
+            'module'=>'Leads',
+            'moduleid'=>$request->id,
+            'createbyid'=>Auth::user()->id,
+            'logname'=>'Contacts Updated',
+            'olddata'=>$olddata,
+            'newdata'=>$newdata
+        ];
+        $ids=DataLogs::create($logs);
+        /// redirect jika sukses menyimpan data
+         return redirect('contacts/view/'.$request->id);
+    }
 }

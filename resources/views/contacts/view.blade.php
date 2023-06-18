@@ -1,5 +1,5 @@
 @extends('layouts/admin')
-@section('title','Create New Leads')
+@section('title','Create New Contacts')
 @section('add_css')
 <style>
 .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active{
@@ -50,12 +50,10 @@
         </div>
         <!-- Page title actions -->
         <div class="col-auto ms-auto d-print-none"> 
-          <a href="{{ url('leads')}}" class="btn btn-light">« Kembali</a>  
-          <a href="#" data-id="{{$leads[0]->id}}" class="btn btn-success d-none d-sm-inline-block" id="convert">
-             Convert to Accounts
-          </a>  
-          <a href="{{ url('leads/edit',$leads[0]->id)}}" class="btn btn-primary d-none d-sm-inline-block" >
-             Update Lead
+          <a href="{{ url('contacts')}}" class="btn btn-light">« Kembali</a>  
+          
+          <a href="{{ url('contacts/edit',$leads[0]->id)}}" class="btn btn-primary d-none d-sm-inline-block" >
+             Update Contacts
           </a>  
         </div>
       </div>
@@ -317,10 +315,9 @@
                             <div class="form-group mb-3 row">
                               <label class="form-label col-3 col-form-label">Property Name</label>
                               <div class="col">
-                              
                               {{$leads[0]->property_name}}
                               </div>
-                            </div>  
+                            </div> 
                             <div class="form-group mb-3 row">
                               <label class="form-label col-3 col-form-label">Property Address</label>
                               <div class="col">
@@ -432,7 +429,7 @@
                        
                         <div class="card-body row collapse multi-collapse show" id="c4">
                           <div class="col-md-12">
-                            <div class="table-responsive"  style="min-height: 550px;">
+                            <div class="table-responsive"  style="min-height: 150px;">
                               <table class="table card-table table-vcenter text-nowrap datatable">
                                 <thead>
                                   <tr>
@@ -629,30 +626,7 @@
             // {data: 'action', name: 'action', orderable: false, searchable: false},
         ]
     });
-    $(document).on("click","#convert", function(e){
-      e.preventDefault();
-      var id=$(this).attr("data-id");
-      $.ajaxSetup({
-          headers: {
-              'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-          }
-      });
-      var urls = URI + "/leads/convert/" + id;
-      $.ajax({
-          url: urls,
-          method: 'get',
-
-          success: function(result) {
-            console.log(result);
-            var data = JSON.parse(result);
-            if(data['status']=="success"){
-              var url="{{url('contacts/view')}}/" + id;
-              window.location.href = url; 
-            }
-            
-          }
-      });
-    });
+    
   });
 </script>
 @endpush

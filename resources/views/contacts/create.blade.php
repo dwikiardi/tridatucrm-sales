@@ -226,9 +226,9 @@
             <div class="form-group mb-3 row">
               <label class="form-label col-3 col-form-label">Property Name</label>
               <div class="col">
-                <input type="text" class="form-control" name="property_name" placeholder="Property Name">
+              <input type="text" class="form-control" name="property_name" placeholder="Property Name">
               </div>
-            </div> 
+            </div>  
             <div class="form-group mb-3 row">
               <label class="form-label col-3 col-form-label">Property Address</label>
               <div class="col">

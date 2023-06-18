@@ -1,8 +1,8 @@
 @extends('layouts/admin')
-@section('title','Create New Leads')
+@section('title','Create New Contacts')
 
 @section('content_header')
-<form action="{{ route('leads.update') }}" method="POST">    
+<form action="{{ route('contacts.update') }}" method="POST">    
     <div class="page-header d-print-none">
       <div class="row align-items-center">
         <div class="col">
@@ -14,7 +14,7 @@
         </div>
         <!-- Page title actions -->
         <div class="col-auto ms-auto d-print-none"> 
-          <a href="{{ url('leads/view',$leads[0]->id)}}" class="btn btn-light">« Kembali</a>                 
+          <a href="{{ url('contacts/view',$leads[0]->id)}}" class="btn btn-light">« Kembali</a>                 
           <button type="submit" class="btn btn-primary">Update</button>
         </div>
       </div>
@@ -222,13 +222,13 @@
             <h3 class="card-title"> Property Information</h3>
           </div>
           <div class="card-body row">
-          <div class="col-md-6">
-            <div class="form-group mb-3 row">
-              <label class="form-label col-3 col-form-label">Property Name</label>
-              <div class="col">
+            <div class="col-md-6">
+              <div class="form-group mb-3 row">
+                <label class="form-label col-3 col-form-label">Property Name</label>
+                <div class="col">
                 <input type="text" class="form-control" name="property_name" placeholder="Property Name" value="{{$leads[0]->property_name}}">
-              </div>
-            </div> 
+                </div>
+              </div> 
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Property Address</label>
                 <div class="col">
@@ -341,7 +341,7 @@
       </div>
       <!-- Page title actions -->
       <div class="col-auto ms-auto d-print-none"> 
-        <a href="{{ url('leads/view',$leads[0]->id)}}" class="btn btn-light">« Kembali</a>                    
+        <a href="{{ url('contacts/view',$leads[0]->id)}}" class="btn btn-light">« Kembali</a>                    
         <button type="submit" class="btn btn-primary">Simpan</button>
       </div>
     </div>
