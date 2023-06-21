@@ -170,6 +170,21 @@
                             </div>
                           </div>  
                           <div class="form-group mb-3 row">
+                            <label class="form-label col-3 col-form-label">Created By</label>
+                            <div class="col">
+                            {{ $createbyid[0]->first_name}} {{ $createbyid[0]->last_name}}
+                            <br>{{ $leads[0]->created_at }}
+                            </div>
+                          </div>  
+                          <div class="form-group mb-3 row">
+                            <label class="form-label col-3 col-form-label">Last Modified By</label>
+                            <div class="col">
+                            {{ $updatebyid[0]->first_name}} {{ $updatebyid[0]->last_name}}
+                            <br>{{ $leads[0]->updated_at }}
+                            </div>
+                          </div> 
+                          <?php /*
+                          <div class="form-group mb-3 row">
                             <label class="form-label col-3 col-form-label">Billing Address</label>
                             <div class="col">
                             
@@ -205,6 +220,7 @@
                               {{$leads[0]->billing_zipcode}}
                             </div>
                           </div>
+                          */?>
                         </div>
                       </div>
                     </div>
@@ -261,7 +277,7 @@
                         </div>
                         <div class="col-md-6">
                           <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">Billing Name</label>
+                            <label class="form-label col-3 col-form-label">Billing Contact</label>
                             <div class="col">
                               
                               {{$leads[0]->billing_contact}}
@@ -391,20 +407,7 @@
                               {{$leads[0]->note}}
                               </div>
                             </div> 
-                            <div class="form-group mb-3 row">
-                              <label class="form-label col-3 col-form-label">Created By</label>
-                              <div class="col" style="padding: 10px!important;">
-                              {{ $createbyid[0]->first_name}} {{ $createbyid[0]->last_name}}
-                              <br>{{ $leads[0]->created_at }}
-                              </div>
-                            </div>  
-                            <div class="form-group mb-3 row">
-                              <label class="form-label col-3 col-form-label">Last Modified By</label>
-                              <div class="col" style="padding: 10px!important;">
-                              {{ $updatebyid[0]->first_name}} {{ $updatebyid[0]->last_name}}
-                              <br>{{ $leads[0]->updated_at }}
-                              </div>
-                            </div> 
+                            
                           </div>
                         </div>
                         

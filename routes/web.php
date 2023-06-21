@@ -6,6 +6,7 @@ use App\Http\Controllers\AccountsController;
 use App\Http\Controllers\LeadController;
 use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\VendorController;
+use App\Http\Controllers\SurveyController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -69,11 +70,20 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('quotes/update/', [QuoteController::class, 'update'])->name('quotes.update');
 
 
-     //Vendors
-     Route::get('vendors', [VendorController::class, 'index'])->name('vendors.index');
-     Route::get('vendors/create', [VendorController::class, 'create'])->name('vendors.create');
-     Route::post('vendors/store', [VendorController::class, 'store'])->name('vendors.store');
-     Route::get('vendors/view/{id}', [VendorController::class, 'view'])->name('vendors.view');
-     Route::get('vendors/edit/{id}', [VendorController::class, 'edit'])->name('edit');
-     Route::post('vendors/update/', [VendorController::class, 'update'])->name('vendors.update');
+    //Vendors
+    Route::get('vendors', [VendorController::class, 'index'])->name('vendors.index');
+    Route::get('vendors/create', [VendorController::class, 'create'])->name('vendors.create');
+    Route::post('vendors/store', [VendorController::class, 'store'])->name('vendors.store');
+    Route::get('vendors/view/{id}', [VendorController::class, 'view'])->name('vendors.view');
+    Route::get('vendors/edit/{id}', [VendorController::class, 'edit'])->name('edit');
+    Route::post('vendors/update/', [VendorController::class, 'update'])->name('vendors.update');
+
+    //Vendors
+    Route::get('surveys', [SurveyController::class, 'index'])->name('surveys.index');
+    Route::get('surveys/create', [SurveyController::class, 'create'])->name('surveys.create');
+    Route::post('surveys/store', [SurveyController::class, 'store'])->name('surveys.store');
+    Route::get('surveys/view/{id}', [SurveyController::class, 'view'])->name('surveys.view');
+    Route::get('surveys/edit/{id}', [SurveyController::class, 'edit'])->name('edit');
+    Route::post('surveys/update/', [SurveyController::class, 'update'])->name('surveys.update');
+
 });

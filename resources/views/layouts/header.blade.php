@@ -112,6 +112,9 @@
                       <a class="dropdown-item" href="{{url('installasi')}}" >
                         Instalations
                       </a>
+                      <a class="dropdown-item" href="{{url('revocation')}}" >
+                        Revocation
+                      </a>
                       <hr style="padding:0!important;margin:0!important">
                       <a class="dropdown-item" href="{{url('accounts')}}" >
                         Accounts's
@@ -174,33 +177,48 @@
                       </span>
                     </a>
                     <div class="dropdown-menu">
-                          <a class="dropdown-item" href="{{url('ipaddress')}}" >
-                            IP Address
-                          </a>
-                          <a class="dropdown-item" href="{{url('pops')}}" >
-                            Lokasi POP
-                          </a>
-                          <a class="dropdown-item" href="{{ url('products') }}" >
-                            Perangkat
-                          </a>
-                          <a class="dropdown-item" href="{{url('vendors')}}" > 
-                            Vendors
-                          </a> 
-                          <a class="dropdown-item" href="{{ url('services') }}" >
-                            Produk Layanan
-                          </a> 
+                      <a class="dropdown-item" href="{{url('vendors')}}" > 
+                        Vendors
+                      </a>
+                      <a class="dropdown-item" href="{{ url('services') }}" >
+                        Service / Package
+                      </a> 
+                      <hr style="padding:0!important;margin:0!important">
+                      <a class="dropdown-item" href="{{ url('category') }}" >
+                        Product Category
+                      </a>
+                      <a class="dropdown-item" href="{{ url('product') }}" >
+                        Products
+                      </a>
+                      <hr style="padding:0!important;margin:0!important">
+                      <a class="dropdown-item" href="{{url('ipaddress')}}" >
+                        IP Address
+                      </a>
+                      <a class="dropdown-item" href="{{url('pops')}}" >
+                        Lokasi POP
+                      </a>
+                      <hr style="padding:0!important;margin:0!important">
+                      <a class="dropdown-item" href="{{url('buys')}}" >
+                        Product Buys
+                      </a>
+                      <a class="dropdown-item" href="{{url('buys')}}" >
+                        Product Return
+                      </a>
+                      <a class="dropdown-item" href="{{url('report')}}" >
+                        Inventory Reports
+                      </a>
                     </div>
                   </li>
                   <li class="nav-item dropdown orders">
                                      <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
                       <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
                       <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-shopping-cart" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-   <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-   <circle cx="6" cy="19" r="2"></circle>
-   <circle cx="17" cy="19" r="2"></circle>
-   <path d="M17 17h-11v-14h-2"></path>
-   <path d="M6 5l14 1l-1 7h-13"></path>
-</svg>
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <circle cx="6" cy="19" r="2"></circle>
+                        <circle cx="17" cy="19" r="2"></circle>
+                        <path d="M17 17h-11v-14h-2"></path>
+                        <path d="M6 5l14 1l-1 7h-13"></path>
+                      </svg>
                       </span>
                       <span class="nav-link-title">
                         Order's
@@ -241,12 +259,12 @@
                   <a class="nav-link dropdown-toggle" href="#navbar-layout" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
                       <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/file-text -->
                       <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-   <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-   <circle cx="9" cy="7" r="4"></circle>
-   <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
-   <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-   <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
-</svg></span>
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
+                      </svg></span>
                       <span class="nav-link-title"> 
                         User's
                       </span>

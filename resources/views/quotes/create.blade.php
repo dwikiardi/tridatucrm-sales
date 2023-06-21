@@ -147,7 +147,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">
 <script type="text/javascript">
   $(function () {
-    $('#datetimepicker').datetimepicker({format: 'DD/MM/YYYY'});
+    
    
       
   });

@@ -78,8 +78,8 @@ class LeadController extends Controller
             $owner=User::where('id','=',$leads[0]->ownerid)->get();
             $createbyid=User::where('id','=',$leads[0]->createbyid)->get();
             $updatebyid=User::where('id','=',$leads[0]->updatebyid)->get();
-            $logs=DataLogs::where('moduleid','=',$id)->where('module','=','Leads')->orderBy('created_at', 'DESC')->join('users', 'DataLogs.createbyid', '=', 'users.id')
-            ->select('DataLogs.*' ,'users.first_name as firstname', 'users.last_name as lastname')->get();
+            $logs=DataLogs::where('moduleid','=',$id)->where('module','=','Leads')->orderBy('created_at', 'DESC')->join('users', 'datalogs.createbyid', '=', 'users.id')
+            ->select('datalogs.*' ,'users.first_name as firstname', 'users.last_name as lastname')->get();
             return view('leads.view',compact('leads','owner','createbyid','updatebyid','logs'));
         }else{
             // $accounts = Accounts::where('leadid','=',$leads[0]->id)->get();
@@ -194,11 +194,11 @@ class LeadController extends Controller
                 'state'=>$accdata[0]->state,
                 'zipcode'=>$accdata[0]->zipcode,
                 'country'=>$accdata[0]->country,
-                'billing_address'=>$accdata[0]->billing_address,
-                'billing_city'=>$accdata[0]->billing_city,
-                'billing_state'=>$accdata[0]->billing_state,
-                'billing_zipcode'=>$accdata[0]->billing_zipcode,
-                'billing_country'=>$accdata[0]->billing_country,
+                // 'billing_address'=>$accdata[0]->billing_address,
+                // 'billing_city'=>$accdata[0]->billing_city,
+                // 'billing_state'=>$accdata[0]->billing_state,
+                // 'billing_zipcode'=>$accdata[0]->billing_zipcode,
+                // 'billing_country'=>$accdata[0]->billing_country,
                 'website'=>$accdata[0]->website,
                 'email'=>$accdata[0]->email,
                 'phone'=>$accdata[0]->phone,
@@ -273,8 +273,8 @@ class LeadController extends Controller
         $owner=User::where('id','=',$leads[0]->ownerid)->get();
         $createbyid=User::where('id','=',$leads[0]->createbyid)->get();
         $updatebyid=User::where('id','=',$leads[0]->updatebyid)->get();
-        $logs=DataLogs::where('moduleid','=',$id)->where('module','=','Leads')->orderBy('created_at', 'DESC')->join('users', 'DataLogs.createbyid', '=', 'users.id')
-        ->select('DataLogs.*' ,'users.first_name as firstname', 'users.last_name as lastname')->get();
+        $logs=DataLogs::where('moduleid','=',$id)->where('module','=','Leads')->orderBy('created_at', 'DESC')->join('users', 'datalogs.createbyid', '=', 'users.id')
+        ->select('datalogs.*' ,'users.first_name as firstname', 'users.last_name as lastname')->get();
         return view('contacts.view',compact('leads','owner','createbyid','updatebyid','logs'));
         
     }

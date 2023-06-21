@@ -1,5 +1,5 @@
 @extends('layouts/admin')
-@section('title','Vendor Details')
+@section('title','Survey Details')
 @section('add_css')
 <style>
 .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active{
@@ -12,6 +12,9 @@
   }
   .dataTables_length{
     padding-left:15px;
+  }
+  label{
+    padding:0!important;
   }
   .dataTables_length label{
     display: inline-flex;
@@ -45,9 +48,9 @@
         </div>
         <!-- Page title actions -->
         <div class="col-auto ms-auto d-print-none"> 
-          <a href="{{ url('vendors')}}" class="btn btn-light">« Kembali</a>
-          <a href="{{ url('vendors/edit',$vendors[0]->id)}}" class="btn btn-primary d-none d-sm-inline-block" >
-            Update Vendor
+          <a href="{{ url('surveys')}}" class="btn btn-light">« Kembali</a>
+          <a href="{{ url('surveys/edit',$surveys[0]->id)}}" class="btn btn-primary d-none d-sm-inline-block" >
+            Update Survey
           </a>
         </div>
       </div>
@@ -64,172 +67,102 @@
             <div class="tab-pane fade active show" id="tabs-home-17">
               <div class="container-xl" style="padding: 0!important;">
                 <div class="row row-cards" data-masonry='{"percentPosition": true }'>
-                  <div class="col-12">
+                  <div class="col-md-6">
                     <div class="card">
-                      <div class="card-header ">
-                        <h3 class="card-title"> Vendor Information </h3>
-                        <div class="col-auto ms-auto d-print-none"> 
-                          
-                        </div>
+                      <div class="card-header bg-blue-lt">
+                        <h3 class="card-title"> Survey Request</h3>
                       </div>
-                      
-                      <div class="card-body row collapse multi-collapse show" id="multiCollapseExample1">
-                        <div class="col-md-6">
+                      <div class="card-body row">
+                        <div class="col-12" style="padding:0 15px;"> 
                           <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">Vendor Name</label>
+                            <label class="form-label col-3 col-form-label">Request Date</label>
                             <div class="col">
-                              {{$vendors[0]->vendor_name}}
+                              {{date('d/m/Y',strtotime($surveys[0]->requestdate))}}
                             </div>
                           </div>
                           <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">Vendor Type</label>
+                            <label class="form-label col-3 col-form-label">Request To</label>
                             <div class="col">
-                                  
-                                  @switch($vendors[0]->type)
-                                  @case(1)
-                                    Vendor Jasa
-                                    @break
-
-                                  @case(2)
-                                    Vendor Barang
-                                    @break
-                                  @case(3)
-                                    Vendor Lain
-                                    @break
-
-                                  @default
-                                      <span>Something went wrong, please try again</span>
-                              @endswitch
-
+                            {{$surveyorto}}
                             </div>
-                          </div> 
+                          </div>    
                           <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">Contact Name</label>
+                            <label class="form-label col-3 col-form-label">Lead</label>
                             <div class="col">
-                              {{$vendors[0]->contact}}
+                            {{$surveys[0]->leadsname}}
                             </div>
-                          </div>
+                          </div>    
                           <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">Contact Email</label>
+                            <label class="form-label col-3 col-form-label">Status</label>
                             <div class="col">
-                              {{$vendors[0]->email}}
+                              {{$surveys[0]->status}}
+                           
                             </div>
-                          </div>
-                          <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">Contact Mobile</label>
-                            <div class="col">
-                              {{$vendors[0]->mobile}}
-                            </div>
-                          </div>
-                          <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">Contact Phone</label>
-                            <div class="col">
-                              {{$vendors[0]->phone}}
-                            </div>
-                          </div>
+                          </div>   
                           
                           <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">Address</label>
+                            <label class="form-label col-3 col-form-label">Note</label>
                             <div class="col">
-                            {{$vendors[0]->address}}
+                            {{$surveys[0]->note}}
                             </div>
                           </div>  
-                          <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">City</label>
-                            <div class="col">
-                              {{$vendors[0]->city}}
-                            </div>
-                          </div>
-                          <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">State/Province</label>
-                            <div class="col">
-                              {{$vendors[0]->state}}
-                            </div>
-                          </div>  
-                          <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">Country</label>
-                            <div class="col">
-                              {{$vendors[0]->country}}
-                            </div>
-                          </div>
-                          <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">ZIP Code</label>
-                            <div class="col">
-                              {{$vendors[0]->zipcode}}
-                            </div>
-                          </div>
-
-                        </div>
-                        <div class="col-md-6">
-                          
-                          <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">Billing Name</label>
-                            <div class="col">
-                              {{$vendors[0]->billing_contact}}
-                            </div>
-                          </div>
-                          <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">Billing Email</label>
-                            <div class="col">
-                              {{$vendors[0]->billing_email}}
-                            </div>
-                          </div>
-                          <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">Billing Mobile</label>
-                            <div class="col">
-                              {{$vendors[0]->billing_mobile}}
-                            </div>
-                          </div>
-                          <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">Billing Phone</label>
-                            <div class="col">
-                              {{$vendors[0]->billing_phone}}
-                            </div>
-                          </div>
-                          <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">Billing Address</label>
-                            <div class="col">
-                            {{$vendors[0]->billing_address}}
-                            </div>
-                          </div>  
-                          <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">Billing City</label>
-                            <div class="col">
-                              {{$vendors[0]->billing_city}}
-                            </div>
-                          </div>
-                          <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">Billing State/Province</label>
-                            <div class="col">
-                              {{$vendors[0]->billing_state}}
-                            </div>
-                          </div>  
-                          <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">Billing Country</label>
-                            <div class="col">
-                              {{$vendors[0]->billing_country}}
-                            </div>
-                          </div>
-                          <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">Billing ZIP Code</label>
-                            <div class="col">
-                              {{$vendors[0]->billing_zipcode}}
-                            </div>
-                          </div>
                           <div class="form-group mb-3 row">
                             <label class="form-label col-3 col-form-label">Created By</label>
-                            <div class="col" style="padding: 10px!important;">
+                            <div class="col" >
                             {{ $createbyid[0]->first_name}} {{ $createbyid[0]->last_name}}
-                            <br>{{ $vendors[0]->created_at }}
+                            <br>{{ $surveys[0]->created_at }}
                             </div>
                           </div>  
                           <div class="form-group mb-3 row">
                             <label class="form-label col-3 col-form-label">Last Modified By</label>
-                            <div class="col" style="padding: 10px!important;">
+                            <div class="col" >
                             {{ $updatebyid[0]->first_name}} {{ $updatebyid[0]->last_name}}
-                            <br>{{ $vendors[0]->updated_at }}
+                            <br>{{ $surveys[0]->updated_at }}
                             </div>
                           </div> 
+                        </div>
+                        
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="card">
+                      <div class="card-header bg-blue-lt">
+                        <h3 class="card-title"> Survey Result</h3>
+                      </div>
+                      <div class="card-body row">
+                        <div class="col-12" style="padding:0 15px;">
+                          <div class="form-group mb-3 row">
+                            <label class="form-label col-3 col-form-label">Survey Date</label>
+                            <div class="col">
+                            {{date('d/m/Y',strtotime($surveys[0]->surveydate))}}
+                            </div>
+                          </div>
+                          <div class="form-group mb-3 row">
+                            <label class="form-label col-3 col-form-label">Survey To</label>
+                            <div class="col">
+                            {{$surveyorid}}
+                            </div>
+                          </div>   
+                          <div class="form-group mb-3 row">
+                            <label class="form-label col-3 col-form-label">Location Latitude</label>
+                            <div class="col">
+                              {{$surveys[0]->rmaplat}}
+                            </div>
+                          </div>
+                          <div class="form-group mb-3 row">
+                            <label class="form-label col-3 col-form-label">Location Longitude</label>
+                            <div class="col">
+                              {{$surveys[0]->rmaplong}}
+                            </div>
+                          </div>
+                          
+                          <div class="form-group mb-3 row">
+                            <label class="form-label col-3 col-form-label">Survey Result</label>
+                            <div class="col">
+                            {{$surveys[0]->surveyresult}}
+                            </div>
+                          </div>  
                         </div>
                       </div>
                     </div>
@@ -248,16 +181,16 @@
                     </div>
                     <!-- Page title actions -->
                     <div class="col-auto ms-auto d-print-none"> 
-                    <a href="{{ url('vendors')}}" class="btn btn-light">« Kembali</a>  
-                    <a href="{{ url('vendors/edit',$vendors[0]->id)}}" class="btn btn-primary d-none d-sm-inline-block" >
-                      Update Vendor
+                    <a href="{{ url('surveys')}}" class="btn btn-light">« Kembali</a>  
+                    <a href="{{ url('surveys/edit',$surveys[0]->id)}}" class="btn btn-primary d-none d-sm-inline-block" >
+                      Update Survey
                     </a> 
                     </div>
                   </div>
                 </div>
               </div>
 
-            </div>  
+            
             </div>
             <div class="tab-pane fade" id="tabs-profile-17">
             <div class="col-12">
@@ -323,7 +256,7 @@
     $(document).on("click",".edit",function(){
       var id=$(this).attr("data-id");
       console.log("click id: " + id);
-      window.location.href = "{{ url('vendors/edit')}}/" + id;
+      window.location.href = "{{ url('surveys/edit')}}/" + id;
     });
   });
 </script>

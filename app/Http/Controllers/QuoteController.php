@@ -125,8 +125,8 @@ class QuoteController extends Controller
         $lead=Leads::where('id','=',$quotes[0]->leadid)->get();
         $createbyid=User::where('id','=',$quotes[0]->createbyid)->get();
         $updatebyid=User::where('id','=',$quotes[0]->updatebyid)->get();
-        $logs=DataLogs::where('moduleid','=',$id)->where('module','=','quotes')->orderBy('created_at', 'DESC')->join('users', 'DataLogs.createbyid', '=', 'users.id')
-        ->select('DataLogs.*' ,'users.first_name as firstname', 'users.last_name as lastname')->get();
+        $logs=DataLogs::where('moduleid','=',$id)->where('module','=','quotes')->orderBy('created_at', 'DESC')->join('users', 'datalogs.createbyid', '=', 'users.id')
+        ->select('datalogs.*' ,'users.first_name as firstname', 'users.last_name as lastname')->get();
         return view('quotes.view',compact('quotes','owner','createbyid','updatebyid','logs','lead'));
         
     }

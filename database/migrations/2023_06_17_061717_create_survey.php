@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('surveys', function (Blueprint $table) {
             $table->id();
             $table->date('requestdate')->nullable();//requested survey date
+            $table->bigInteger('leadid')->nullable();//Lead ID to survey
             $table->bigInteger('surveyorid')->nullable();//staff hwo do survey
             $table->bigInteger('surveyorto')->nullable();//alocated staff to survey
             $table->string('rmaplat')->nullable();//result Survey Map Latitude

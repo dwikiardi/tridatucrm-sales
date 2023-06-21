@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::table('quotes', function (Blueprint $table) {
             $table->integer('status')->default(1); // 1: Waiting For Apporove; 2: Approved; 3:Rejected; 4: Need Revision
-            $table->bigInteger('approvedbyid')->nullable()->change(); // 
             $table->bigInteger('leadid')->nullable()->change(); // 
             $table->date('aprrovedate')->nullable(); // 
         });

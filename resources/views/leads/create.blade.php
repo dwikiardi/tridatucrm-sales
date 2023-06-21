@@ -113,6 +113,7 @@
                 <input type="text" class="form-control" name="phone" aria-describedby="emailHelp" placeholder="">
               </div>
             </div>  
+            <?php /*
             <div class="form-group mb-3 row">
               <label class="form-label col-3 col-form-label">Billing Address</label>
               <div class="col">
@@ -144,6 +145,7 @@
                 <input type="text" class="form-control" name="billing_zipcode" aria-describedby="emailHelp" placeholder="">
               </div>
             </div>
+            */?>
           </div>
         </div>
       </div>
