@@ -55,38 +55,38 @@
             <div class="form-group mb-3 row">
               <label class="form-label col-3 col-form-label">Company Name</label>
               <div class="col">
-                <input type="text" class="form-control company" name="account_name" placeholder="Company Name">
+                <input type="text" class="form-control company" name="account_name" id="account_name" placeholder="Company Name">
               </div>
             </div>
             <div class="form-group mb-3 row">
               <label class="form-label col-3 col-form-label">Address</label>
               <div class="col">
-              <textarea class="form-control" name="address" placeholder=""></textarea>
+              <textarea class="form-control" name="address" id="address" placeholder=""></textarea>
               </div>
             </div>  
             <div class="form-group mb-3 row">
               <label class="form-label col-3 col-form-label">City</label>
               <div class="col">
-                <input type="text" class="form-control" name="city" placeholder="City">
+                <input type="text" class="form-control" name="city" id="city" placeholder="City">
               </div>
             </div>
             <div class="form-group mb-3 row">
               <label class="form-label col-3 col-form-label">State/Province</label>
               <div class="col">
-                <input type="text" class="form-control" name="state" aria-describedby="emailHelp" placeholder="Province">
+                <input type="text" class="form-control" name="state" id="state" aria-describedby="emailHelp" placeholder="Province">
               </div>
             </div>  
             
             <div class="form-group mb-3 row">
               <label class="form-label col-3 col-form-label">Country</label>
               <div class="col">
-                <input type="text" class="form-control" name="country" aria-describedby="emailHelp" placeholder="Country">
+                <input type="text" class="form-control" name="country" id="country" aria-describedby="emailHelp" placeholder="Country">
               </div>
             </div>  
             <div class="form-group mb-3 row">
               <label class="form-label col-3 col-form-label">ZIP Code</label>
               <div class="col">
-                <input type="text" class="form-control" name="zipcode" aria-describedby="emailHelp" placeholder="ZIP Code">
+                <input type="text" class="form-control" name="zipcode" id="zipcode" aria-describedby="emailHelp" placeholder="ZIP Code">
               </div>
             </div>
             
@@ -98,19 +98,19 @@
             <div class="form-group mb-3 row">
               <label class="form-label col-3 col-form-label">E-mail</label>
               <div class="col">
-                <input type="email" class="form-control" name="email" aria-describedby="emailHelp" placeholder="Email">
+                <input type="email" class="form-control" name="email" id="email" aria-describedby="emailHelp" placeholder="Email">
               </div>
             </div>  
             <div class="form-group mb-3 row">
               <label class="form-label col-3 col-form-label">Website</label>
               <div class="col">
-                <input type="text" class="form-control" name="website" aria-describedby="emailHelp" placeholder="">
+                <input type="text" class="form-control" name="website" id="website" aria-describedby="emailHelp" placeholder="">
               </div>
             </div>  
             <div class="form-group mb-3 row">
               <label class="form-label col-3 col-form-label">Phone</label>
               <div class="col">
-                <input type="text" class="form-control" name="phone" aria-describedby="emailHelp" placeholder="">
+                <input type="text" class="form-control" name="phone" id="phone" aria-describedby="emailHelp" placeholder="">
               </div>
             </div>  
             <?php /*
@@ -327,11 +327,20 @@
 </form>
 @stop
 @push('js')
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
 <script type="text/javascript">
   $(function () {
       
-   
+    var path = "{{ route('leads.autocomplete') }}";
+    $('#account_name').typeahead({
+      source:  function (query, process) {
+      return $.get(path, { term: query }, function (data) {
+              return process(data);
+          });
+      }
+    });
       
   });
 </script>

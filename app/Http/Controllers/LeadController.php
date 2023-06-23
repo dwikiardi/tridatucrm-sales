@@ -10,6 +10,7 @@ use App\Models\Accounts;
 use App\Models\Quotes;
 use App\Models\User;
 use App\Models\DataLogs;
+use App\Models\Surveys;
 use DataTables;
 
 class LeadController extends Controller
@@ -119,7 +120,7 @@ class LeadController extends Controller
          return redirect('leads/view/'.$request->id);
     }
 
-    public function getQuote(Request $request,$id){
+    public function getquote(Request $request,$id){
         if ($request->ajax()) {
             $data = Quotes::join('users', 'quotes.ownerid', '=', 'users.id')
             ->join('leads', 'quotes.leadid', '=', 'leads.id')
@@ -176,6 +177,56 @@ class LeadController extends Controller
         return view('quotes.index');
     }
 
+    public function autocomplete(Request $request)
+    {
+        //$data = Accounts::select('account_name as name')
+        $data = Accounts::select('account_name as name')
+                ->where('account_name','LIKE',"%{$_GET['term']}%")
+                ->get();
+        return response()->json($data);
+        //echo ($_GET['term']);
+    }
+    public function complateit(Request $request)
+    {
+        $data = Accounts::where("account_name","LIKE","%".$request->query."%")
+                ->get();
+        return response()->json($data);
+    }
+    public function getsurvey(Request $request,$id){
+        if ($request->ajax()) {
+            //$data = Accounts::select('*');
+            $data = Surveys::join('leads','leads.id','=','surveys.leadid')->join('users','users.id','=','surveys.surveyorid')->where('surveys.leadid','=',$id)
+            ->select('surveys.id as ID','surveys.surveydate as SurveyDate' ,'surveys.requestdate as ReqDate' , 'leads.leadsname AS Property', 'users.first_name AS Petugas','surveys.status As Status','surveys.note As Note')
+            ->get();
+            //dd($data);
+            return DataTables::of($data)
+                ->addIndexColumn()
+                // ->addColumn('action', function($row){
+                //     $actionBtn = '<a class="edit btn btn-success btn-sm" data-id="'.$row->ID.'">Edit</a> <a  class="delete btn btn-danger btn-sm" data-id="'.$row->ID.'">DeActive</a>';
+                //     //$actionBtn=$row->ID;
+                //     return $actionBtn;
+                // })
+                // ->rawColumns(['action'])
+                ->editColumn('SurveyDate', function ($row) {
+                    if(isset($row->SurveyDate)){
+                        $date=date('d/m/Y',strtotime($row->SurveyDate));
+                        return $date;    
+                    }else{
+                        return '-';
+                    }
+                    
+                })
+                ->editColumn('ReqDate', function ($row) {
+                    if(isset($row->ReqDate)){
+                        $date=date('d/m/Y',strtotime($row->ReqDate));
+                        return $date;    
+                    }else{
+                        return '-';
+                    }
+                })
+                ->make(true);
+        }
+    }
 
     public function convert($id){
         

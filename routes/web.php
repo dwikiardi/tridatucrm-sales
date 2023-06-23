@@ -7,6 +7,10 @@ use App\Http\Controllers\LeadController;
 use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\SurveyController;
+use App\Http\Controllers\ServicesController;
+use App\Http\Controllers\StocCategoryController;
+use App\Http\Controllers\StocksController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -40,6 +44,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('leads/update/', [LeadController::class, 'update'])->name('leads.update');
     Route::get('leads/convert/{id}', [LeadController::class, 'convert'])->name('convert');
     Route::get('leads/getquote/{id}', [LeadController::class, 'getquote'])->name('leads.getquote');
+    Route::get('leads/getsurvey/{id}', [LeadController::class, 'getsurvey'])->name('leads.getsurvey');
+    Route::get('leads/autocomplete', [LeadController::class, 'autocomplete'])->name('leads.autocomplete');
     // Route::get('leads/view/{id}', [LeadController::class, 'contact'])->name('leads.contact');
     // Route::get('leads/contact/{id}', [LeadController::class, 'contact'])->name('leads.contact');
     
@@ -59,7 +65,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('contacts/view/{id}', [LeadController::class, 'cview'])->name('contacts.view');
     Route::get('contacts/edit/{id}', [LeadController::class, 'cedit'])->name('contacts.edit');
     Route::post('contacts/update/', [LeadController::class, 'cupdate'])->name('contacts.update');
-
+    Route::get('contacts/getquote/{id}', [LeadController::class, 'getquote'])->name('leads.getquote');
+    Route::get('contacts/getsurvey/{id}', [LeadController::class, 'getsurvey'])->name('leads.getsurvey');
     // Quotes
     Route::get('quotes', [QuoteController::class, 'index'])->name('index');
     Route::get('quotes', [QuoteController::class, 'index'])->name('quotes.index');
@@ -78,12 +85,38 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('vendors/edit/{id}', [VendorController::class, 'edit'])->name('edit');
     Route::post('vendors/update/', [VendorController::class, 'update'])->name('vendors.update');
 
-    //Vendors
+    //Surveys
     Route::get('surveys', [SurveyController::class, 'index'])->name('surveys.index');
     Route::get('surveys/create', [SurveyController::class, 'create'])->name('surveys.create');
     Route::post('surveys/store', [SurveyController::class, 'store'])->name('surveys.store');
     Route::get('surveys/view/{id}', [SurveyController::class, 'view'])->name('surveys.view');
     Route::get('surveys/edit/{id}', [SurveyController::class, 'edit'])->name('edit');
     Route::post('surveys/update/', [SurveyController::class, 'update'])->name('surveys.update');
+
+    //Services
+    Route::get('services', [ServicesController::class, 'index'])->name('services.index');
+    Route::get('services/create', [ServicesController::class, 'create'])->name('services.create');
+    Route::post('services/store', [ServicesController::class, 'store'])->name('services.store');
+    Route::get('services/view/{id}', [ServicesController::class, 'view'])->name('services.view');
+    Route::get('services/edit/{id}', [ServicesController::class, 'edit'])->name('edit');
+    Route::post('services/update/', [ServicesController::class, 'update'])->name('services.update');
+
+    //StockCategories
+    Route::get('category', [StocCategoryController::class, 'index'])->name('category.index');
+    Route::get('category/create', [StocCategoryController::class, 'create'])->name('category.create');
+    Route::post('category/store', [StocCategoryController::class, 'store'])->name('category.store');
+    Route::get('category/view/{id}', [StocCategoryController::class, 'view'])->name('category.view');
+    Route::get('category/edit/{id}', [StocCategoryController::class, 'edit'])->name('edit');
+    Route::post('category/update/', [StocCategoryController::class, 'update'])->name('category.update');
+
+    //stocks/Product
+    Route::get('product', [StocksController::class, 'index'])->name('stocks.index');
+    Route::get('product/create', [StocksController::class, 'create'])->name('stocks.create');
+    Route::post('product/store', [StocksController::class, 'store'])->name('stocks.store');
+    Route::get('product/view/{id}', [StocksController::class, 'view'])->name('stocks.view');
+    Route::get('product/edit/{id}', [StocksController::class, 'edit'])->name('edit');
+    Route::post('product/update/', [StocksController::class, 'update'])->name('stocks.update');
+    Route::get('product/getstock/{id}', [StocksController::class, 'getStock'])->name('stocks.getstock');
+
 
 });

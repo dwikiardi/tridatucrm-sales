@@ -9,7 +9,7 @@
   </div>
   <!-- BEGIN BODY -->
   <div class="page-body">
-  @yield('content')
+    @yield('content')
   </div>
   <!-- END BODY -->
 

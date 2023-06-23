@@ -75,6 +75,11 @@ class QuoteController extends Controller
     public function create($id=null)
     {
         $Users=User::get();
+        if(isset($id)){
+            $id=$id;
+        }else{
+            $id="";
+        }
         $Leads=Leads::get();
         return view('quotes.create',compact('Users','id','Leads'));
     }

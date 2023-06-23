@@ -1,6 +1,6 @@
 @extends('layouts/admin')
 @section('title','Vendors')
-@section('add_css');
+@section('add_css')
 <style>
   .dataTables_filter{
     float: right;

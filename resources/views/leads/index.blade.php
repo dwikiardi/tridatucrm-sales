@@ -1,6 +1,6 @@
 @extends('layouts/admin')
 @section('title','Leads')
-@section('add_css');
+@section('add_css')
 <style>
   .dataTables_filter{
     float: right;
@@ -90,7 +90,24 @@
 
 <script type="text/javascript">
   $(function () {
-      
+    // $('.datatable thead tr').clone(true).appendTo( '.datatable thead' );
+    // $('.datatable thead tr:eq(1) th').each( function (i) {
+    //     var title = $(this).text();
+    //     $(this).html( '<input type="text" placeholder=" Search '+title+'" />' );
+
+    //     $( 'input', this ).on( 'keypress', function (e) {
+    //       if(e.which == 13) {
+    //         //alert('You pressed enter!');
+    //         if ( table.column(i).search() !== this.value ) {
+    //             table
+    //                 .column(i)
+    //                 .search( this.value )
+    //                 .draw();
+    //         }
+    //       }
+            
+    //     });
+    // });
     var table = $('.datatable').DataTable({
         processing: true,
         serverSide: true,

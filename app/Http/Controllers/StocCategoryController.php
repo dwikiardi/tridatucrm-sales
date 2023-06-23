@@ -3,21 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\DataLogs;
-use App\Models\Services;
+use App\Models\StockCategorys;
 
 use DataTables;
 
-class ServicesController extends Controller
+class StocCategoryController extends Controller
 {
     //Index ListView
     public function index(Request $request){
         if ($request->ajax()) {
             //$data = Accounts::select('*');
-            $data = Services::select('services.id as ID','services.services_name','services.desk as desk','services.price as price','services.note as note')->get();
+            $data = StockCategorys::select('stock_categories.id as ID','stock_categories.category_name as name','stock_categories.desk as desk')->get();
             //dd($data);
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -38,13 +37,12 @@ class ServicesController extends Controller
                 ->make(true);
         }
 
-        return view('services.index');
+        return view('stockcategories.index');
     }
 
-    public function create($id=null)
+    public function create()
     {
-        $Users=User::get();
-        return view('services.create',compact('Users','id'));
+        return view('stockcategories.create');
     }
     public function store(Request $request){
         /// insert setiap request dari form ke dalam database via model
@@ -54,38 +52,37 @@ class ServicesController extends Controller
         
         
         unset($data['_token']);
-        $ids=Services::create($data);
+        $ids=StockCategorys::create($data);
 
         $newdata=json_encode($request->all());
         $logs=[
-            'module'=>'Services',
+            'module'=>'Stock_Categories',
             'moduleid'=>$ids->id,
             'createbyid'=>Auth::user()->id,
-            'logname'=>'Vendor Created',
+            'logname'=>'Category Product Created',
             'olddata'=>'',
             'newdata'=>$newdata
         ];
         $ids=DataLogs::create($logs);
         //echo $newdata;
         /// redirect jika sukses menyimpan data
-         return redirect('services');
+         return redirect('category');
     }
 
     public function view($id){
-        $services=Services::get();
+        $category=StockCategorys::get();
         
-        $createbyid=User::where('id','=',$services[0]->createbyid)->get();
-        $updatebyid=User::where('id','=',$services[0]->updatebyid)->get();
-        $logs=DataLogs::where('moduleid','=',$id)->where('module','=','services')->orderBy('created_at', 'DESC')->join('users', 'datalogs.createbyid', '=', 'users.id')
+        $createbyid=User::where('id','=',$category[0]->createbyid)->get();
+        $updatebyid=User::where('id','=',$category[0]->updatebyid)->get();
+        $logs=DataLogs::where('moduleid','=',$id)->where('module','=','Stock_Categories')->orderBy('created_at', 'DESC')->join('users', 'datalogs.createbyid', '=', 'users.id')
         ->select('datalogs.*' ,'users.first_name as firstname', 'users.last_name as lastname')->get();
         
-        return view('services.view',compact('services','createbyid','updatebyid','logs'));
+        return view('stockcategories.view',compact('category','createbyid','updatebyid','logs'));
     }
 
     public function edit($id){
-        $Users=User::get();
-        $services=Services::where('id','=',$id)->get();
-        return view('services.edit',compact('Users','services'));
+        $category=StockCategorys::where('id','=',$id)->get();
+        return view('stockcategories.edit',compact('category'));
     }
     public function update(Request $request){
         //var_dump($request->all());
@@ -93,21 +90,21 @@ class ServicesController extends Controller
         
         
         unset($data['_token']);
-        $accdata=Services::where('id','=',$request->id)->get();
+        $accdata=StockCategorys::where('id','=',$request->id)->get();
         $olddata = json_encode($accdata[0]);
         $newdata = json_encode($data);
         $logs=[
-            'module'=>'Services',
+            'module'=>'Stock_Categories',
             'moduleid'=>$request->id,
             'createbyid'=>Auth::user()->id,
-            'logname'=>'services Updated',
+            'logname'=>'Stock Categories Updated',
             'olddata'=>$olddata,
             'newdata'=>$newdata
         ];
-        $vendor=Services::where('id',$request->id)->update($data);
+        $vendor=StockCategorys::where('id',$request->id)->update($data);
         $ids=DataLogs::create($logs);
         /// redirect jika sukses menyimpan data
-         return redirect('services/view/'.$request->id);
+         return redirect('category/view/'.$request->id);
     }
 
     

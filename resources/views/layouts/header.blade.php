@@ -133,29 +133,6 @@
                       </a>
                     </div>
                   </li>
-                  <li class="nav-item dropdown activity">
-                    <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
-                      <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
-                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-book-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M19 4v16h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12z"></path><path d="M19 16h-12a2 2 0 0 0 -2 2"></path><path d="M9 8h6"></path></svg>
-                      </span>
-                      <span class="nav-link-title">
-                        Activities
-                      </span>
-                    </a>
-                    <div class="dropdown-menu">
-                      <a class="dropdown-item" href="{{url('leads')}}" >
-                        Task
-                      </a>
-                      <a class="dropdown-item" href="{{url('accounts')}}" >
-                        Calls
-                      </a>
-                      <a class="dropdown-item" href="{{url('contacts')}}" >
-                        Meetings
-                      </a>
-                      
-                     
-                    </div>
-                  </li>
                   <li class="nav-item dropdown inventory">
                     <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
                       <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
@@ -198,47 +175,47 @@
                         Lokasi POP
                       </a>
                       <hr style="padding:0!important;margin:0!important">
-                      <a class="dropdown-item" href="{{url('buys')}}" >
-                        Product Buys
+                      <a class="dropdown-item" href="{{url('po')}}" >
+                        Purchase Orders
                       </a>
-                      <a class="dropdown-item" href="{{url('buys')}}" >
-                        Product Return
+                      <a class="dropdown-item" href="{{url('order')}}" >
+                        Orders
+                      </a>
+                      <a class="dropdown-item" href="{{url('refund')}}" >
+                        Purchase Return
+                      </a>
+                      <a class="dropdown-item" href="{{url('return')}}" >
+                        Revocation Return
                       </a>
                       <a class="dropdown-item" href="{{url('report')}}" >
                         Inventory Reports
                       </a>
                     </div>
                   </li>
-                  <li class="nav-item dropdown orders">
-                                     <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
-                      <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
-                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-shopping-cart" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                        <circle cx="6" cy="19" r="2"></circle>
-                        <circle cx="17" cy="19" r="2"></circle>
-                        <path d="M17 17h-11v-14h-2"></path>
-                        <path d="M6 5l14 1l-1 7h-13"></path>
-                      </svg>
+                  <li class="nav-item dropdown activity">
+                    <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
+                      <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-book-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M19 4v16h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12z"></path><path d="M19 16h-12a2 2 0 0 0 -2 2"></path><path d="M9 8h6"></path></svg>
                       </span>
                       <span class="nav-link-title">
-                        Order's
+                        Activities
                       </span>
                     </a>
                     <div class="dropdown-menu">
-                          <a class="dropdown-item" href="./billing.php" >
-                          Billing
-                          </a>
-                          <a class="dropdown-item" href="./invoice.php" >
-                          Invoice
-                          </a>
-                          <a class="dropdown-item" href="./form-instalasi.php" >
-                            Instalasi
-                          </a>
-                          <a class="dropdown-item" href="./jadwal-maintenance.php" >
-                            Maintenance
-                          </a>
+                      <a class="dropdown-item" href="{{url('leads')}}" >
+                        Task
+                      </a>
+                      <a class="dropdown-item" href="{{url('accounts')}}" >
+                        Calls
+                      </a>
+                      <a class="dropdown-item" href="{{url('contacts')}}" >
+                        Meetings
+                      </a>
+                      
+                     
                     </div>
                   </li>
+                  
                  
                   <li class="nav-item dropdown support">
                     <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >

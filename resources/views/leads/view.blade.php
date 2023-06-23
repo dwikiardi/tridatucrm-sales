@@ -435,7 +435,7 @@
                        
                         <div class="card-body row collapse multi-collapse show" id="c4">
                           <div class="col-md-12">
-                            <div class="table-responsive"  style="min-height: 550px;">
+                            <div class="table-responsive"  style="min-height: 200px;">
                               <table class="table card-table table-vcenter text-nowrap datatable">
                                 <thead>
                                   <tr>
@@ -460,8 +460,11 @@
                   <div class="col-12">
                     <div class="card">
                       <div class="card-header bg-blue-lt">
-                        <h3 class="card-title"> Survey </h3>
+                        <h3 class="card-title"> Surveys History </h3>
                         <div class="col-auto ms-auto d-print-none"> 
+                            <a href="{{route('quotes.create',$leads[0]->id)}}" class="btn btn-success d-none d-sm-inline-block" >
+                              Request Survey
+                            </a>  
                             <a class="btn btn-light" data-bs-toggle="collapse" href="#s1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-layout-bottombar-collapse" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -475,11 +478,23 @@
                        
                         <div class="card-body row collapse multi-collapse show" id="s1">
                           <div class="col-md-12">
-                            
-                            
+                            <div class="table-responsive"  style="min-height: 200px;">
+                              <table class="table card-table table-vcenter text-nowrap survey">
+                                <thead>
+                                  <tr>
+                                    <th>Property Name</th>
+                                    <th>Requesta Date</th>
+                                    <th>Survey Date </th>
+                                    <th>Process By</th>
+                                    <th>Status</th>
+                                    <th>Note</th>
+                                  </tr>
+                                </thead>
+                                <tbody></tbody>
+                              </table>
+                            </div>
                           </div>
                         </div>
-                        
                      
                       
                     </div>
@@ -629,6 +644,39 @@
               }
             },
             {data: 'Owners', name: 'Owners'},
+            // {data: 'action', name: 'action', orderable: false, searchable: false},
+        ]
+    });
+    var survey = $('.survey').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: "{{ route('leads.getsurvey',$leads[0]->id) }}",
+        columns: [
+            {data: 'Property', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+              {
+                $(nTd).html("<a href='{{ url('quotes/view')}}/"+oData.ID+"'>"+oData.Property+"</a>");
+              }
+            },
+            {data: 'ReqDate', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+              {
+                $(nTd).html("<a href='{{ url('quotes/view')}}/"+oData.ID+"'>"+oData.ReqDate+"</a>");
+              }
+            },
+            {data: 'SurveyDate', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+              {
+                $(nTd).html("<a href='{{ url('quotes/view')}}/"+oData.ID+"'>"+oData.SurveyDate+"</a>");
+              }
+            },
+            {data: 'Petugas', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+              {
+                $(nTd).html("<a href='{{ url('quotes/view')}}/"+oData.ID+"'>"+oData.Petugas+"</a>");
+              }
+            },
+            {data: 'Note', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+              {
+                $(nTd).html("<a href='{{ url('quotes/view')}}/"+oData.ID+"'>"+oData.Note+"</a>");
+              }
+            }
             // {data: 'action', name: 'action', orderable: false, searchable: false},
         ]
     });

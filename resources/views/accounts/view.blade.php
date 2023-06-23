@@ -88,80 +88,9 @@
                             <div class="form-group mb-3 row">
                               <label class="form-label col-3 col-form-label">Account Name</label>
                               <div class="col" style="padding: 10px!important;">
-                              {{ $accounts[0]->fullname }}
+                              {{ $accounts[0]->account_name }}
                               </div>
                             </div>
-                            <div class="form-group mb-3 row">
-                              <label class="form-label col-3 col-form-label">E-mail</label>
-                              <div class="col" style="padding: 10px!important;">
-                              {{ $accounts[0]->email }}
-                              </div>
-                            </div>  
-                            <div class="form-group mb-3 row">
-                              <label class="form-label col-3 col-form-label">Website</label>
-                              <div class="col" style="padding: 10px!important;">
-                              {{ $accounts[0]->website }}
-                              </div>
-                            </div>  
-                            <div class="form-group mb-3 row">
-                              <label class="form-label col-3 col-form-label">Phone</label>
-                              <div class="col" style="padding: 10px!important;">
-                              {{ $accounts[0]->phone }}
-                              </div>
-                            </div>  
-                            <div class="form-group mb-3 row">
-                              <label class="form-label col-3 col-form-label">FAX</label>
-                              <div class="col" style="padding: 10px!important;">
-                              {{ $accounts[0]->fax }}
-                              </div>
-                            </div>  
-                          </div>
-                          <div class="col-md-6">
-                            
-                            <div class="form-group mb-3 row">
-                              <label class="form-label col-3 col-form-label">Note</label>
-                              <div class="col" style="padding: 10px!important;">
-                              {{ $accounts[0]->note }}
-                              </div>
-                            </div>  
-                            <div class="form-group mb-3 row">
-                              <label class="form-label col-3 col-form-label">Created By</label>
-                              <div class="col" style="padding: 10px!important;">
-                              {{ $createbyid[0]->first_name}} {{ $createbyid[0]->last_name}}
-                              <br>{{ $accounts[0]->created_at }}
-                              </div>
-                            </div>  
-                            <div class="form-group mb-3 row">
-                              <label class="form-label col-3 col-form-label">Last Modified By</label>
-                              <div class="col" style="padding: 10px!important;">
-                              {{ $updatebyid[0]->first_name}} {{ $updatebyid[0]->last_name}}
-                              <br>{{ $accounts[0]->updated_at }}
-                              </div>
-                            </div> 
-                          </div>
-                          
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-12">
-                      <div class="card">
-                        <div class="card-header bg-blue-lt">
-                          <h3 class="card-title"> Address Information </h3>
-                          <div class="col-auto ms-auto d-print-none"> 
-                            <a class="btn btn-light" data-bs-toggle="collapse" href="#c2" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
-                              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-layout-bottombar-collapse" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <path d="M20 6v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2z"></path>
-                                <path d="M20 15h-16"></path>
-                                <path d="M14 8l-2 2l-2 -2"></path>
-                              </svg>
-                            </a>   
-                          </div>
-                        </div>
-                        
-                        <div class="card-body row collapse multi-collapse show" id="c2">
-                          
-                          <div class="col-md-6">
                             <div class="form-group mb-3 row">
                               <label class="form-label col-3 col-form-label">Address</label>
                               <div class="col" style="padding: 10px!important;">
@@ -192,62 +121,59 @@
                               {{ $accounts[0]->zipcode }}
                               </div>
                             </div>  
-                            
-                            
+                            <!-- <div class="form-group mb-3 row">
+                              <label class="form-label col-3 col-form-label">FAX</label>
+                              <div class="col" style="padding: 10px!important;">
+                              {{ $accounts[0]->fax }}
+                              </div>
+                            </div>   -->
                           </div>
                           <div class="col-md-6">
+                            
                             <div class="form-group mb-3 row">
-                              <label class="form-label col-3 col-form-label">Billing Address</label>
+                              <label class="form-label col-3 col-form-label">E-mail</label>
                               <div class="col" style="padding: 10px!important;">
-                              {{ $accounts[0]->billingaddress }}
+                              {{ $accounts[0]->email }}
                               </div>
                             </div>  
                             <div class="form-group mb-3 row">
-                              <label class="form-label col-3 col-form-label">Billing  City</label>
+                              <label class="form-label col-3 col-form-label">Website</label>
                               <div class="col" style="padding: 10px!important;">
-                              {{ $accounts[0]->billingcity }}
-                              </div>
-                            </div>
-                            <div class="form-group mb-3 row">
-                              <label class="form-label col-3 col-form-label">Billing State/Province</label>
-                              <div class="col" style="padding: 10px!important;">
-                              {{ $accounts[0]->billingprovince }}
+                              {{ $accounts[0]->website }}
                               </div>
                             </div>  
                             <div class="form-group mb-3 row">
-                              <label class="form-label col-3 col-form-label">Billing Country</label>
+                              <label class="form-label col-3 col-form-label">Phone</label>
                               <div class="col" style="padding: 10px!important;">
-                              {{ $accounts[0]->billingcountry }}
+                              {{ $accounts[0]->phone }}
+                              </div>
+                            </div>  
+                            <!-- <div class="form-group mb-3 row">
+                              <label class="form-label col-3 col-form-label">Note</label>
+                              <div class="col" style="padding: 10px!important;">
+                              {{ $accounts[0]->note }}
+                              </div>
+                            </div>   -->
+                            <div class="form-group mb-3 row">
+                              <label class="form-label col-3 col-form-label">Created By</label>
+                              <div class="col" style="padding: 10px!important;">
+                              {{ $createbyid[0]->first_name}} {{ $createbyid[0]->last_name}}
+                              <br>{{ $accounts[0]->created_at }}
                               </div>
                             </div>  
                             <div class="form-group mb-3 row">
-                              <label class="form-label col-3 col-form-label">Billing ZIP Code</label>
+                              <label class="form-label col-3 col-form-label">Last Modified By</label>
                               <div class="col" style="padding: 10px!important;">
-                              {{ $accounts[0]->billingzipcode }}
+                              {{ $updatebyid[0]->first_name}} {{ $updatebyid[0]->last_name}}
+                              <br>{{ $accounts[0]->updated_at }}
                               </div>
-                            </div>  
-                            <div class="form-group mb-3 row">
-                              <label class="form-label col-3 col-form-label">Billing E-Mail</label>
-                              <div class="col" style="padding: 10px!important;">
-                              {{ $accounts[0]->billingemail }}
-                              </div>
-                            </div>  
-                            <div class="form-group mb-3 row">
-                              <label class="form-label col-3 col-form-label">Billing Fax</label>
-                              <div class="col" style="padding: 10px!important;">
-                              {{ $accounts[0]->billingfax }}
-                              </div>
-                            </div>  
-                            <div class="form-group mb-3 row">
-                              <label class="form-label col-3 col-form-label">Billing Phone</label>
-                              <div class="col" style="padding: 10px!important;">
-                              {{ $accounts[0]->billingphone }}
-                              </div>
-                            </div>  
+                            </div> 
                           </div>
+                          
                         </div>
                       </div>
                     </div>
+                    
                     <div class="col-12">
                       <div class="card">
                         <div class="card-header bg-blue-lt">

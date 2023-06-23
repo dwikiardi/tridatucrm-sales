@@ -5,16 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Services extends Model
+class Stocks extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'services_name',
+        'stockid',
+        'stockname',
         'desk',
-        'note',
-        'price',
+        'sell_price',
+        'categoryid',
+        'qtytype',//0: Qty; 1: SumNoseri
+        'unit',
         'createbyid',
-        'updatebyid',
+        'updatebyid'
     ];
-    protected $table = "services";
+    protected $table = "stocks";
 }

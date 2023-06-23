@@ -14,7 +14,7 @@
         </div>
         <!-- Page title actions -->
         <div class="col-auto ms-auto d-print-none"> 
-          <a href="{{ url('quote')}}" class="btn btn-light">« Kembali</a>                 
+          <a href="{{ url('quotes')}}" class="btn btn-light">« Kembali</a>                 
           <button type="submit" class="btn btn-primary">Simpan</button>
         </div>
       </div>
@@ -51,7 +51,11 @@
                 <div class="col">
                       <select class="form-select" name="leadid">
                         @foreach($Leads as $lead)
-                          <option  value="{{ $lead->id }}">{{ $lead->leadsname}}</option>
+                          @if($lead->id==$id)
+                            <option selected value="{{ $lead->id }}">{{ $lead->leadsname}}</option>
+                          @else
+                            <option  value="{{ $lead->id }}">{{ $lead->leadsname}}</option>
+                          @endif
                         @endforeach
                       </select>
                 </div>
