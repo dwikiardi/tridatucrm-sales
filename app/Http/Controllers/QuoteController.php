@@ -16,10 +16,10 @@ class QuoteController extends Controller
 {
     public function index(Request $request){
         if ($request->ajax()) {
-            $data = Quotes::join('users', 'quotes.ownerid', '=', 'users.id')
+            $data = Quotes::leftjoin('users', 'quotes.approvedbyid', '=', 'users.id')
             ->join('leads', 'quotes.leadid', '=', 'leads.id')
-            ->select('quotes.id as ID','quotes.quotenumber as QuoteNo' , 'quotes.quotedate AS Date','quotes.approve As Approve','quotes.toperson as To','quotes.status AS Status','users.last_name AS Owners')
-            ->where('type','=','lead')
+            ->select('quotes.id as ID','quotes.quotenumber as QuoteNo' , 'quotes.quotedate AS Date','users.first_name As By','quotes.toperson as To','quotes.status AS Status')
+            //->where('type','=','lead')
             ->get();
             //dd($data);
             return DataTables::of($data)
@@ -34,14 +34,17 @@ class QuoteController extends Controller
                     $date=date('d/m/Y',strtotime($row->Date));
                     return $date;
                 })
-                ->editColumn('Approve', function ($row) {
-                    //return $row->Phone ?: '-';
-                    if($row->Approve==1){
-                        return "Approved";
-                    }else{
-                        return "Waiting to Aprroval";
-                    }
+                ->editColumn('By', function ($row) {
+                    return $row->By ?: '-';
                 })
+                // ->editColumn('Approve', function ($row) {
+                //     //return $row->Phone ?: '-';
+                //     if($row->Approve==1){
+                //         return "Approved";
+                //     }else{
+                //         return "Waiting to Aprroval";
+                //     }
+                // })
                 ->editColumn('Status', function ($row) {
                     //return $row->Website ?: '-';
                     switch ($row->Status) {
@@ -54,9 +57,9 @@ class QuoteController extends Controller
                         case '3':
                             return "Rejected";
                             break;
-                        case '4':
-                            return "Request Revision";
-                            break;
+                        // case '4':
+                        //     return "Request Revision";
+                        //     break;
                         
                             
                         default:
@@ -203,5 +206,47 @@ class QuoteController extends Controller
          return redirect('quotes/view/'.$request->id);
     }
 
+    public function approve(Request $request, $id){
+        //dd($_GET['request']);
+        $appid=$_GET['request'];
+        $data=[ 'status'=>2, 'approvedbyid'=>$appid ];
+        //dd($data);
+        $quotes=Quotes::where('id','=',$id)->update($data);
+        
+        $newdata=json_encode($data);
+        $logs=[
+            'module'=>'Quotes',
+            'moduleid'=>$request->id,
+            'createbyid'=>Auth::user()->id,
+            'logname'=>'Quotes Approved',
+            'olddata'=>'',
+            'newdata'=>$newdata
+        ];
+        $ids=DataLogs::create($logs);
+        
+        $return=['status'=>'success','message'=>'Quote Approved'];
+        echo json_encode($return);
+        
+    }
+    public function reject(Request $request, $id){
+        
+        $appid=$_GET['request'];
+        $data=[ 'status'=>3, 'approvedbyid'=>$appid ];
+        $quotes=Quotes::where('id','=',$id)->update($data);
+        $newdata=json_encode($data);
+        $logs=[
+            'module'=>'Quotes',
+            'moduleid'=>$request->id,
+            'createbyid'=>Auth::user()->id,
+            'logname'=>'Quotes Rejected',
+            'olddata'=>"",
+            'newdata'=>$newdata
+        ];
+        $ids=DataLogs::create($logs);
+        
+        $return=['status'=>'success','message'=>'Quote Approved'];
+        echo json_encode($return);
+        
+    }
    
 }

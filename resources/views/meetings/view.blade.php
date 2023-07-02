@@ -1,14 +1,12 @@
 @extends('layouts/admin')
-@section('title','Create New Quotes')
+@section('title','View Meeting')
 @section('add_css')
 <style>
 .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active{
   color: #fff;
   background-color: #206bc4;
 }
-#approved.hide,#reject.hide{
-display:none!important;
-}
+
   .dataTables_filter{
     float: right;
     padding-right:15px;
@@ -52,17 +50,10 @@ display:none!important;
         </div>
         <!-- Page title actions -->
         <div class="col-auto ms-auto d-print-none"> 
-          <a href="{{ url('quotes')}}" class="btn btn-light">« Kembali</a>  
-          @if($quotes[0]->status == 1)
-          <a href="#" data-id="{{$quotes[0]->id}}" class="btn btn-success d-none d-sm-inline-block" id="approved">
-             Approve
-          </a>  
-          <a href="#" data-id="{{$quotes[0]->id}}" class="btn btn-danger d-none d-sm-inline-block" id="reject">
-             Reject
-          </a> 
-          @endif
-          <a href="{{ url('quotes/edit',$quotes[0]->id)}}" class="btn btn-primary d-none d-sm-inline-block" >
-             Update Quote
+          <a href="{{ url('meetings')}}" class="btn btn-light">« Kembali</a>  
+         
+          <a href="{{ url('meetings/edit',$meetings[0]->id)}}" class="btn btn-primary d-none d-sm-inline-block" >
+             Update Meeting
           </a>  
         </div>
       </div>
@@ -80,87 +71,112 @@ display:none!important;
                 <div class="col-12">
                   <div class="card">
                     <div class="card-header bg-blue-lt">
-                      <h3 class="card-title"> Quote's Information</h3>
+                      <h3 class="card-title"> Meeting's Information</h3>
                     </div>
                     <div class="card-body row">
                       <div class="col-md-6">
+                       
                         <div class="form-group mb-3 row">
-                          <label class="form-label col-3 col-form-label">Quote Owner</label>
+                          <label class="form-label col-3 col-form-label">Meeting Name</label>
                           <div class="col">
-                          {{$owner[0]->first_name}} {{$owner[0]->last_name}}
+                            {{$meetings[0]->meetingname}}
                           </div>
-                        </div>    
+                        </div>
                         <div class="form-group mb-3 row">
                           <label class="form-label col-3 col-form-label">Lead</label>
                           <div class="col">
-                          {{$lead[0]->leadsname}}
+                             {{$Leads[0]->leadsname}}
                           </div>
                         </div>    
+                        
                         <div class="form-group mb-3 row">
-                          <label class="form-label col-3 col-form-label">Quotes Name</label>
-                          <div class="col">
-                            {{$quotes[0]->quotename}}
+                          <label class="form-label col-3 col-form-label">Meeting Start</label>
+                          <div class="col-md-6">
+                            <div class="input-icon mb-2">
+                              {{date('d/m/Y',strtotime($meetings[0]->startdate))}} {{$meetings[0]->starttime}}
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                           
                           </div>
                         </div>
                         <div class="form-group mb-3 row">
-                          <label class="form-label col-3 col-form-label">Quotes No.</label>
-                          <div class="col">
-                            {{$quotes[0]->quotenumber}}
-                          </div>
-                        </div>
-                        <div class="form-group mb-3 row">
-                          <label class="form-label col-3 col-form-label">Quote Date</label>
-                          <div class="col">
-                            {{date('d/m/Y',strtotime($quotes[0]->quotedate))}}
+                          <label class="form-label col-3 col-form-label">Meeting End</label>
+                          <div class="col-md-6">
+                            {{date('d/m/Y',strtotime($meetings[0]->enddate))}} {{$meetings[0]->endtime}}
                             
                           </div>
                         </div>
                         <div class="form-group mb-3 row">
-                          <label class="form-label col-3 col-form-label">To Contact</label>
+                          <label class="form-label col-3 col-form-label">Locations</label>
                           <div class="col">
-                            {{$quotes[0]->toperson}}
+                          {{$meetings[0]->location}}
                           </div>
                         </div>
                         <div class="form-group mb-3 row">
-                          <label class="form-label col-3 col-form-label">Address</label>
+                          <label class="form-label col-3 col-form-label">Host By</label>
                           <div class="col">
-                          {{$quotes[0]->toaddress}}
+                          {{$host[0]->first_name}} {{$host[0]->last_name}}
+                          </div>
+                        </div>
+                        
+                        <div class="form-group mb-3 row">
+                          <label class="form-label col-3 col-form-label">Detail Meeting</label>
+                          <div class="col">
+                          {{$meetings[0]->detail}}
                           </div>
                         </div>  
                         
+                        <div class="form-group mb-3 row">
+                          <label class="form-label col-3 col-form-label">Meeting Result</label>
+                          <div class="col">
+                          {{$meetings[0]->result}}
+                          </div>
+                        </div>  
                       </div>
                       <div class="col-md-6">
-                        <div class="form-group mb-3 row">
-                          <label class="form-label col-3 col-form-label">Quotes Documents</label>
-                          <div class="col">
-                          <a href="{{ url($quotes[0]->attcfile)}}" target="_blank" class="btn btn-light">view</a>   
-                          </div>
+                        <div class="form-group mb-12 row">
+                          <label class="form-label col-12 col-form-label">Meeting Partisipants</label>
                         </div>  
-                        
-                        <div class="form-group mb-3 row">
-                          <label class="form-label col-3 col-form-label">Notes</label>
-                          <div class="col">
-                          {{$quotes[0]->note}}
-                          </div>
-                        </div>  
+                        <input type="hidden" name="list" class="form-control list" value="1" >
+                        <table  class="table table-hover table-bordered table-stripped" id="example2">
+                          <thead>
+                              <tr>
+                                <th class="text-center">Name</th>
+                                <th class="text-center">Email</th>
+                              </tr>
+                          </thead>
+                          <tbody class="details" id="details">
+                            @foreach($meetingpart as $part)
+                              <tr>
+                                <td>{{$part->name}}</td>
+                                <td>{{$part->email}}</td>
+                                
+                              </tr>
+                            @endforeach
+                            
+                          </tbody>
+                          
+                        </table>
                         <div class="form-group mb-3 row">
                           <label class="form-label col-3 col-form-label">Created By</label>
                           <div class="col" style="padding: 10px!important;">
                           {{ $createbyid[0]->first_name}} {{ $createbyid[0]->last_name}}
-                          <br>{{ $quotes[0]->created_at }}
+                          <br>{{ $meetings[0]->created_at }}
                           </div>
                         </div>  
                         <div class="form-group mb-3 row">
                           <label class="form-label col-3 col-form-label">Last Modified By</label>
                           <div class="col" style="padding: 10px!important;">
                           {{ $updatebyid[0]->first_name}} {{ $updatebyid[0]->last_name}}
-                          <br>{{ $quotes[0]->updated_at }}
+                          <br>{{ $meetings[0]->updated_at }}
                           </div>
                         </div> 
                       </div>
+                      </div>
                     </div>
                   </div>
-                </div>
+               
                   </div> <!-- END Container-XL -->
                 </div>
               
@@ -174,7 +190,7 @@ display:none!important;
                     </div>
                     <!-- Page title actions -->
                     <div class="col-auto ms-auto d-print-none"> 
-                    <a href="{{ url('quotes')}}" class="btn btn-light">« Kembali</a>   
+                    <a href="{{ url('meetings')}}" class="btn btn-light">« Kembali</a>   
                     </div>
                   </div>
                 </div>
@@ -209,19 +225,8 @@ display:none!important;
                               <path d="M13.5 6.5l4 4"></path>
                             </svg>
                           @endif
-                          @if (strpos($log->logname, 'Approved') !== FALSE)
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                              <path d="M5 12l5 5l10 -10"></path>
-                            </svg>
-                          @endif
-                          @if (strpos($log->logname, 'Rejected') !== FALSE)
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-ban" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                              <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
-                              <path d="M5.7 5.7l12.6 12.6"></path>
-                            </svg>
-                          @endif
+                        
+                          
                         </div>
                         <div class="list-timeline-content">
                           <div class="list-timeline-time">{{ $log->created_at }}</div>
@@ -252,62 +257,8 @@ display:none!important;
 
 <script type="text/javascript">
   $(function () {
-    var URI = "{{ url('/') }}";
-    $(document).on("click","#approved", function(e){
       
-      e.preventDefault();
-      var id=$(this).attr("data-id");
-      $.ajaxSetup({
-          headers: {
-              'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-          }
-      });
-      var urls = URI + "/quotes/approve/" + id;
-      $.ajax({
-          url: urls,
-          method: 'get',
-          data:{
-            request:{{Auth::user()->id}}
-          },
-          success: function(result) {
-            console.log(result);
-            var data = JSON.parse(result);
-            if(data['status']=="success"){
-              $('#approved').addClass('hide');
-              $("#reject").addClass('hide');
-            }
-            
-          }
-      });
-    });
-
-    $(document).on("click","#reject", function(e){
-      
-      e.preventDefault();
-      var id=$(this).attr("data-id");
-      $.ajaxSetup({
-          headers: {
-              'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-          }
-      });
-      var urls = URI + "/quotes/reject/" + id;
-      $.ajax({
-          url: urls,
-          method: 'get',
-          data:{
-            request:{{Auth::user()->id}}
-          },
-          success: function(result) {
-            console.log(result);
-            var data = JSON.parse(result);
-            if(data['status']=="success"){
-              $('#approved').addClass('hide');
-              $("#reject").addClass('hide');
-            }
-            
-          }
-      });
-    });
+  
   });
 </script>
 @endpush

@@ -20,7 +20,7 @@
   <body >
     <div class="wrapper">
       <div class="sticky-top">
-        <header class="navbar navbar-expand-md navbar-light sticky-top d-print-none">
+        <header class="navbar navbar-expand-md navbar-light sticky-top d-print-none" style="margin-bottom:0!important">
           <div class="container-xl">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
               <span class="navbar-toggler-icon"></span>
@@ -115,6 +115,10 @@
                       <a class="dropdown-item" href="{{url('revocation')}}" >
                         Revocation
                       </a>
+                      <a class="dropdown-item" href="{{url('meetings')}}" >
+                        Meetings
+                      </a>
+                      
                       <hr style="padding:0!important;margin:0!important">
                       <a class="dropdown-item" href="{{url('accounts')}}" >
                         Accounts's
@@ -130,6 +134,16 @@
                       </a>
                       <a class="dropdown-item" href="{{url('billing')}}" >
                         Bill's
+                      </a>
+                      <hr style="padding:0!important;margin:0!important">
+                      <a class="dropdown-item" href="{{url('deals')}}" >
+                        Deals
+                      </a>
+                      <a class="dropdown-item" href="{{url('leads')}}" >
+                        Task
+                      </a>
+                      <a class="dropdown-item" href="{{url('accounts')}}" >
+                        Calls
                       </a>
                     </div>
                   </li>
@@ -201,19 +215,7 @@
                         Activities
                       </span>
                     </a>
-                    <div class="dropdown-menu">
-                      <a class="dropdown-item" href="{{url('leads')}}" >
-                        Task
-                      </a>
-                      <a class="dropdown-item" href="{{url('accounts')}}" >
-                        Calls
-                      </a>
-                      <a class="dropdown-item" href="{{url('contacts')}}" >
-                        Meetings
-                      </a>
-                      
-                     
-                    </div>
+                    
                   </li>
                   
                  

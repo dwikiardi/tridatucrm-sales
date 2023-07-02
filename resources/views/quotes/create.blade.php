@@ -76,7 +76,7 @@
                 <label class="form-label col-3 col-form-label">Quote Date</label>
                 <div class="col">
                   <div class='input-group date' id='datetimepicker' >
-                      <input type='text' name='quotedate' class="form-control" />
+                      <input type='text' name='quotedate' class="form-control date" />
                       <span class="input-group-addon">
                           <span class="glyphicon glyphicon-calendar"></span>
                       </span>
@@ -152,7 +152,7 @@
 <script type="text/javascript">
   $(function () {
     
-   
+    $('.date').datetimepicker({format: 'DD/MM/YYYY'});
       
   });
 </script>

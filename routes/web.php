@@ -10,7 +10,7 @@ use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\StocCategoryController;
 use App\Http\Controllers\StocksController;
-
+use App\Http\Controllers\MeetingController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -67,6 +67,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('contacts/update/', [LeadController::class, 'cupdate'])->name('contacts.update');
     Route::get('contacts/getquote/{id}', [LeadController::class, 'getquote'])->name('leads.getquote');
     Route::get('contacts/getsurvey/{id}', [LeadController::class, 'getsurvey'])->name('leads.getsurvey');
+    
     // Quotes
     Route::get('quotes', [QuoteController::class, 'index'])->name('index');
     Route::get('quotes', [QuoteController::class, 'index'])->name('quotes.index');
@@ -75,6 +76,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('quotes/view/{id}', [QuoteController::class, 'view'])->name('quotes.view');
     Route::get('quotes/edit/{id}', [QuoteController::class, 'edit'])->name('quotes.edit');
     Route::post('quotes/update/', [QuoteController::class, 'update'])->name('quotes.update');
+    Route::get('quotes/approve/{id}', [QuoteController::class, 'approve'])->name('quotes.approve');
+    Route::get('quotes/reject/{id}', [QuoteController::class, 'reject'])->name('quotes.reject');
 
 
     //Vendors
@@ -117,6 +120,16 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('product/edit/{id}', [StocksController::class, 'edit'])->name('edit');
     Route::post('product/update/', [StocksController::class, 'update'])->name('stocks.update');
     Route::get('product/getstock/{id}', [StocksController::class, 'getStock'])->name('stocks.getstock');
+
+    // Meetings
+    Route::get('meetings', [MeetingController::class, 'index'])->name('index');
+    Route::get('meetings', [MeetingController::class, 'index'])->name('meetings.index');
+    Route::get('meetings/create/{id?}', [MeetingController::class, 'create'])->name('meetings.create');
+    Route::post('meetings/store', [MeetingController::class, 'store'])->name('meetings.store');
+    Route::get('meetings/view/{id}', [MeetingController::class, 'view'])->name('meetings.view');
+    Route::get('meetings/edit/{id}', [MeetingController::class, 'edit'])->name('meetings.edit');
+    Route::post('meetings/update/', [MeetingController::class, 'update'])->name('meetings.update');
+
 
 
 });
