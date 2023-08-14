@@ -69,7 +69,7 @@ class StocksController extends Controller
         $ids=DataLogs::create($logs);
         //echo $newdata;
         /// redirect jika sukses menyimpan data
-         return redirect('stocks');
+         return redirect('product');
     }
 
     public function view($id){
@@ -104,7 +104,7 @@ class StocksController extends Controller
         $vendor=Stocks::where('id',$request->id)->update($data);
         $ids=DataLogs::create($logs);
         /// redirect jika sukses menyimpan data
-         return redirect('stocks/view/'.$request->id);
+         return redirect('product/view/'.$request->id);
     }
 
     public function getStock(Request $request,$id){

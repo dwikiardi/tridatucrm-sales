@@ -229,7 +229,7 @@
     var table = $('.datatable').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('stocks.getstock',$stocks[0]->id) }}",
+        ajax: "{{ route('product.getstock',$stocks[0]->id) }}",
         columns: [
           {data: 'stockid', name:'stockid'},
           {data: 'stockname', name:'stockname'},

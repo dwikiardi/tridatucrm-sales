@@ -189,11 +189,11 @@
                         Lokasi POP
                       </a>
                       <hr style="padding:0!important;margin:0!important">
-                      <a class="dropdown-item" href="{{url('po')}}" >
+                      <!-- <a class="dropdown-item" href="{{url('po')}}" >
                         Purchase Orders
-                      </a>
+                      </a> -->
                       <a class="dropdown-item" href="{{url('order')}}" >
-                        Orders
+                      Purchase Orders
                       </a>
                       <a class="dropdown-item" href="{{url('refund')}}" >
                         Purchase Return

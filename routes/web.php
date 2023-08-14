@@ -11,6 +11,8 @@ use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\StocCategoryController;
 use App\Http\Controllers\StocksController;
 use App\Http\Controllers\MeetingController;
+use App\Http\Controllers\PurchaseOrderController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -96,6 +98,15 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('surveys/edit/{id}', [SurveyController::class, 'edit'])->name('edit');
     Route::post('surveys/update/', [SurveyController::class, 'update'])->name('surveys.update');
 
+    // Meetings
+    Route::get('meetings', [MeetingController::class, 'index'])->name('index');
+    Route::get('meetings', [MeetingController::class, 'index'])->name('meetings.index');
+    Route::get('meetings/create/{id?}', [MeetingController::class, 'create'])->name('meetings.create');
+    Route::post('meetings/store', [MeetingController::class, 'store'])->name('meetings.store');
+    Route::get('meetings/view/{id}', [MeetingController::class, 'view'])->name('meetings.view');
+    Route::get('meetings/edit/{id}', [MeetingController::class, 'edit'])->name('meetings.edit');
+    Route::post('meetings/update/', [MeetingController::class, 'update'])->name('meetings.update');
+
     //Services
     Route::get('services', [ServicesController::class, 'index'])->name('services.index');
     Route::get('services/create', [ServicesController::class, 'create'])->name('services.create');
@@ -114,29 +125,22 @@ Route::group(['middleware' => 'auth'], function () {
 
     //stocks/Product
     Route::get('product', [StocksController::class, 'index'])->name('stocks.index');
-    Route::get('product/create', [StocksController::class, 'create'])->name('stocks.create');
-    Route::post('product/store', [StocksController::class, 'store'])->name('stocks.store');
-    Route::get('product/view/{id}', [StocksController::class, 'view'])->name('stocks.view');
+    Route::get('product/create', [StocksController::class, 'create'])->name('product.create');
+    Route::post('product/store', [StocksController::class, 'store'])->name('product.store');
+    Route::get('product/view/{id}', [StocksController::class, 'view'])->name('product.view');
     Route::get('product/edit/{id}', [StocksController::class, 'edit'])->name('edit');
-    Route::post('product/update/', [StocksController::class, 'update'])->name('stocks.update');
-    Route::get('product/getstock/{id}', [StocksController::class, 'getStock'])->name('stocks.getstock');
+    Route::post('product/update/', [StocksController::class, 'update'])->name('product.update');
+    Route::get('product/getstock/{id}', [StocksController::class, 'getStock'])->name('product.getstock');
 
-    // Meetings
-    Route::get('meetings', [MeetingController::class, 'index'])->name('index');
-    Route::get('meetings', [MeetingController::class, 'index'])->name('meetings.index');
-    Route::get('meetings/create/{id?}', [MeetingController::class, 'create'])->name('meetings.create');
-    Route::post('meetings/store', [MeetingController::class, 'store'])->name('meetings.store');
-    Route::get('meetings/view/{id}', [MeetingController::class, 'view'])->name('meetings.view');
-    Route::get('meetings/edit/{id}', [MeetingController::class, 'edit'])->name('meetings.edit');
-    Route::post('meetings/update/', [MeetingController::class, 'update'])->name('meetings.update');
+    
 
     // Porchase Order
-    Route::get('orders', [MeetingController::class, 'index'])->name('index');
-    Route::get('orders', [MeetingController::class, 'index'])->name('meetings.index');
-    Route::get('orders/create/{id?}', [MeetingController::class, 'create'])->name('meetings.create');
-    Route::post('orders/store', [MeetingController::class, 'store'])->name('meetings.store');
-    Route::get('orders/view/{id}', [MeetingController::class, 'view'])->name('meetings.view');
-    Route::get('orders/edit/{id}', [MeetingController::class, 'edit'])->name('meetings.edit');
-    Route::post('orders/update/', [MeetingController::class, 'update'])->name('meetings.update');
+    Route::get('order', [PurchaseOrderController::class, 'index'])->name('index');
+    Route::get('order', [PurchaseOrderController::class, 'index'])->name('order.index');
+    Route::get('order/create/{id?}', [PurchaseOrderController::class, 'create'])->name('order.create');
+    Route::post('order/store', [PurchaseOrderController::class, 'store'])->name('order.store');
+    Route::get('order/view/{id}', [PurchaseOrderController::class, 'view'])->name('order.view');
+    Route::get('order/edit/{id}', [PurchaseOrderController::class, 'edit'])->name('order.edit');
+    Route::post('order/update/', [PurchaseOrderController::class, 'update'])->name('order.update');
 
 });

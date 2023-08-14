@@ -2,7 +2,7 @@
 @section('title','Create New Product')
 
 @section('content_header')
-<form action="{{ route('stocks.store') }}" method="POST">    
+<form action="{{ route('product.store') }}" method="POST">    
     <div class="page-header d-print-none">
       <div class="row align-items-center">
         <div class="col">

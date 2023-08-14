@@ -2,7 +2,7 @@
 @section('title','Update Product')
 
 @section('content_header')
-<form action="{{ route('stocks.update') }}" method="POST">    
+<form action="{{ route('product.update') }}" method="POST">    
     <div class="page-header d-print-none">
       <div class="row align-items-center">
         <div class="col">
