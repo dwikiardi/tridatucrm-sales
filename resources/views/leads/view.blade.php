@@ -652,29 +652,34 @@
         serverSide: true,
         ajax: "{{ route('leads.getsurvey',$leads[0]->id) }}",
         columns: [
-            {data: 'Property', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+            {data: 'Property', "fnCreatedCell2": function (nTD2, sData2, oData2, iRow2, iCol2) 
               {
-                $(nTd).html("<a href='{{ url('surveys/view')}}/"+oData.ID+"'>"+oData.Property+"</a>");
+                $(nTD2).html("<a href='{{ url('surveys/view')}}/"+oData2.ID+"'>"+oData2.Property+" -- 1</a>");
               }
             },
-            {data: 'ReqDate', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+            {data: 'ReqDate', "fnCreatedCell2": function (nTD2, sData2, oData2, iRow2, iCol2)  
               {
-                $(nTd).html("<a href='{{ url('surveys/view')}}/"+oData.ID+"'>"+oData.ReqDate+"</a>");
+                $(nTD2).html("<a href='{{ url('surveys/view')}}/"+oData2.ID+"'>"+oData2.ReqDate+"</a>");
               }
             },
-            {data: 'SurveyDate', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+            {data: 'SurveyDate', "fnCreatedCell2": function (nTD2, sData2, oData2, iRow2, iCol2)  
               {
-                $(nTd).html("<a href='{{ url('surveys/view')}}/"+oData.ID+"'>"+oData.SurveyDate+"</a>");
+                $(nTD2).html("<a href='{{ url('surveys/view')}}/"+oData2.ID+"'>"+oData2.SurveyDate+"</a>");
               }
             },
-            {data: 'Petugas', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+            {data: 'Petugas', "fnCreatedCell2": function (nTD2, sData2, oData2, iRow2, iCol2)  
               {
-                $(nTd).html("<a href='{{ url('surveys/view')}}/"+oData.ID+"'>"+oData.Petugas+"</a>");
+                $(nTD2).html("<a href='{{ url('surveys/view')}}/"+oData2.ID+"'>"+oData2.Petugas+"</a>");
               }
             },
-            {data: 'Note', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+            {data: 'Status', "fnCreatedCell2": function (nTD2, sData2, oData2, iRow2, iCol2)  
               {
-                $(nTd).html("<a href='{{ url('surveys/view')}}/"+oData.ID+"'>"+oData.Note+"</a>");
+                $(nTD2).html("<a href='{{ url('surveys/view')}}/"+oData2.ID+"'>"+oData2.Status+"</a>");
+              }
+            },
+            {data: 'Note', "fnCreatedCell2": function (nTD2, sData2, oData2, iRow2, iCol2)  
+              {
+                $(nTD2).html("<a href='{{ url('surveys/view')}}/"+oData2.ID+"'>"+oData2.Note+"</a>");
               }
             }
             // {data: 'action', name: 'action', orderable: false, searchable: false},

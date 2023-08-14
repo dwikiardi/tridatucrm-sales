@@ -130,6 +130,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('meetings/edit/{id}', [MeetingController::class, 'edit'])->name('meetings.edit');
     Route::post('meetings/update/', [MeetingController::class, 'update'])->name('meetings.update');
 
-
+    // Porchase Order
+    Route::get('orders', [MeetingController::class, 'index'])->name('index');
+    Route::get('orders', [MeetingController::class, 'index'])->name('meetings.index');
+    Route::get('orders/create/{id?}', [MeetingController::class, 'create'])->name('meetings.create');
+    Route::post('orders/store', [MeetingController::class, 'store'])->name('meetings.store');
+    Route::get('orders/view/{id}', [MeetingController::class, 'view'])->name('meetings.view');
+    Route::get('orders/edit/{id}', [MeetingController::class, 'edit'])->name('meetings.edit');
+    Route::post('orders/update/', [MeetingController::class, 'update'])->name('meetings.update');
 
 });

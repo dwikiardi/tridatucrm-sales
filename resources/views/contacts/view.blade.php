@@ -597,7 +597,6 @@
 </div>
 @stop
 @push('js')
-@push('js')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>  
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
 <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
@@ -648,27 +647,32 @@
         columns: [
             {data: 'Property', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('quotes/view')}}/"+oData.ID+"'>"+oData.Property+"</a>");
+                $(nTd).html("<a href='{{ url('surveys/view')}}/"+oData.ID+"'>"+oData.Property+"</a>");
               }
             },
             {data: 'ReqDate', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('quotes/view')}}/"+oData.ID+"'>"+oData.ReqDate+"</a>");
+                $(nTd).html("<a href='{{ url('surveys/view')}}/"+oData.ID+"'>"+oData.ReqDate+"</a>");
               }
             },
             {data: 'SurveyDate', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('quotes/view')}}/"+oData.ID+"'>"+oData.SurveyDate+"</a>");
+                $(nTd).html("<a href='{{ url('surveys/view')}}/"+oData.ID+"'>"+oData.SurveyDate+"</a>");
               }
             },
             {data: 'Petugas', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('quotes/view')}}/"+oData.ID+"'>"+oData.Petugas+"</a>");
+                $(nTd).html("<a href='{{ url('surveys/view')}}/"+oData.ID+"'>"+oData.Petugas+"</a>");
+              }
+            },
+            {data: 'Status', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+              {
+                $(nTd).html("<a href='{{ url('surveys/view')}}/"+oData.ID+"'>"+oData.Status+"</a>");
               }
             },
             {data: 'Note', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('quotes/view')}}/"+oData.ID+"'>"+oData.Note+"</a>");
+                $(nTd).html("<a href='{{ url('surveys/view')}}/"+oData.ID+"'>"+oData.Note+"</a>");
               }
             }
             // {data: 'action', name: 'action', orderable: false, searchable: false},
@@ -677,5 +681,4 @@
     
   });
 </script>
-@endpush
 @endpush

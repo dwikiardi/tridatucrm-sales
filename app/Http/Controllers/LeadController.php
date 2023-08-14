@@ -192,6 +192,7 @@ class LeadController extends Controller
                 ->get();
         return response()->json($data);
     }
+
     public function getsurvey(Request $request,$id){
         if ($request->ajax()) {
             //$data = Accounts::select('*');
@@ -224,6 +225,7 @@ class LeadController extends Controller
                         return '-';
                     }
                 })
+                
                 ->make(true);
         }
     }
