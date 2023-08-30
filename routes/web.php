@@ -137,7 +137,7 @@ Route::group(['middleware' => 'auth'], function () {
     // Porchase Order
     Route::get('order', [PurchaseOrderController::class, 'index'])->name('index');
     Route::get('order', [PurchaseOrderController::class, 'index'])->name('order.index');
-    Route::get('order/create/{id?}', [PurchaseOrderController::class, 'create'])->name('order.create');
+    Route::get('order/create', [PurchaseOrderController::class, 'create'])->name('order.create');
     Route::post('order/store', [PurchaseOrderController::class, 'store'])->name('order.store');
     Route::get('order/view/{id}', [PurchaseOrderController::class, 'view'])->name('order.view');
     Route::get('order/edit/{id}', [PurchaseOrderController::class, 'edit'])->name('order.edit');

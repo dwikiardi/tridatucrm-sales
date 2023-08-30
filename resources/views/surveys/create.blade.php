@@ -68,9 +68,9 @@
               </div>
             </div>    
             <div class="form-group mb-3 row">
-              <label class="form-label col-3 col-form-label">Lead</label>
+              <label class="form-label col-3 col-form-label">Survey Status</label>
               <div class="col">
-                <select class="form-select" name="leadid">
+                <select class="form-select" name="status">
                   <option  value="open" selected>Open</option>
                   <option  value="onproggress">On Proggress</option>
                   <option  value="close">Close</option>

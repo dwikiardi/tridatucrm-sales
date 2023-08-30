@@ -64,6 +64,7 @@ class SurveyController extends Controller
         /// jika menggunakan metode ini, maka nama field dan nama form harus sama
         //dd($request->all());
         $data=$request->all();
+
         if(isset($request->requestdate)){
             $data['requestdate']=date('Y-m-d',strtotime(str_replace('/','-',$request->requestdate)));
         }else{
@@ -75,7 +76,7 @@ class SurveyController extends Controller
         }else{
             unset($data['surveydate']);
         }
-        
+        //dd($data);
         unset($data['_token']);
         $ids=Surveys::create($data);
 

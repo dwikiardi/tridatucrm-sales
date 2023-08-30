@@ -456,7 +456,7 @@
                       <div class="card-header bg-blue-lt">
                         <h3 class="card-title"> Surveys History </h3>
                         <div class="col-auto ms-auto d-print-none"> 
-                            <a href="{{route('quotes.create',$leads[0]->id)}}" class="btn btn-success d-none d-sm-inline-block" >
+                            <a href="{{route('surveys.create',$leads[0]->id)}}" class="btn btn-success d-none d-sm-inline-block" >
                               Request Survey
                             </a>  
                             <a class="btn btn-light" data-bs-toggle="collapse" href="#s1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">

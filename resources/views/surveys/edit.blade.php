@@ -63,8 +63,8 @@
               <div class="col">
                     <select class="form-select" name="leadid">
                       @foreach($Leads as $lead)
-                        @if($lead->id=== $surveys[0]->leadid)
-                          <option  value="{{ $lead->id }}">{{ $lead->leadsname}}</option>
+                        @if($lead->id == $surveys[0]->leadid)
+                          <option selected value="{{ $lead->id }}">{{ $lead->leadsname}}</option>
                         @else
                           <option  value="{{ $lead->id }}">{{ $lead->leadsname}}</option>
                         @endif

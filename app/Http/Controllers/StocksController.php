@@ -40,6 +40,14 @@ class StocksController extends Controller
                     }
                     
                 })
+                ->editColumn('Desk', function ($row) {
+                    if($row->Desk==""){
+                        return "-";
+                    }else{
+                        return $row->Desk;
+                    }
+                    
+                })
                 ->make(true);
         }
 
@@ -123,6 +131,13 @@ class StocksController extends Controller
                 //     $date=date('d/m/Y',strtotime($row->Date));
                 //     return $date;
                 // })
+                ->editColumn('desk', function ($row) {
+                    if($row->desk==""){
+                        return "-";
+                    }else{
+                        return $row->Desk;
+                    }
+                })
                 
                 ->make(true);
         }
