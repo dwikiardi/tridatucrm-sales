@@ -44,7 +44,7 @@ class PurchaseOrderController extends Controller
     {
         $Users=User::get();
         $Vendor=Vendors::where('type','=',2)->get();
-        $Stocks=Stocks::get();
+        $Stocks=Stocks::select('id','stockid','stockname','qtytype','unit')->get();
         return view('orders.create',compact('Users','Vendor','Stocks'));
     }
     public function store(Request $request){

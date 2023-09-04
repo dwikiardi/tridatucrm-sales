@@ -22,6 +22,7 @@ class Orders extends Model
         'shipping',
         'total',
         'supno',
+        'discount'
     ];
     protected $table = "orders";
 }

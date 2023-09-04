@@ -2,7 +2,7 @@
 @section('title','Create New Order')
 
 @section('content_header')
-<form action="{{ route('order.store') }}" method="POST" enctype="multipart/form-data" id="myform">   
+<!-- <form action="{{ route('order.store') }}" method="POST" enctype="multipart/form-data" id="myform">    -->
     <div class="page-header d-print-none">
       <div class="row align-items-center">
         <div class="col">
@@ -15,7 +15,7 @@
         <!-- Page title actions -->
         <div class="col-auto ms-auto d-print-none"> 
           <a href="{{ url('order')}}" class="btn btn-light">« Kembali</a>                 
-          <button type="submit" class="btn btn-primary">Simpan</button>
+          <a href="#" class="btn btn-primary process">Simpan</a>
         </div>
       </div>
     </div>
@@ -36,13 +36,13 @@
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Orders Name</label>
                 <div class="col">
-                  <input type="text" class="form-control" name="ordername" placeholder="Order Name">
+                  <input type="text" class="form-control ordername" name="ordername" placeholder="Order Name">
                 </div>
               </div>
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Suppiler Inv.No</label>
                 <div class="col">
-                  <input type="text" class="form-control" name="supno" placeholder="Supplier Invoice Number">
+                  <input type="text" class="form-control supno" name="supno" placeholder="Supplier Invoice Number">
                 </div>
               </div>
              
@@ -51,7 +51,7 @@
                 <div class="col">
                   
                   <div class='input-group date' id='datetimepicker' >
-                    <input type='text' name='orderdate' class="form-control date" />
+                    <input type='text' name='orderdate' id='orderdate' class="form-control date" />
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
@@ -62,8 +62,8 @@
               
               
               
-              <input type="hidden" name="createbyid" value="{{Auth::user()->id}}">
-              <input type="hidden" name="updatebyid" value="{{Auth::user()->id}}">
+              <input class="createby" type="hidden" name="createbyid" value="{{Auth::user()->id}}">
+              <input class="updateby" type="hidden" name="updatebyid" value="{{Auth::user()->id}}">
             </div>
             <div class="col-md-6">
               <div class="form-group mb-3 row">
@@ -94,51 +94,88 @@
           </div>
         </div>
         <div class="card">
-            <div class="table-responsive"  style="min-height: 150px;">
-            <input type="text" class="form-control lsprod" name="lsprod" value='<?php echo json_encode($Stocks); ?>' readonly>
-              <table class="table card-table table-vcenter text-nowrap datatable">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Product ID</th>
-                    <th>Product Name</th>
-                    <th>Qty</th>
-                    <th>Price</th>
-                    <th>Unit</th>
-                    <th>Total</th>
-                    
-                    <!-- <th>Action</th> -->
-                  </tr>
-                </thead>
-                <tbody class='listItem'>
-                  <tr class="ix-0">
-                    <td> <a class="btn btn-danger remove hidden">x</a></td>
-                    <td> <select class="form-select stockid stockid-0" name="stockid[0]">
-                      <option>-- select one --</option>
-                        @foreach($Stocks as $stock)
-                            <option data-dtl='0|{{ $stock->stockname}}|{{ $stock->qtytype}}|{{ $stock->unit}}|' value="{{ $stock->stockid }}">{{ $stock->stockname}}</option>
-                        @endforeach
-                      </select>
-                    </td>
-                    <td><input type="text" class="form-control name name-0" name="name[0]" placeholder="Stock Name"></td>
-                    <td><input type="text" class="form-control qty qty-0" name="qty[0]" data-ix="0" placeholder="Qty" value="0"><input type="text" class="form-control qtytype-0" name="qtytype[0]" ></td>
-                    <td><input type="text" class="form-control price price-0" name="price[0]" data-ix="0" placeholder="Price" value="0"><input type="text" class="form-control lsnoseri-0" name="lsnoseri[0]" placeholder="List NoSeri"></td>
-                    <td><input type="text" class="form-control unit unit-0" name="unit[0]" placeholder="Unit"readonly></td>
-                    <td><input type="text" class="form-control total total-0" name="total[0]" placeholder="Total" readonly></td>
-                  </tr>
-                </tbody>
-                <tfooter>
-                  <tr class="index">
-                    <td>&nbsp;</td>
-                    <td>
-                    <input type="text" class="form-control indexs" name="indexs" value="0" readonly><a href="#" class="addrows">add New Rows</a>
-                    </td>
-                  </tr>
-                </tfooter>
-              </table>
-            </div>
-            
+          <div class="table-responsive"  style="min-height: 150px;">
+            <input type="hidden" class="form-control lsprod" name="lsprod" value='<?php echo json_encode($Stocks); ?>' readonly>
+            <table class="table card-table table-vcenter text-nowrap datatable">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Product ID</th>
+                  <th>Product Name</th>
+                  <th>Qty</th>
+                  <th>Price</th>
+                  <th>Unit</th>
+                  <th>Total</th>
+                  
+                  <!-- <th>Action</th> -->
+                </tr>
+              </thead>
+              <tbody class='listItem'>
+                <tr class="ix-0">
+                  <td> <a class="btn btn-danger remove hidden">x</a></td>
+                  <td> <select class="form-select stockid stockid-0" name="stockid[0]">
+                    <option>-- select one --</option>
+                      @foreach($Stocks as $stock)
+                          <option data-dtl='0|{{ $stock->stockname}}|{{ $stock->qtytype}}|{{ $stock->unit}}|' value="{{ $stock->id }}">{{ $stock->stockname}}</option>
+                      @endforeach
+                    </select>
+                  </td>
+                  <td><input type="text" class="form-control name name-0" name="name[0]" placeholder="Stock Name"></td>
+                  <td class="onqty-0"><input type="text" class="form-control qty qty-0" name="qty[0]" data-ix="0" placeholder="Qty" value="0"><input type="hidden" class="form-control qtytype-0" name="qtytype[0]" ></td>
+                  <td><input type="text" class="form-control price price-0" name="price[0]" data-ix="0" placeholder="Price" value="0"><input type="hidden" class="form-control lsnoseri-0" name="lsnoseri[0]" placeholder="List NoSeri"></td>
+                  <td><input type="text" class="form-control unit unit-0" name="unit[0]" placeholder="Unit"readonly></td>
+                  <td><input type="text" class="form-control total total-0" name="total[0]" placeholder="Total" readonly></td>
+                </tr>
+              </tbody>
+              <tr class="index">
+                <td>&nbsp;</td>
+                <td>
+                <input type="hidden" class="form-control indexs" name="indexs" value="0" readonly><a href="#" class="addrows  btn btn-primary">add New Rows</a>
+                </td>
+              </tr>
+              <tfooter>
+              <tr>
+                  <td colspan=4>&nbsp;</td>
+                  <td >Total</td>
+                  <td colspan=2 style="text-align:right;">
+                  <input type="text" class="form-control totals" name="totals" value="0" style="text-align:right;" readonly>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan=4>&nbsp;</td>
+                  <td >Shipping Cost</td>
+                  <td colspan=2 style="text-align:right;">
+                  <input type="text" class="form-control shipping" name="shipping" value="0" style="text-align:right;">
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan=4>&nbsp;</td>
+                  <td >TAX</td>
+                  <td colspan=2 style="text-align:right;">
+                  <input type="text" class="form-control tax" name="tax" value="0" style="text-align:right;">
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan=4>&nbsp;</td>
+                  <td >Diskon</td>
+                  <td colspan=2 style="text-align:right;">
+                  <input type="text" class="form-control diskon" name="diskon" value="0" style="text-align:right;">
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan=4>&nbsp;</td>
+                  <td >Grand Total</td>
+                  <td colspan=2 style="text-align:right;">
+                  <input type="text" class="form-control gtt" name="gtt" value="0" style="text-align:right;" readonly>
+                  </td>
+                </tr>
+                
+              </tfooter>
+              
+            </table>
           </div>
+            
+        </div>
         
       </div>
       
@@ -155,12 +192,12 @@
       <!-- Page title actions -->
       <div class="col-auto ms-auto d-print-none"> 
       <a href="{{ url('leads')}}" class="btn btn-light">« Kembali</a>                 
-          <a href="#" class="btn btn-primary process">Simpan</a>
+      <a href="#" class="btn btn-primary process">Simpan</a>
       </div>
     </div>
   </div>
 </div>
-</form>
+<!-- </form> -->
 <!-- Modal -->
 <div class="modal fade" id="popup" tabindex="-1" role="dialog" aria-labelledby="popupLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
   <div class="modal-dialog" role="document">
@@ -208,7 +245,7 @@
       $('.vaddr').text(text);
     });
 
-    $('.date').datetimepicker({format: 'DD/MM/YYYY'});
+    $('.date').datetimepicker({format: 'DD/MM/YYYY',defaultDate:'now' });
     //$('.stockid').on("change", function () {
     $(document).on("change",'.stockid', function () {
       var option = $('option:selected', this).attr('data-dtl');
@@ -219,108 +256,105 @@
       $('.qtytype-'+options[0]).val(options[2]);
       $('.unit-'+options[0]).val(options[3]);
       $('.qty-'+options[0]).focus();
+      if(options[2]==0){
+        $('.seelist-'+options[0]).remove();
+      }else{
+        if($('.qty-'+options[0]).val()!=0){
+          $('.seelist-'+options[0]).remove();
+          $('.onqty-'+options[0]).append('<a href="#" class="seelist seelist-'+options[0]+'" data-ix="'+options[0]+'">see list</a>');
+        }
+      }
+      
+    });
+    $(document).on("input propertychange",'.qty', function () {
+      var ix=$(this).attr('data-ix');
+      var options=$('.qtytype-'+ix).val();
+      if(options==1){
+        $('.seelist-'+ix).remove();
+        $('.onqty-'+ix).append('<a href="#" class="seelist seelist-'+ix+'" data-ix="'+ix+'">see list</a>');
+      }else{
+        $('.seelist-'+ix).remove();
+      }
+    });
+    $(document).on('click','.seelist',function () {
+      console.log('see list');
+      var ix=$(this).attr('data-ix');
+      var series=$('.qtytype-' + ix).val();
+      var arr=$('.qty-' + ix).val();
+      var list="";
+      if(series == '1'){
+        var exsist=$('.lsnoseri-'+ix).val();
+        if(exsist === undefined || exsist === null || exsist === ''){
+          for(let i=0;i<arr;i++){
+            list= list + '<tr><td><input type="text" class="form-control list list-0" name="list['+i+']" placeholder="Serial Number"></td></tr>';
+          }
+          
+        }else{
+          var datals=exsist.split(',');
+          for(let i=0;i<arr;i++){
+            list= list + '<tr><td><input type="text" class="form-control list list-0" name="list['+i+']" placeholder="Serial Number" value="'+ datals[i] +'"></td></tr>';
+          }
+        }
+        $('.lsSerial').empty();
+        $('.lsSerial').append(list);
+        $('.sindex').empty();
+        $('.sindex').val(ix);
+        $(".modal-btn").click(); 
+        $('.price-' + ix).focus();
+        //callModals();
+      }else{
+        $('.price-' + ix).focus();
+      }
     });
     
-    $('.qty').on('keypress',function(e) {
-        var ix=$(this).attr('data-ix');
-        var arr=$(this).val();
-        if(e.which == 13) {
-          if(arr <=0){
-            alert('Quantity tidak boleh lebih kecil dari 1');
-          }else{
-            var series=$('.qtytype-' + ix).val();
-            var list="";
-            if(series == '1'){
-              var exsist=$('.lsnoseri-'+ix).val();
-              if(exsist === undefined || exsist === null || exsist === ''){
-                for(let i=1;i<=arr;i++){
-                  list= list + '<tr><td><input type="text" class="form-control list list-0" name="list['+i+']" placeholder="Serial Number"></td></tr>';
-                }
-                
-              }else{
-                var datals=exsist.split(',');
-                for(let i=1;i<=arr;i++){
-                  list= list + '<tr><td><input type="text" class="form-control list list-0" name="list['+i+']" placeholder="Serial Number" value="'+ datals[i] +'"></td></tr>';
-                }
-              }
-              $('.lsSerial').empty();
-              $('.lsSerial').append(list);
-              $('.sindex').empty();
-              $('.sindex').val(ix);
-              $(".modal-btn").click(); 
-              $('.price-' + ix).focus();
-              //callModals();
-            }else{
-              $('.price-' + ix).focus();
-            }
-          }
-          //return false;
-          
-          
-          return false;
-        }
-        
-    });
     $(document).on('keypress','.qty',function(e) {
-        var ix=$(this).attr('data-ix');
-        var arr=$(this).val();
-        if(e.which == 13) {
-          if(arr <=0){
-            alert('Quantity tidak boleh lebih kecil dari 1');
-          }else{
-            var series=$('.qtytype-' + ix).val();
-            var list="";
-            if(series == '1'){
-              var exsist=$('.lsnoseri-'+ix).val();
-              if(exsist === undefined || exsist === null || exsist === ''){
-                for(let i=1;i<=arr;i++){
-                  list= list + '<tr><td><input type="text" class="form-control list list-0" name="list['+i+']" placeholder="Serial Number"></td></tr>';
-                }
-                
-              }else{
-                var datals=exsist.split(',');
-                for(let i=1;i<=arr;i++){
-                  list= list + '<tr><td><input type="text" class="form-control list list-0" name="list['+i+']" placeholder="Serial Number" value="'+ datals[i] +'"></td></tr>';
-                }
+      var ix=$(this).attr('data-ix');
+      var arr=$(this).val();
+      if(e.which == 13) {
+        if(arr <=0){
+          alert('Quantity tidak boleh lebih kecil dari 1');
+        }else{
+          var series=$('.qtytype-' + ix).val();
+          var list="";
+          if(series == '1'){
+            var exsist=$('.lsnoseri-'+ix).val();
+            if(exsist === undefined || exsist === null || exsist === ''){
+              for(let i=0;i<arr;i++){
+                list= list + '<tr><td><input type="text" class="form-control list list-0" name="list['+i+']" placeholder="Serial Number"></td></tr>';
               }
-                $('.lsSerial').empty();
-                $('.lsSerial').append(list);
-                $('.sindex').empty();
-                $('.sindex').val(ix);
-                $(".modal-btn").click(); 
-              //callModals();
+              
             }else{
-              $('.price-' + ix).focus();
+              var datals=exsist.split(',');
+              for(let i=0;i<arr;i++){
+                list= list + '<tr><td><input type="text" class="form-control list list-0" name="list['+i+']" placeholder="Serial Number" value="'+ datals[i] +'"></td></tr>';
+              }
             }
+            $('.lsSerial').empty();
+            $('.lsSerial').append(list);
+            $('.sindex').empty();
+            $('.sindex').val(ix);
+            $(".modal-btn").click(); 
+            $('.price-' + ix).focus();
+            //callModals();
+          }else{
+            $('.price-' + ix).focus();
           }
-          //return false;
-          
-          
-          return false;
         }
-        
-    });
-    $('.price').on('keypress',function(e) {
-        var ix=$(this).attr('data-ix');
-        //console.log();
-        if(e.which == 13) {
-          //console.log('enter Pressed');
-          var total=getTotal(ix);
-          $('.total-' + ix).val(total);
-          return false;
-        }
+        return false;
+      
+      }
         
     });
     $(document).on('keypress','.price',function(e) {
-        var ix=$(this).attr('data-ix');
-        //console.log();
-        if(e.which == 13) {
-          //console.log('enter Pressed');
-          var total=getTotal(ix);
-          $('.total-' + ix).val(total);
-          return false;
-        }
-        
+      var ix=$(this).attr('data-ix');
+      //console.log();
+      if(e.which == 13) {
+        //console.log('enter Pressed');
+        var total=calculates(ix);
+        $('.total-' + ix).val(total);
+        summaries();
+        return false;
+      }
     });
     $('#popup').modal({
       backdrop: 'static',
@@ -338,6 +372,7 @@
       if(duplicateElements.length >0){
         alert("it's duplicate : \n" + duplicateElements);
       }else{
+        nlist=nlist.substring(1);
         var option = $('.sindex').val();
         $('.lsnoseri-'+option).val('');
         $('.lsnoseri-'+option).val(nlist);
@@ -354,32 +389,99 @@
       var series=JSON.parse($('.lsprod').val());
       $(series).each(function(index, value){ //loop through your elements
         
-            options += '<option data-dtl="'+ix+'|'+value.stockname+'|'+value.qtytype+'|'+value.unit+'" value="'+ value.stockid +'">'+value.stockname+'</option>'; //add the option element as a string
+            options += '<option data-dtl="'+ix+'|'+value.stockname+'|'+value.qtytype+'|'+value.unit+'" value="'+ value.id +'">'+value.stockname+'</option>'; //add the option element as a string
             
         
       });                        
       text=text + options;                      
       text=text + '</select></td>';
       text=text + '<td><input type="text" class="form-control name name-'+ix+'" name="name['+ix+']" placeholder="Stock Name"></td>';
-      text=text + '<td><input type="text" class="form-control qty qty-'+ix+'" name="qty['+ix+']" data-ix="'+ix+'" placeholder="Qty" value="0"><input type="text" class="form-control qtytype-'+ix+'" name="qtytype['+ix+']" ></td>';
-      text=text + '<td><input type="text" class="form-control price price-'+ix+'" name="price['+ix+']" data-ix="'+ix+'" placeholder="Price" value="0"><input type="text" class="form-control lsnoseri-'+ix+'" name="lsnoseri['+ix+']" placeholder="List NoSeri"></td>';
+      text=text + '<td class="onqty-'+ix+'"><input type="text" class="form-control qty qty-'+ix+'" name="qty['+ix+']" data-ix="'+ix+'" placeholder="Qty" value="0"><input type="hidden" class="form-control qtytype-'+ix+'" name="qtytype['+ix+']" ></td>';
+      text=text + '<td><input type="text" class="form-control price price-'+ix+'" name="price['+ix+']" data-ix="'+ix+'" placeholder="Price" value="0"><input type="hidden" class="form-control lsnoseri-'+ix+'" name="lsnoseri['+ix+']" placeholder="List NoSeri"></td>';
       text=text + '<td><input type="text" class="form-control unit unit-'+ix+'" name="unit['+ix+']" placeholder="Unit"readonly></td>';
       text=text + '<td><input type="text" class="form-control total total-'+ix+'" name="total['+ix+']" placeholder="Total" readonly></td></tr>';
       $('.listItem').append(text);
     });
-    $(document).on('click','.process',function () {
+    $(document).on('click','.process',function (e) {
       var result=validate();
+      if(result==true){
+        var arr=$('.indexs').val();
+        let listItem=[];
+        for(let i=0; i<=arr;i++){
+          var items={
+            'stockid' : $('.stockid-'+i+' option:selected').val(),
+            'qty' : $('.qty-'+i).val(),
+            'qtytype' : $('.qtytype-'+i).val(),
+            'price' : $('.price-'+i).val(),
+            'lsnoseri' : $('.lsnoseri-'+i).val(),
+            'total' : $('.total-'+i).val()
+          };
+          listItem.push(items);
+          
+        }
+        var data={
+          'order_name' : $('.ordername').val(),
+          'date' : $('#orderdate').val(),
+          'supno' : $('.supno').val(),
+          'vendorid' : $('.vendorid option:selected').val(),
+          'subtotal' : $('.totals').val(),
+          'tax' : $('.tax').val(),
+          'shipping' : $('.shipping').val(),
+          'total' : $('.gtt').val(),
+          'discount' : $('.diskon').val(),
+          'Item_List' : listItem}
+        ;
+        console.log(data);
+      }
     });
-    function getTotal(params) {
+    $(document).on("input propertychange",'.tax', function () {
+      summaries();
+    });
+    $(document).on("input propertychange",'.shipping', function () {
+      summaries();
+    });
+    $(document).on("input propertychange",'.diskon', function () {
+      summaries();
+    });
+    function calculates(params) {
       var a =$('.qty-' + params).val();
       var b =$('.price-' + params).val();
       return (a * b);
     }
-
+    function summaries() {
+      let total=0;
+      $('.total').each(function(){
+        //console.log(this.value);
+        total= total + parseInt(this.value);
+      });
+      $('.totals').val(total);
+      //console.log(total);
+      var shipping=parseInt($('.shipping').val());
+      var tax=parseInt($('.tax').val());
+      var diskon=parseInt($('.diskon').val());
+      var gtt=total + shipping + tax - diskon;
+      $('.gtt').val(gtt);
+    }
     function validate() {
-      let valid=false;
-      var validates=$('#myform').serialize();
-      console.log(validates);
+      let valid=true;
+      var arr=$('.indexs').val();
+      for(let i=0; i<=arr;i++){
+        var qtytype=$('.qtytype-'+i).val();
+        if(qtytype==1){//if serial
+          var qty=parseInt($('.qty-'+i).val());
+          var serial=$('.lsnoseri-'+i).val();
+          var serials=serial.match(/[^,]+/g);
+          if(qty!=serials.length){ 
+            alert("some serial is difrent");
+            valid=false;
+          }
+        }
+        
+      }
+
+      //console.log(decodeURIComponent(validates));
+      return valid;
+      
     }
     function toFindDuplicates(arry) {
         const uniqueElements = new Set(arry);
