@@ -54,7 +54,10 @@ class AccountsController extends Controller
         
         return view('accounts.view',compact('accounts','owner','createbyid','updatebyid','logs'));
     }
-
+    public function create(){
+        $Users=User::get();
+        return view('accounts.create',compact('Users'));
+    }
     public function edit($id){
         $Users=User::get();
         $accounts=Accounts::where('id','=',$id)->get();
@@ -79,6 +82,26 @@ class AccountsController extends Controller
         $ids=DataLogs::create($logs);
         /// redirect jika sukses menyimpan data
          return redirect('accounts/view/'.$request->id);
+    }
+    public function store(Request $request){
+        //var_dump($request->all());
+        $data=$request->all();
+        unset($data['_token']);
+        //$accdata=Accounts::where('id','=',$request->id)->get();
+        $accounts=Accounts::create($data);
+        $prevdata = "";
+        $newdata = json_encode($request->all());
+        $logs=[
+            'module'=>'Accounts',
+            'moduleid'=>$accounts->id,
+            'createbyid'=>Auth::user()->id,
+            'logname'=>'Accounts Created ',
+            'olddata'=>($prevdata),
+            'newdata'=>($newdata)
+        ];
+        $ids=DataLogs::create($logs);
+        /// redirect jika sukses menyimpan data
+         return redirect('accounts/view/'.$accounts->id);
     }
 
     //Data Tables Contact(Contact List)

@@ -8,7 +8,7 @@
         <div class="col">
           <!-- Page pre-title -->
           <div class="page-pretitle">
-          <h1 class="m-0 text-dark">Update Lead </h1>
+          <h1 class="m-0 text-dark">Update Contact </h1>
           </div>
           
         </div>
@@ -25,15 +25,15 @@
 @csrf
 <div class="container-xl">
   <div class="row row-cards" data-masonry='{"percentPosition": true }'>
-  <div class="col-12">
+    <div class="col-12">
         <div class="card">
           <div class="card-header bg-blue-lt">
-            <h3 class="card-title"> Company's Information</h3>
+            <h3 class="card-title"> Account's Information</h3>
           </div>
           <div class="card-body row">
             <div class="col-md-6">
               <div class="form-group mb-3 row">
-                <label class="form-label col-3 col-form-label">Lead Owner</label>
+                <label class="form-label col-3 col-form-label">Contact Owner</label>
                 <div class="col">
                       <select class="form-select" name="ownerid">
                         @foreach($Users as $user)
@@ -47,7 +47,7 @@
                 </div>
               </div>    
               <div class="form-group mb-3 row">
-                <label class="form-label col-3 col-form-label">Lead Name</label>
+                <label class="form-label col-3 col-form-label">Contact Name</label>
                 <div class="col">
                   <input type="text" class="form-control" name="leadsname" placeholder="Lead Name" value="{{$leads[0]->leadsname}}">
                 </div>
@@ -55,40 +55,37 @@
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Company Name</label>
                 <div class="col">
-                  <input type="text" class="form-control company" name="account_name" placeholder="Company Name" value="{{$leads[0]->account_name}}">
-                </div>
+                    <select class="form-select" name="accountid">
+                      @foreach($Accounts as $account)
+                        @if($account->id===  $id)
+                          <option selected value="{{ $account->id }}">{{ $account->account_name}}</option>
+                        @else
+                          <option  value="{{ $account->id }}">{{ $account->account_name}}</option>
+                        @endif
+                      @endforeach
+                    </select>
+              </div>
               </div>
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Address</label>
                 <div class="col">
-                <textarea class="form-control" name="address" placeholder="">{{$leads[0]->address}}</textarea>
+                <textarea readonly class="form-control" name="address" placeholder="">{{$leads[0]->address}}</textarea>
                 </div>
               </div>  
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">City</label>
                 <div class="col">
-                  <input type="text" class="form-control" name="city" placeholder="City"  value="{{$leads[0]->city}}">
+                  <input readonly type="text" class="form-control" name="city" placeholder="City"  value="{{$leads[0]->city}}">
                 </div>
               </div>
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">State/Province</label>
                 <div class="col">
-                  <input type="text" class="form-control" name="state" aria-describedby="emailHelp" placeholder="Province"  value="{{$leads[0]->state}}">
+                  <input readonly type="text" class="form-control" name="state" aria-describedby="emailHelp" placeholder="Province"  value="{{$leads[0]->state}}">
                 </div>
               </div>  
               
-              <div class="form-group mb-3 row">
-                <label class="form-label col-3 col-form-label">Country</label>
-                <div class="col">
-                  <input type="text" class="form-control" name="country" aria-describedby="emailHelp" placeholder="Country"  value="{{$leads[0]->country}}">
-                </div>
-              </div>  
-              <div class="form-group mb-3 row">
-                <label class="form-label col-3 col-form-label">ZIP Code</label>
-                <div class="col">
-                  <input type="text" class="form-control" name="zipcode" aria-describedby="emailHelp" placeholder="ZIP Code"  value="{{$leads[0]->zipcode}}">
-                </div>
-              </div>
+              
               
               <input type="hidden" name="accountid" id="accountid"  value="{{$leads[0]->accountid}}">
               <input type="hidden" name="id" id="id"  value="{{$leads[0]->id}}">
@@ -97,54 +94,36 @@
             </div>
             <div class="col-md-6">
               <div class="form-group mb-3 row">
+                <label class="form-label col-3 col-form-label">Country</label>
+                <div class="col">
+                  <input readonly type="text" class="form-control" name="country" aria-describedby="emailHelp" placeholder="Country"  value="{{$leads[0]->country}}">
+                </div>
+              </div>  
+              <div class="form-group mb-3 row">
+                <label class="form-label col-3 col-form-label">ZIP Code</label>
+                <div class="col">
+                  <input readonly type="text" class="form-control" name="zipcode" aria-describedby="emailHelp" placeholder="ZIP Code"  value="{{$leads[0]->zipcode}}">
+                </div>
+              </div>
+              <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">E-mail</label>
                 <div class="col">
-                  <input type="email" class="form-control" name="email" aria-describedby="emailHelp" placeholder="Email" value="{{$leads[0]->email}}">
+                  <input readonly type="email" class="form-control" name="email" aria-describedby="emailHelp" placeholder="Email" value="{{$leads[0]->email}}">
                 </div>
               </div>  
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Website</label>
                 <div class="col">
-                  <input type="text" class="form-control" name="website" aria-describedby="emailHelp" placeholder="" value="{{$leads[0]->website}}">
+                  <input readonly type="text" class="form-control" name="website" aria-describedby="emailHelp" placeholder="" value="{{$leads[0]->website}}">
                 </div>
               </div>  
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Phone</label>
                 <div class="col">
-                  <input type="text" class="form-control" name="phone" aria-describedby="emailHelp" placeholder="" value="{{$leads[0]->phone}}">
-                </div>
-              </div>  
-              <div class="form-group mb-3 row">
-                <label class="form-label col-3 col-form-label">Billing Address</label>
-                <div class="col">
-                <textarea class="form-control" name="billing_address" placeholder="">{{$leads[0]->billing_address}}</textarea>
-                </div>
-              </div>  
-              <div class="form-group mb-3 row">
-                <label class="form-label col-3 col-form-label">Billing City</label>
-                <div class="col">
-                  <input type="text" class="form-control" name="billing_city" placeholder="City Name" value="{{$leads[0]->billing_city}}">
-                </div>
-              </div>
-              <div class="form-group mb-3 row">
-                <label class="form-label col-3 col-form-label">Billing State/Province</label>
-                <div class="col">
-                  <input type="text" class="form-control" name="billing_state" aria-describedby="emailHelp" placeholder="Province" value="{{$leads[0]->billing_state}}">
+                  <input readonly type="text" class="form-control" name="phone" aria-describedby="emailHelp" placeholder="" value="{{$leads[0]->phone}}">
                 </div>
               </div>  
               
-              <div class="form-group mb-3 row">
-                <label class="form-label col-3 col-form-label">Billing Country</label>
-                <div class="col">
-                  <input type="text" class="form-control" name="billing_country" aria-describedby="emailHelp" placeholder="" value="{{$leads[0]->billing_country}}">
-                </div>
-              </div>  
-              <div class="form-group mb-3 row">
-                <label class="form-label col-3 col-form-label">Billing ZIP Code</label>
-                <div class="col">
-                  <input type="text" class="form-control" name="billing_zipcode" aria-describedby="emailHelp" placeholder="" value="{{$leads[0]->billing_zipcode}}">
-                </div>
-              </div>
             </div>
           </div>
         </div>

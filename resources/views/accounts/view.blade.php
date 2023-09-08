@@ -177,9 +177,11 @@
                     <div class="col-12">
                       <div class="card">
                         <div class="card-header bg-blue-lt">
-                          <h3 class="card-title"> Contact Detail </h3>
+                          <h3 class="card-title"> Contacts/Property Detail </h3>
                           <div class="col-auto ms-auto d-print-none"> 
-                            
+                            <a href="{{url('contacts/create')}}/{{$accounts[0]->id}}" class="btn btn-success d-none d-sm-inline-block" >
+                              Create
+                            </a>
                             <a class="btn btn-light" data-bs-toggle="collapse" href="#multiCollapseExample2" role="button" aria-expanded="false" aria-controls="multiCollapseExample2"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-layout-bottombar-collapse" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                 <path d="M20 6v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2z"></path>

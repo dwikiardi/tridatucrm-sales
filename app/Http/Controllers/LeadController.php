@@ -326,16 +326,18 @@ class LeadController extends Controller
         $owner=User::where('id','=',$leads[0]->ownerid)->get();
         $createbyid=User::where('id','=',$leads[0]->createbyid)->get();
         $updatebyid=User::where('id','=',$leads[0]->updatebyid)->get();
+        $Accounts=Accounts::where('id','=',$leads[0]->accountid)->get();
         $logs=DataLogs::where('moduleid','=',$id)->where('module','=','Leads')->orderBy('created_at', 'DESC')->join('users', 'datalogs.createbyid', '=', 'users.id')
         ->select('datalogs.*' ,'users.first_name as firstname', 'users.last_name as lastname')->get();
-        return view('contacts.view',compact('leads','owner','createbyid','updatebyid','logs'));
+        return view('contacts.view',compact('leads','owner','createbyid','updatebyid','logs','Accounts'));
         
     }
 
     public function cedit($id){
         $Users=User::get();
         $leads=Leads::where('id','=',$id)->get();
-        return view('contacts.edit',compact('Users','leads'));
+        $Accounts=Accounts::get();
+        return view('contacts.edit',compact('Users','leads','Accounts',"id"));
     }
     
     public function cupdate(Request $request){
@@ -358,5 +360,36 @@ class LeadController extends Controller
         $ids=DataLogs::create($logs);
         /// redirect jika sukses menyimpan data
          return redirect('contacts/view/'.$request->id);
+    }
+    public function ccreate($id=null)
+    {
+        $Users=User::get();
+        $Accounts=Accounts::get();
+        
+        if(isset($id)){
+            $acc=Accounts::where('id','=',$id)->get();
+        }else{
+            $acc="";
+        }
+        return view('contacts.create',compact('Users','Accounts','id','acc'));
+    }
+    public function cstore(Request $request){
+        /// insert setiap request dari form ke dalam database via model
+        /// jika menggunakan metode ini, maka nama field dan nama form harus sama
+        $ids=Leads::create($request->all());
+
+        $newdata=json_encode($request->all());
+        $logs=[
+            'module'=>'Leads',
+            'moduleid'=>$ids->id,
+            'createbyid'=>Auth::user()->id,
+            'logname'=>'Contact Created',
+            'olddata'=>'',
+            'newdata'=>$newdata
+        ];
+        $ids=DataLogs::create($logs);
+        //echo $newdata;
+        /// redirect jika sukses menyimpan data
+         return redirect('contacts');
     }
 }

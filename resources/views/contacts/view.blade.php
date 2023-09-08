@@ -71,7 +71,7 @@
                   <div class="col-12">
                     <div class="card">
                       <div class="card-header bg-blue-lt">
-                        <h3 class="card-title"> Company's Information</h3>
+                        <h3 class="card-title"> Accounts's Information</h3>
                         <div class="col-auto ms-auto d-print-none"> 
                             <a class="btn btn-light" data-bs-toggle="collapse" href="#c1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-layout-bottombar-collapse" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -87,88 +87,113 @@
                         <div class="card-body row collapse multi-collapse show" id="c1">
                         <div class="col-md-6">
                           <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">Lead Owner</label>
+                            <label class="form-label col-3 col-form-label">Contact Owner</label>
                             <div class="col">
                             {{$owner[0]->first_name}} {{$owner[0]->last_name}}
                             </div>
                           </div>    
                           <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">Lead Name</label>
+                            <label class="form-label col-3 col-form-label">Contact Name</label>
                             <div class="col">
                               {{$leads[0]->leadsname}}
                             </div>
                           </div>
                           <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">Company Name</label>
+                            <label class="form-label col-3 col-form-label">Account Name</label>
                             <div class="col">
-                            {{$leads[0]->account_name}}
+                            <a href="{{url('accounts/view')}}/{{$Accounts[0]->id}}">{{$Accounts[0]->account_name}}</a>
                             </div>
                           </div>
                           <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">Address</label>
+                            <label class="form-label col-3 col-form-label">Account Address</label>
                             <div class="col">
                             
-                            {{$leads[0]->address}}
+                            {{$Accounts[0]->address}}
                             </div>
                           </div>  
                           <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">City</label>
+                            <label class="form-label col-3 col-form-label">Account City</label>
                             <div class="col">
                               
-                              {{$leads[0]->city}}
+                              {{$Accounts[0]->city}}
                             </div>
                           </div>
                           <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">State/Province</label>
+                            <label class="form-label col-3 col-form-label">Account State/Province</label>
                             <div class="col">
                               
-                              {{$leads[0]->state}}
+                              {{$Accounts[0]->state}}
                             </div>
                           </div>  
-                          
-                          <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">Country</label>
-                            <div class="col">
-                              
-                              {{$leads[0]->country}}
-                            </div>
-                          </div>  
-                          <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">ZIP Code</label>
-                            <div class="col">
-                              
-                              {{$leads[0]->zipcode}}
-                            </div>
-                          </div>
                           
                           <input type="hidden" name="accountid" id="accountid" value="{{$leads[0]->accountid}}">
                           <input type="hidden" name="createbyid" value="{{Auth::user()->id}}">
                           <input type="hidden" name="updatebyid" value="{{Auth::user()->id}}">
                         </div>
                         <div class="col-md-6">
+                          
+                          
                           <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">E-mail</label>
+                            <label class="form-label col-3 col-form-label">Account Country</label>
                             <div class="col">
                               
-                              {{$leads[0]->email}}
+                              {{$Accounts[0]->country}}
                             </div>
                           </div>  
                           <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">Website</label>
+                            <label class="form-label col-3 col-form-label">Account ZIP Code</label>
                             <div class="col">
                               
-                              {{$leads[0]->website}}
+                              {{$Accounts[0]->zipcode}}
+                            </div>
+                          </div>
+                          <div class="form-group mb-3 row">
+                            <label class="form-label col-3 col-form-label">Account E-mail</label>
+                            <div class="col">
+                              
+                              {{$Accounts[0]->email}}
                             </div>
                           </div>  
                           <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">Phone</label>
+                            <label class="form-label col-3 col-form-label">Account Website</label>
                             <div class="col">
                               
-                              {{$leads[0]->phone}}
+                              {{$Accounts[0]->website}}
                             </div>
                           </div>  
                           <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">Billing Address</label>
+                            <label class="form-label col-3 col-form-label">Account Phone</label>
+                            <div class="col">
+                              
+                              {{$Accounts[0]->phone}}
+                            </div>
+                          </div> 
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="card">
+                      <div class="card-header bg-blue-lt">
+                        <h3 class="card-title"> Billing's Information</h3>
+                        <div class="col-auto ms-auto d-print-none"> 
+                            <a class="btn btn-light" data-bs-toggle="collapse" href="#c1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-layout-bottombar-collapse" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M20 6v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2z"></path>
+                                <path d="M20 15h-16"></path>
+                                <path d="M14 8l-2 2l-2 -2"></path>
+                              </svg>
+                            </a>   
+                          </div>
+                        </div>
+                       
+                        <div class="card-body row collapse multi-collapse show" id="c1">
+                        
+                        <div class="col-md-6">
+                           
+                          <div class="form-group mb-3 row">
+                            <label class="form-label col-3 col-form-label">Contact Billing Address</label>
                             <div class="col">
                             
                             {{$leads[0]->billing_address}}
@@ -188,6 +213,10 @@
                               {{$leads[0]->billing_state}}
                             </div>
                           </div>  
+                          
+                        </div>
+                        <div class="col-md-6">
+                           
                           
                           <div class="form-group mb-3 row">
                             <label class="form-label col-3 col-form-label">Billing Country</label>

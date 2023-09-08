@@ -58,11 +58,16 @@
               </div>
             </div>    
             <div class="form-group mb-3 row">
-              <label class="form-label col-3 col-form-label">Lead</label>
+              <label class="form-label col-3 col-form-label">Lead/ Contact</label>
               <div class="col">
                     <select class="form-select" name="leadid">
                       @foreach($Leads as $lead)
-                        <option  value="{{ $lead->id }}">{{ $lead->leadsname}}</option>
+                        <!-- <option  value="{{ $lead->id }}">{{ $lead->leadsname}}</option> -->
+                        @if($lead->id==$id)
+                            <option selected value="{{ $lead->id }}">{{ $lead->leadsname}}</option>
+                          @else
+                            <option  value="{{ $lead->id }}">{{ $lead->leadsname}}</option>
+                          @endif
                       @endforeach
                     </select>
               </div>

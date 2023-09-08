@@ -64,6 +64,8 @@ Route::group(['middleware' => 'auth'], function () {
     
     //Contacts
     Route::get('contacts', [LeadController::class, 'cindex'])->name('contacts.index');
+    Route::get('contacts/create/{id?}', [LeadController::class, 'ccreate'])->name('leads.ccreate');
+    Route::get('contacts/store', [LeadController::class, 'cstore'])->name('leads.cstore');
     Route::get('contacts/view/{id}', [LeadController::class, 'cview'])->name('contacts.view');
     Route::get('contacts/edit/{id}', [LeadController::class, 'cedit'])->name('contacts.edit');
     Route::post('contacts/update/', [LeadController::class, 'cupdate'])->name('contacts.update');
@@ -92,7 +94,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     //Surveys
     Route::get('surveys', [SurveyController::class, 'index'])->name('surveys.index');
-    Route::get('surveys/create', [SurveyController::class, 'create'])->name('surveys.create');
+    Route::get('surveys/create/{id?}', [SurveyController::class, 'create'])->name('surveys.create');
     Route::post('surveys/store', [SurveyController::class, 'store'])->name('surveys.store');
     Route::get('surveys/view/{id}', [SurveyController::class, 'view'])->name('surveys.view');
     Route::get('surveys/edit/{id}', [SurveyController::class, 'edit'])->name('edit');

@@ -103,6 +103,13 @@
                       <a class="dropdown-item" href="{{url('leads')}}" >
                         Lead's
                       </a>
+                      <a class="dropdown-item" href="{{url('accounts')}}" >
+                        Accounts's
+                      </a>
+                      <a class="dropdown-item" href="{{url('contacts')}}" >
+                        Customer's
+                      </a>
+                      <hr style="padding:0!important;margin:0!important">
                       <a class="dropdown-item" href="{{url('quotes')}}" >
                         Quote's
                       </a>
@@ -115,27 +122,21 @@
                       <a class="dropdown-item" href="{{url('revocation')}}" >
                         Revocation
                       </a>
-                      <a class="dropdown-item" href="{{url('meetings')}}" >
-                        Meetings
-                      </a>
-                      
-                      <hr style="padding:0!important;margin:0!important">
-                      <a class="dropdown-item" href="{{url('accounts')}}" >
-                        Accounts's
-                      </a>
-                      <a class="dropdown-item" href="{{url('contacts')}}" >
-                        Customer's
-                      </a>
-                      <!-- <a class="dropdown-item" href="{{url('property')}}" >
-                        Properties
-                      </a> -->
                       <a class="dropdown-item" href="{{url('maintenance')}}" >
                         Maintenance's
                       </a>
+
+                      <hr style="padding:0!important;margin:0!important">
+                      
+                      
                       <a class="dropdown-item" href="{{url('billing')}}" >
                         Bill's
                       </a>
                       <hr style="padding:0!important;margin:0!important">
+                      <a class="dropdown-item" href="{{url('meetings')}}" >
+                        Meetings
+                      </a>
+                      
                       <a class="dropdown-item" href="{{url('deals')}}" >
                         Deals
                       </a>
