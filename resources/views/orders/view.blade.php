@@ -1,314 +1,292 @@
 @extends('layouts/admin')
-@section('title','Create New Quotes')
-@section('add_css')
-<style>
-.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active{
-  color: #fff;
-  background-color: #206bc4;
-}
-#approved.hide,#reject.hide{
-display:none!important;
-}
-  .dataTables_filter{
-    float: right;
-    padding-right:15px;
-  }
-  .dataTables_length{
-    padding-left:15px;
-  }
-  .dataTables_length label{
-    display: inline-flex;
-    padding: 5px;
-  }
-  .dataTables_length label select{
-    margin: 0 5px;
-  }
-  .dataTables_info{
-    padding: 5px 15px;
-  }
-  .col-form-label{
-    padding-top:0!important;
-    padding-bottom:0!important;
-  }
-</style>
-@stop
+@section('title','Create New Order')
+
 @section('content_header')
-    
+
+<!-- <form action="{{ route('order.store') }}" method="POST" enctype="multipart/form-data" id="myform">    -->
     <div class="page-header d-print-none">
       <div class="row align-items-center">
         <div class="col">
           <!-- Page pre-title -->
           <div class="page-pretitle">
-            <ul class="nav nav-tabs" data-bs-toggle="tabs" style=" margin-bottom: 15px; border-bottom: none;">
-              <li class="nav-item" style="margin-right: 15px;">
-                <a href="#tabs-home-17" class="nav-link active" data-bs-toggle="tab" style="border: solid #cbd5e1 1px!important;border-radius: 15px;">Overview</a>
-              </li>
-              <li class="nav-item">
-                <a href="#tabs-profile-17" class="nav-link" data-bs-toggle="tab" style="border: solid #cbd5e1 1px!important;border-radius: 15px;">Timeline</a>
-              </li>
-            </ul>
+          <h1 class="m-0 text-dark">Create New Order </h1>
           </div>
           
         </div>
         <!-- Page title actions -->
         <div class="col-auto ms-auto d-print-none"> 
-          <a href="{{ url('quotes')}}" class="btn btn-light">« Kembali</a>  
-          @if($quotes[0]->status == 1)
-          <a href="#" data-id="{{$quotes[0]->id}}" class="btn btn-success d-none d-sm-inline-block" id="approved">
-             Approve
-          </a>  
-          <a href="#" data-id="{{$quotes[0]->id}}" class="btn btn-danger d-none d-sm-inline-block" id="reject">
-             Reject
-          </a> 
-          @endif
-          <a href="{{ url('quotes/edit',$quotes[0]->id)}}" class="btn btn-primary d-none d-sm-inline-block" >
-             Update Quote
-          </a>  
+          <a href="{{ url('order')}}" class="btn btn-light">« Kembali</a> 
         </div>
       </div>
     </div>
 @stop
 @section('content')
+
+@csrf
 <div class="container-xl">
-  <div class="row row-cards">
-    <div class="col-12">
-      
-          <div class="tab-content">
-            <div class="tab-pane fade active show" id="tabs-home-17">
-              <div class="container-xl" style="padding: 0!important;">
-                <div class="row row-cards" data-masonry='{"percentPosition": true }'>
-                <div class="col-12">
-                  <div class="card">
-                    <div class="card-header bg-blue-lt">
-                      <h3 class="card-title"> Quote's Information</h3>
-                    </div>
-                    <div class="card-body row">
-                      <div class="col-md-6">
-                        <div class="form-group mb-3 row">
-                          <label class="form-label col-3 col-form-label">Quote Owner</label>
-                          <div class="col">
-                          {{$owner[0]->first_name}} {{$owner[0]->last_name}}
-                          </div>
-                        </div>    
-                        <div class="form-group mb-3 row">
-                          <label class="form-label col-3 col-form-label">Lead</label>
-                          <div class="col">
-                          {{$lead[0]->leadsname}}
-                          </div>
-                        </div>    
-                        <div class="form-group mb-3 row">
-                          <label class="form-label col-3 col-form-label">Quotes Name</label>
-                          <div class="col">
-                            {{$quotes[0]->quotename}}
-                          </div>
-                        </div>
-                        <div class="form-group mb-3 row">
-                          <label class="form-label col-3 col-form-label">Quotes No.</label>
-                          <div class="col">
-                            {{$quotes[0]->quotenumber}}
-                          </div>
-                        </div>
-                        <div class="form-group mb-3 row">
-                          <label class="form-label col-3 col-form-label">Quote Date</label>
-                          <div class="col">
-                            {{date('d/m/Y',strtotime($quotes[0]->quotedate))}}
-                            
-                          </div>
-                        </div>
-                        <div class="form-group mb-3 row">
-                          <label class="form-label col-3 col-form-label">To Contact</label>
-                          <div class="col">
-                            {{$quotes[0]->toperson}}
-                          </div>
-                        </div>
-                        <div class="form-group mb-3 row">
-                          <label class="form-label col-3 col-form-label">Address</label>
-                          <div class="col">
-                          {{$quotes[0]->toaddress}}
-                          </div>
-                        </div>  
-                        
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group mb-3 row">
-                          <label class="form-label col-3 col-form-label">Quotes Documents</label>
-                          <div class="col">
-                          <a href="{{ url($quotes[0]->attcfile)}}" target="_blank" class="btn btn-light">view</a>   
-                          </div>
-                        </div>  
-                        
-                        <div class="form-group mb-3 row">
-                          <label class="form-label col-3 col-form-label">Notes</label>
-                          <div class="col">
-                          {{$quotes[0]->note}}
-                          </div>
-                        </div>  
-                        <div class="form-group mb-3 row">
-                          <label class="form-label col-3 col-form-label">Created By</label>
-                          <div class="col" style="padding: 10px!important;">
-                          {{ $createbyid[0]->first_name}} {{ $createbyid[0]->last_name}}
-                          <br>{{ $quotes[0]->created_at }}
-                          </div>
-                        </div>  
-                        <div class="form-group mb-3 row">
-                          <label class="form-label col-3 col-form-label">Last Modified By</label>
-                          <div class="col" style="padding: 10px!important;">
-                          {{ $updatebyid[0]->first_name}} {{ $updatebyid[0]->last_name}}
-                          <br>{{ $quotes[0]->updated_at }}
-                          </div>
-                        </div> 
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                  </div> <!-- END Container-XL -->
-                </div>
-              
-
-              <div class="container-xl">
-                <!-- Page title -->
-                <div class="page-header d-print-none">
-                  <div class="row align-items-center">
-                    <div class="col">
-                      <!-- Page pre-title -->
-                    </div>
-                    <!-- Page title actions -->
-                    <div class="col-auto ms-auto d-print-none"> 
-                    <a href="{{ url('quotes')}}" class="btn btn-light">« Kembali</a>   
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              
-            </div>
-            <div class="tab-pane fade" id="tabs-profile-17">
-              <div class="col-12">
-                <div class="card">
-                  <div class="card-header bg-blue-lt">
-                    <h3 class="card-title"> History </h3>
-                  </div>
-                  <div class="card-body row">
-                    <ul class="list list-timeline">
-                      @foreach($logs as $log)
-                      <li>
-                        <div class="list-timeline-icon"><!-- Download SVG icon from http://tabler-icons.io/i/brand-twitter -->
-                          <!-- SVG icon code -->
-                          @if (strpos($log->logname, 'Create') !== FALSE)
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-circle-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                              <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
-                              <path d="M9 12l6 0"></path>
-                              <path d="M12 9l0 6"></path>
-                            </svg>
-                          @endif
-                          @if (strpos($log->logname, 'Update') !== FALSE)
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                              <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4"></path>
-                              <path d="M13.5 6.5l4 4"></path>
-                            </svg>
-                          @endif
-                          @if (strpos($log->logname, 'Approved') !== FALSE)
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                              <path d="M5 12l5 5l10 -10"></path>
-                            </svg>
-                          @endif
-                          @if (strpos($log->logname, 'Rejected') !== FALSE)
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-ban" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                              <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
-                              <path d="M5.7 5.7l12.6 12.6"></path>
-                            </svg>
-                          @endif
-                        </div>
-                        <div class="list-timeline-content">
-                          <div class="list-timeline-time">{{ $log->created_at }}</div>
-                          <p class="list-timeline-title">{{$log->logname}}</p>
-                          <p class="text-muted">{{ $log->firstname }} {{ $log->lastname }}</p>
-                        </div>
-                      </li>
-                      @endforeach
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
+  <div class="row row-cards" data-masonry='{"percentPosition": true }'>
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header bg-blue-lt">
+            <h3 class="card-title"> Order's Information</h3>
           </div>
+          <div class="card-body row">
+            <div class="col-md-6">
+              
+              <div class="form-group mb-3 row">
+                <label class="col-3">Orders Name</label>
+                <div class="col">
+                  {{$order[0]->ordername}}
+                </div>
+              </div>
+              <div class="form-group mb-3 row">
+                <label class="col-3">Suppiler Inv.No</label>
+                <div class="col">
+                {{$order[0]->supno}}
+                </div>
+              </div>
+             
+              <div class="form-group mb-3 row">
+                <label class="col-3">Date</label>
+                <div class="col">
+                {{ date('d/m/Y', strtotime($order[0]->orderdate)) }}
+                </div>
+                
+              </div>
+              
+            </div>
+            <div class="col-md-6">
+              <div class="form-group mb-3 row">
+                <label class="col-3">Vendors</label>
+                <div class="col">
+                    {{ $Vendor[0]->vendor_name}}
+                      
+                </div>
+              </div>    
+              <div class="form-group mb-3 row">
+                <label class="col-3">Address</label>
+                <div class="col">
+                {{$Vendor[0]->address}},{{$Vendor[0]->city}},{{$Vendor[0]->state}},{{$Vendor[0]->country}}
+                </div>
+              </div>  
+              <div class="form-group mb-3 row">
+                <label class="col-3">Note</label>
+                <div class="col">
+                {{$order[0]->note}}
+              </div>  
+              
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="table-responsive"  style="min-height: 150px;">
+          <input type="hidden" class="form-control lsnoseri" name="lsnoseri" placeholder="List NoSeri" value="{{$serial}}">
+            <table class="table card-table table-vcenter text-nowrap datatable">
+              <thead>
+                <tr>
+                  <th>Product ID</th>
+                  <th>Product Name</th>
+                  <th>Qty</th>
+                  <th>Price</th>
+                  <th>Unit</th>
+                  <th>Total</th>
+                  
+                  <!-- <th>Action</th> -->
+                </tr>
+              </thead>
+              <tbody class='listItem'>
+                @foreach($details as $detail)
+                
+                <tr class="ix">
+                  <td>
+                    {{$detail->Stockcode}}
+                  </td>
+                  <td>{{ $detail->stockname }}</td>
+                  <td>{{ $detail->qty}}<br>
+                    @if($detail->qtytype==1)
+                    <a href="#" class="seelist " data-ix="{{$detail->StockId}}">see list</a>
+                    @endif
+                    
+                  </td>
+                  <td>{{ $detail->hpp}}</td>
+                  <td>{{ $detail->unit}}</td>
+                  <td style="text-align:right;">{{number_format(($detail->qty * $detail->hpp), 2)}}</td>
+                </tr>
+                @endforeach
+              </tbody>
+              
+              <tfooter>
+              <tr>
+                  <td colspan=4>&nbsp;</td>
+                  <td >Total</td>
+                  <td colspan=1 style="text-align:right;">
+                  {{number_format($order[0]->subtotal, 2)}}
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan=4>&nbsp;</td>
+                  <td >Shipping Cost</td>
+                  <td colspan=1 style="text-align:right;">
+                  {{number_format($order[0]->shipping, 2)}}
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan=4>&nbsp;</td>
+                  <td >TAX</td>
+                  <td colspan=1 style="text-align:right;">
+                  {{number_format($order[0]->tax, 2)}}
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan=4>&nbsp;</td>
+                  <td >Diskon</td>
+                  <td colspan=1 style="text-align:right;">
+                  {{number_format($order[0]->discount, 2)}}
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan=4>&nbsp;</td>
+                  <td >Grand Total</td>
+                  <td colspan=1 style="text-align:right;">
+                  {{number_format($order[0]->total, 2)}}
+                  </td>
+                </tr>
+                
+              </tfooter>
+              
+            </table>
+          </div>
+            
+        </div>
         
+      </div>
+      
+  </div> <!-- END Container-XL -->
+</div>
+  
+<div class="container-xl">
+  <!-- Page title -->
+  <div class="page-header d-print-none">
+    <div class="row align-items-center">
+      <div class="col">
+        <!-- Page pre-title -->
+      </div>
+      <!-- Page title actions -->
+      <div class="col-auto ms-auto d-print-none"> 
+      <a href="{{ url('leads')}}" class="btn btn-light">« Kembali</a> 
+      </div>
     </div>
   </div>
 </div>
+<!-- </form> -->
+<!-- Modal -->
+<div class="modal fade" id="popup" tabindex="-1" role="dialog" aria-labelledby="popupLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="popupLabel">Input Serial Number</h5>
+        <td><input type="hidden" class="form-control sindex sindex-0" name="sindex"  readonly></td>
+      </div>
+      <div class="modal-body">
+              <table class="table card-table ">
+                <thead>
+                  <tr>
+                  <th>Stock Code</th><th>Serial Number</th>
+                  </tr>
+                </thead>
+                <tbody class="lsSerial">
+
+                </tbody>
+                
+              </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary saveserial" >Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" class="btn btn-primary hide modal-btn" data-toggle="modal" data-target="#popup">
+</button>
 @stop
 @push('js')
-@push('js')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>  
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
-<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">
 <script type="text/javascript">
   $(function () {
-    var URI = "{{ url('/') }}";
-    $(document).on("click","#approved", function(e){
-      
-      e.preventDefault();
-      var id=$(this).attr("data-id");
-      $.ajaxSetup({
-          headers: {
-              'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-          }
-      });
-      var urls = URI + "/quotes/approve/" + id;
-      $.ajax({
-          url: urls,
-          method: 'get',
-          data:{
-            request:{{Auth::user()->id}}
-          },
-          success: function(result) {
-            console.log(result);
-            var data = JSON.parse(result);
-            if(data['status']=="success"){
-              $('#approved').addClass('hide');
-              $("#reject").addClass('hide');
-            }
-            
-          }
-      });
+    
+  
+    $('.saveserial').on('click',function () {
+      $(".modal-btn").click();
     });
+    $('.date').datetimepicker({format: 'DD/MM/YYYY',defaultDate:'now' });
+    //$('.stockid').on("change", function () {
+   
+    $(document).on('click','.seelist',function () {
+      console.log('see list');
+      var ix=$(this).attr('data-ix');
+      var data=JSON.parse($('.lsnoseri').val());
+      var list="";
+      data.forEach(function(item) {
+        if(item.stockid==ix){
+          list= list + '<tr><td>'+ item.stockcode +'</td><td>'+ item.serial +'</td></tr>';
+        }
+      });
+      
+        
+          // var datals=exsist.split(',');
+          // for(let i=0;i<arr;i++){
+          //   list= list + '<tr><td><input type="text" class="form-control list list-0" name="list['+i+']" placeholder="Serial Number" value="'+ datals[i] +'"></td></tr>';
+          // }
+        
+        $('.lsSerial').empty();
+        $('.lsSerial').append(list);
+        $('.sindex').empty();
+        $('.sindex').val(ix);
+        $(".modal-btn").click(); 
+        //callModals();
+    });
+    
+    $('#popup').modal({
+      backdrop: 'static',
+      keyboard: false  // to prevent closing with Esc button (if you want this too)
+    });
+    
+    $(document).on("input propertychange",'.tax', function () {
+      summaries();
+    });
+    $(document).on("input propertychange",'.shipping', function () {
+      summaries();
+    });
+    $(document).on("input propertychange",'.diskon', function () {
+      summaries();
+    });
+    function calculates(params) {
+      var a =$('.qty-' + params).val();
+      var b =$('.price-' + params).val();
+      return (a * b);
+    }
+    function summaries() {
+      let total=0;
+      $('.total').each(function(){
+        //console.log(this.value);
+        total= total + parseInt(this.value);
+      });
+      $('.totals').val(total);
+      //console.log(total);
+      var shipping=parseInt($('.shipping').val());
+      var tax=parseInt($('.tax').val());
+      var diskon=parseInt($('.diskon').val());
+      var gtt=total + shipping + tax - diskon;
+      $('.gtt').val(gtt);
+    }
+    
 
-    $(document).on("click","#reject", function(e){
-      
-      e.preventDefault();
-      var id=$(this).attr("data-id");
-      $.ajaxSetup({
-          headers: {
-              'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-          }
-      });
-      var urls = URI + "/quotes/reject/" + id;
-      $.ajax({
-          url: urls,
-          method: 'get',
-          data:{
-            request:{{Auth::user()->id}}
-          },
-          success: function(result) {
-            console.log(result);
-            var data = JSON.parse(result);
-            if(data['status']=="success"){
-              $('#approved').addClass('hide');
-              $("#reject").addClass('hide');
-            }
-            
-          }
-      });
-    });
   });
 </script>
-@endpush
 @endpush

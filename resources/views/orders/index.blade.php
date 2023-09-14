@@ -97,32 +97,32 @@
         columns: [
           {data: 'NoOrder', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('quotes/view')}}/"+oData.ID+"'>"+oData.NoOrder+"</a>");
+                $(nTd).html("<a href='{{ url('order/view')}}/"+oData.ID+"'>"+oData.NoOrder+"</a>");
               }
             },
             {data: 'InvNumber', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('quotes/view')}}/"+oData.ID+"'>"+oData.InvNumber+"</a>");
+                $(nTd).html("<a href='{{ url('order/view')}}/"+oData.ID+"'>"+oData.InvNumber+"</a>");
               }
             },
             {data: 'Name', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('quotes/view')}}/"+oData.ID+"'>"+oData.Name+"</a>");
+                $(nTd).html("<a href='{{ url('order/view')}}/"+oData.ID+"'>"+oData.Name+"</a>");
               }
             },
             {data: 'Date', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('quotes/view')}}/"+oData.ID+"'>"+oData.Date+"</a>");
+                $(nTd).html("<a href='{{ url('order/view')}}/"+oData.ID+"'>"+oData.Date+"</a>");
               }
             },
             {data: 'Note', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('quotes/view')}}/"+oData.ID+"'>"+oData.Note+"</a>");
+                $(nTd).html("<a href='{{ url('order/view')}}/"+oData.ID+"'>"+oData.Note+"</a>");
               }
             },
             {data: 'Vendor', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('quotes/view')}}/"+oData.ID+"'>"+oData.Vendor+"</a>");
+                $(nTd).html("<a href='{{ url('order/view')}}/"+oData.ID+"'>"+oData.Vendor+"</a>");
               }
             },
             
@@ -133,7 +133,7 @@
     // $(document).on("click",".edit",function(){
     //   var id=$(this).attr("data-id");
     //   console.log("click id: " + id);
-    //   window.location.href = "{{ url('Quotes/edit')}}/" + id;
+    //   window.location.href = "{{ url('order/edit')}}/" + id;
     // });
   });
 </script>

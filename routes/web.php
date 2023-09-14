@@ -65,7 +65,8 @@ Route::group(['middleware' => 'auth'], function () {
     //Contacts
     Route::get('contacts', [LeadController::class, 'cindex'])->name('contacts.index');
     Route::get('contacts/create/{id?}', [LeadController::class, 'ccreate'])->name('leads.ccreate');
-    Route::get('contacts/store', [LeadController::class, 'cstore'])->name('leads.cstore');
+    //Route::get('contacts/store', [LeadController::class, 'cstore'])->name('leads.cstore');
+    Route::post('contacts/store', [LeadController::class, 'cstore'])->name('leads.cstore');
     Route::get('contacts/view/{id}', [LeadController::class, 'cview'])->name('contacts.view');
     Route::get('contacts/edit/{id}', [LeadController::class, 'cedit'])->name('contacts.edit');
     Route::post('contacts/update/', [LeadController::class, 'cupdate'])->name('contacts.update');

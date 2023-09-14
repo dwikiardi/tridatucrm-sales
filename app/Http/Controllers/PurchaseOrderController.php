@@ -10,8 +10,11 @@ use App\Models\User;
 use App\Models\Vendors;
 use App\Models\Stocks;
 use App\Models\Orders;
-use App\Models\OrderDetail;
-use App\Models\OrderSerialDetail;
+use App\Models\OrdersDetail;
+use App\Models\OrdersSerialDetail;
+use App\Models\StocksNoSeri;
+use App\Models\StocksPosition;
+
 use DataTables;
 
 class PurchaseOrderController extends Controller
@@ -48,42 +51,143 @@ class PurchaseOrderController extends Controller
         return view('orders.create',compact('Users','Vendor','Stocks'));
     }
     public function store(Request $request){
-        dd($request);
         /// insert setiap request dari form ke dalam database via model
         /// jika menggunakan metode ini, maka nama field dan nama form harus sama
-        $ids=Leads::create($request->all());
-
-        $newdata=json_encode($request->all());
-        $logs=[
-            'module'=>'Leads',
-            'moduleid'=>$ids->id,
-            'createbyid'=>Auth::user()->id,
-            'logname'=>'Lead Created',
-            'olddata'=>'',
-            'newdata'=>$newdata
+        $noorder=$this->getNoorder();
+        $old_date = explode('/', $request->date); 
+        $date = $old_date[2].'-'.$old_date[1].'-'.$old_date[0];
+        $status="success";
+        $msg="";
+        $data=[
+            'ordernumbers'=>$noorder,
+            'ordername'=>$request->order_name,
+            'orderdate'=>$date,
+            'note'=>$request->note,
+            'vendorid'=>$request->vendorid,
+            'orderstatus'=>2,
+            'createdbyid'=>$request->createdbyid,
+            'updatedbyid'=>$request->updatedbyid,
+            'subtotal'=>$request->subtotal,
+            'tax'=>$request->tax,
+            'shipping'=>$request->shipping,
+            'total'=>$request->total,
+            'supno'=>$request->supno,
+            'discount'=>$request->discount
         ];
-        $ids=DataLogs::create($logs);
-        //echo $newdata;
-        /// redirect jika sukses menyimpan data
-         return redirect('leads');
+        
+        try {
+            $orders=Orders::create($data);
+        }  catch (\Exception $e) {
+            $status="failed";
+            $msg=$msg .$e->getMessage();
+        }
+        $orderid=$orders->id;
+        //var_dump($data);
+        //$orderid="1";
+        $items=$request->Item_List;
+        foreach ($items as $item) {
+            $lsitem=[
+                'ordernumbers'=>$orderid,
+                'stockid'=>$item['stockid'],
+                'qty'=>$item['qty'],
+                'hpp'=>$item['price'],
+            ];
+            
+            try {
+                $dtl=OrdersDetail::create($lsitem);
+            }  catch (\Exception $e) {
+                $status="failed";
+                $msg=$msg .$e->getMessage();
+            }
+            //var_dump($lsitem);
+            if($item['qtytype']==1){
+                $serials = explode(',', $item['lsnoseri']); 
+                foreach ($serials as $serial) {
+                    $lserial=[
+                        'ordernumbers'=>$orderid,
+                        'stockid'=>$item['stockid'],
+                        'stockcode'=>$item['stockcode'],
+                        'serial'=>$serial,
+                    ];
+                    //var_dump($lserial);
+                    try {
+                        $ListSerial=OrdersSerialDetail::create($lserial);
+                    }  catch (\Exception $e) {
+                        $status="failed";
+                        $msg=$msg .$e->getMessage();
+                    }
+                    
+                    $noseri=[
+                        'noseri'=>$serial,
+                        'stockid'=>$item['stockid'],
+                        'posmodule'=>"storeage",
+                        'module_id'=>0,
+                    ];
+                    try {
+                        $StocksNoSeri=StocksNoSeri::create($noseri);
+                    }  catch (\Exception $e) {
+                        $status="failed";
+                        $msg=$msg .$e->getMessage();
+                    }
+                    
+                }
+            }else{
+
+                $current=StocksPosition::where('stockid','=',$item['stockid'])->where('posmodule','=','storeage')->get();
+                //dd($current[0]->id);
+                if ($current->count() > 0) {
+                    $cqty=$current[0]->qty;
+                    $nqty=(int)$cqty + (int)$item['qty'];
+                    $dataupdate=['qty'=>$nqty];
+                    try {
+                        $update=StocksPosition::where('id','=',$current[0]->id)->update($dataupdate);
+                    }  catch (\Exception $e) {
+                        $status="failed";
+                        $msg=$msg .$e->getMessage();
+                    }
+                    
+                }else{
+                    $stockpos=[
+                        'posmodule'=>'storeage',
+                        'module_id'=>0,
+                        'stockid'=>$item['stockid'],
+                        'qty'=>$item['qty'],
+                    ];
+                    try {
+                        $current=StocksPosition::create($stockpos);
+                    }  catch (\Exception $e) {
+                        $status="failed";
+                        $msg=$msg .$e->getMessage();
+                    }
+                    
+                }
+            }
+        }
+        if($status=="success"){
+            $response=[
+                'status'=>'success',
+                'message'=>route('order.index')
+            ];
+        }else{
+            $response=[
+                'status'=>'failed',
+                'message'=>$msg
+            ];
+        }
+        return json_encode($response);
+        
     }
 
     public function view($id){
-        $leads=Leads::where('id','=',$id)->get();
-        if($leads[0]->type=="lead"){
-            $owner=User::where('id','=',$leads[0]->ownerid)->get();
-            $createbyid=User::where('id','=',$leads[0]->createbyid)->get();
-            $updatebyid=User::where('id','=',$leads[0]->updatebyid)->get();
-            $logs=DataLogs::where('moduleid','=',$id)->where('module','=','Leads')->orderBy('created_at', 'DESC')->join('users', 'datalogs.createbyid', '=', 'users.id')
-            ->select('datalogs.*' ,'users.first_name as firstname', 'users.last_name as lastname')->get();
-            return view('leads.view',compact('leads','owner','createbyid','updatebyid','logs'));
-        }else{
-            // $accounts = Accounts::where('leadid','=',$leads[0]->id)->get();
-            // return view('leads.convert',compact('accounts'));
-            return view('leads.convert',compact('leads'));
-        
-        }
-        
+
+        $order=Orders::where('id','=',$id)->get();
+        $Vendor=Vendors::where('id','=',$order[0]->vendorid)->get();
+        $details=OrdersDetail::join('stocks','stocks.id','=','orders_details.stockid')
+        ->where('ordernumbers','=',$order[0]->id)
+        ->select('orders_details.id as id','stocks.id as StockId','orders_details.qty as qty','orders_details.hpp as hpp','stocks.unit as unit','stocks.stockname as stockname','stocks.qtytype as qtytype','stocks.stockid as Stockcode')->get();
+        //dd($details);
+        $serial=OrdersSerialDetail::where('ordernumbers','=',$order[0]->id)->get();
+        return view('orders.view',compact('order','details','Vendor','serial'));
         
     }
 
@@ -353,5 +457,47 @@ class PurchaseOrderController extends Controller
         $ids=DataLogs::create($logs);
         /// redirect jika sukses menyimpan data
          return redirect('contacts/view/'.$request->id);
+    }
+
+    public function getNoorder(){
+        $bln=date("m");
+        $thn=date("Y");
+        $now="/3DT/ORDER/".$bln."/".$thn;
+        $order=Orders::select('ordernumbers')->where('ordernumbers','LIKE','%'.$now.'%')->orderBy('id', 'DESC')->first();
+        //dd($order->noorder);
+        if(empty($order)){
+            $noorder="000001".$now;
+        }else{
+            $no=$order->noorder;
+            $nnow=substr($no,0,strlen($no)-strlen($now));
+            $nnow=(int)$nnow;
+            $newnow=$nnow+1;
+            //echo "Here";
+            switch(strlen($newnow)){
+                case 1:
+                    $noorder="00000".$newnow.$now;
+                    break;
+                case 2:
+                    $noorder="0000".$newnow.$now;
+                    break;
+                case 3:
+                    $noorder="000".$newnow.$now;
+                    break;
+                case 4:
+                    $noorder="00".$newnow.$now;
+                    break;
+                case 5:
+                    $noorder="0".$newnow.$now;
+                    break;
+                case 6:
+                    $noorder=$newnow.$now;
+                    break;
+            }  
+        }
+        //$count=$order->count();
+        //echo $count;
+        //dd($noorder);
+
+        return $noorder;
     }
 }

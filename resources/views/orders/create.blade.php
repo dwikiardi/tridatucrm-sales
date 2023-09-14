@@ -86,7 +86,7 @@
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Note</label>
                 <div class="col">
-                <textarea class="form-control" name="note" placeholder=""></textarea>
+                <textarea class="form-control note" name="note" placeholder=""></textarea>
                 </div>
               </div>  
               
@@ -116,9 +116,9 @@
                   <td> <select class="form-select stockid stockid-0" name="stockid[0]">
                     <option>-- select one --</option>
                       @foreach($Stocks as $stock)
-                          <option data-dtl='0|{{ $stock->stockname}}|{{ $stock->qtytype}}|{{ $stock->unit}}|' value="{{ $stock->id }}">{{ $stock->stockname}}</option>
+                          <option data-dtl='0|{{ $stock->stockname}}|{{ $stock->qtytype}}|{{ $stock->unit}}|{{ $stock->stockid}}' value="{{ $stock->id }}">{{ $stock->stockname}}</option>
                       @endforeach
-                    </select>
+                    </select><input type="hidden" class="form-control stockcode-0" name="stockcode[0]" ></td>
                   </td>
                   <td><input type="text" class="form-control name name-0" name="name[0]" placeholder="Stock Name"></td>
                   <td class="onqty-0"><input type="text" class="form-control qty qty-0" name="qty[0]" data-ix="0" placeholder="Qty" value="0"><input type="hidden" class="form-control qtytype-0" name="qtytype[0]" ></td>
@@ -204,7 +204,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="popupLabel">Input Serial Number</h5>
-        <td><input type="text" class="form-control sindex sindex-0" name="sindex"  readonly></td>
+        <td><input type="hidden" class="form-control sindex sindex-0" name="sindex"  readonly></td>
       </div>
       <div class="modal-body">
               <table>
@@ -255,6 +255,7 @@
       $('.name-'+options[0]).val(options[1]);
       $('.qtytype-'+options[0]).val(options[2]);
       $('.unit-'+options[0]).val(options[3]);
+      $('.stockcode-'+options[0]).val(options[4]);
       $('.qty-'+options[0]).focus();
       if(options[2]==0){
         $('.seelist-'+options[0]).remove();
@@ -389,12 +390,12 @@
       var series=JSON.parse($('.lsprod').val());
       $(series).each(function(index, value){ //loop through your elements
         
-            options += '<option data-dtl="'+ix+'|'+value.stockname+'|'+value.qtytype+'|'+value.unit+'" value="'+ value.id +'">'+value.stockname+'</option>'; //add the option element as a string
+            options += '<option data-dtl="'+ix+'|'+value.stockname+'|'+value.qtytype+'|'+value.unit+'|'+value.stockid+'" value="'+ value.id +'">'+value.stockname+'</option>'; //add the option element as a string
             
         
       });                        
       text=text + options;                      
-      text=text + '</select></td>';
+      text=text + '</select><input type="hidden" class="form-control stockcode-'+ix+'" name="stockcode['+ix+']" ></td>';
       text=text + '<td><input type="text" class="form-control name name-'+ix+'" name="name['+ix+']" placeholder="Stock Name"></td>';
       text=text + '<td class="onqty-'+ix+'"><input type="text" class="form-control qty qty-'+ix+'" name="qty['+ix+']" data-ix="'+ix+'" placeholder="Qty" value="0"><input type="hidden" class="form-control qtytype-'+ix+'" name="qtytype['+ix+']" ></td>';
       text=text + '<td><input type="text" class="form-control price price-'+ix+'" name="price['+ix+']" data-ix="'+ix+'" placeholder="Price" value="0"><input type="hidden" class="form-control lsnoseri-'+ix+'" name="lsnoseri['+ix+']" placeholder="List NoSeri"></td>';
@@ -407,9 +408,22 @@
       if(result==true){
         var arr=$('.indexs').val();
         let listItem=[];
+        let valids=true;
         for(let i=0; i<=arr;i++){
+          if($('.qtytype-'+i).val()==1){
+            var cekit=($('.lsnoseri-'+i).val()).split(',');
+            cekit.forEach(element => {
+              if(element === undefined || element === null || element === ''){
+                valids=false;
+              }
+            });
+            if(valids==false){
+              alert('In Complete Serial Number');
+            }
+          }
           var items={
             'stockid' : $('.stockid-'+i+' option:selected').val(),
+            'stockcode' : $('.stockcode-'+i).val(),
             'qty' : $('.qty-'+i).val(),
             'qtytype' : $('.qtytype-'+i).val(),
             'price' : $('.price-'+i).val(),
@@ -419,19 +433,48 @@
           listItem.push(items);
           
         }
-        var data={
-          'order_name' : $('.ordername').val(),
-          'date' : $('#orderdate').val(),
-          'supno' : $('.supno').val(),
-          'vendorid' : $('.vendorid option:selected').val(),
-          'subtotal' : $('.totals').val(),
-          'tax' : $('.tax').val(),
-          'shipping' : $('.shipping').val(),
-          'total' : $('.gtt').val(),
-          'discount' : $('.diskon').val(),
-          'Item_List' : listItem}
-        ;
-        console.log(data);
+        if($('.vendorid option:selected').val() === undefined || $('.vendorid option:selected').val() === null || $('.vendorid option:selected').val() === '-- Select One --'){
+          alert('Please Select Vendor');
+          valids=false;
+        }
+        if(valids==true){
+          var mydata={
+            'order_name' : $('.ordername').val(),
+            'date' : $('#orderdate').val(),
+            'supno' : $('.supno').val(),
+            'vendorid' : $('.vendorid option:selected').val(),
+            'subtotal' : $('.totals').val(),
+            'tax' : $('.tax').val(),
+            'shipping' : $('.shipping').val(),
+            'total' : $('.gtt').val(),
+            'discount' : $('.diskon').val(),
+            'note' : $('.note').val(),
+            'createdbyid':$('.createby').val(),
+            'updatedbyid':$('.updateby').val(),
+            'Item_List' : listItem
+          };
+          //console.log(data);
+          $.ajaxSetup({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+          });
+          $('.process').attr("disabled", true);
+
+          $.ajax({
+            url: "{{route('order.store')}}",
+            type: "POST",
+            data: mydata,
+            success: function( response ) {
+              $('.process').removeAttr('disabled');
+              const obj = JSON.parse(response);
+              if(obj.status ==="success"){
+                window.location.href = obj.message;
+              }
+              if(obj.status ==="failed"){
+                alert(obj.message);
+              }
+            }
+          });
+        }
       }
     });
     $(document).on("input propertychange",'.tax', function () {
