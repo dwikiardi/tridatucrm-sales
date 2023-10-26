@@ -12,6 +12,11 @@ use App\Http\Controllers\StocCategoryController;
 use App\Http\Controllers\StocksController;
 use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\PurchaseOrderController;
+use App\Http\Controllers\PoPsController;
+use App\Http\Controllers\IPAddressController;
+use App\Http\Controllers\TransferController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -93,6 +98,23 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('vendors/edit/{id}', [VendorController::class, 'edit'])->name('edit');
     Route::post('vendors/update/', [VendorController::class, 'update'])->name('vendors.update');
 
+    //POPs
+    Route::get('pops', [PoPsController::class, 'index'])->name('pops.index');
+    Route::get('pops/create', [PoPsController::class, 'create'])->name('pops.create');
+    Route::post('pops/store', [PoPsController::class, 'store'])->name('pops.store');
+    Route::get('pops/view/{id}', [PoPsController::class, 'view'])->name('pops.view');
+    Route::get('pops/edit/{id}', [PoPsController::class, 'edit'])->name('edit');
+    Route::post('pops/update/', [PoPsController::class, 'update'])->name('pops.update');
+
+    //IP Address
+    Route::get('ipaddress', [IPAddressController::class, 'index'])->name('ipaddress.index');
+    Route::get('ipaddress/checkip', [IPAddressController::class, 'checkip'])->name('ipaddress.checkip');
+    Route::get('ipaddress/create', [IPAddressController::class, 'create'])->name('ipaddress.create');
+    Route::post('ipaddress/store', [IPAddressController::class, 'store'])->name('ipaddress.store');
+    Route::get('ipaddress/view/{id}', [IPAddressController::class, 'view'])->name('ipaddress.view');
+    Route::get('ipaddress/edit/{id}', [IPAddressController::class, 'edit'])->name('edit');
+    Route::post('ipaddress/update/', [IPAddressController::class, 'update'])->name('ipaddress.update');
+
     //Surveys
     Route::get('surveys', [SurveyController::class, 'index'])->name('surveys.index');
     Route::get('surveys/create/{id?}', [SurveyController::class, 'create'])->name('surveys.create');
@@ -137,7 +159,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     
 
-    // Porchase Order
+    // TransferIN By Order
     Route::get('order', [PurchaseOrderController::class, 'index'])->name('index');
     Route::get('order', [PurchaseOrderController::class, 'index'])->name('order.index');
     Route::get('order/create', [PurchaseOrderController::class, 'create'])->name('order.create');
@@ -145,5 +167,25 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('order/view/{id}', [PurchaseOrderController::class, 'view'])->name('order.view');
     Route::get('order/edit/{id}', [PurchaseOrderController::class, 'edit'])->name('order.edit');
     Route::post('order/update/', [PurchaseOrderController::class, 'update'])->name('order.update');
+
+    //Transfer In
+    Route::get('tranfer_in', [TransferController::class, 'iindex'])->name('iindex');
+    Route::get('tranfer_in', [TransferController::class, 'iindex'])->name('tranfer_in.iindex');
+    Route::get('tranfer_in/create', [TransferController::class, 'icreate'])->name('tranfer_in.icreate');
+    Route::post('tranfer_in/icheckExist', [TransferController::class, 'icheckExist'])->name('tranfer_in.icheckExist');    
+    Route::post('tranfer_in/store', [TransferController::class, 'istore'])->name('tranfer_in.istore');
+    Route::get('tranfer_in/view/{id}', [TransferController::class, 'iview'])->name('tranfer_in.iview');
+    Route::get('tranfer_in/edit/{id}', [TransferController::class, 'iedit'])->name('tranfer_in.iedit');
+    Route::post('tranfer_in/update/', [TransferController::class, 'iupdate'])->name('tranfer_in.iupdate');
+
+    //Transfer Out
+    Route::get('transfer_out', [TransferController::class, 'oindex'])->name('oindex');
+    Route::get('transfer_out', [TransferController::class, 'oindex'])->name('transfer_out.oindex');
+    Route::get('transfer_out/create', [TransferController::class, 'ocreate'])->name('transfer_out.ocreate');
+    Route::post('transfer_out/store', [TransferController::class, 'ostore'])->name('transfer_out.ostore');
+    Route::get('transfer_out/view/{id}', [TransferController::class, 'oview'])->name('transfer_out.oview');
+    Route::get('transfer_out/edit/{id}', [TransferController::class, 'oedit'])->name('transfer_out.oedit');
+    Route::post('transfer_out/update/', [TransferController::class, 'oupdate'])->name('transfer_out.oupdate');
+
 
 });

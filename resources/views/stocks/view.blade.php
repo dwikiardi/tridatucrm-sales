@@ -47,7 +47,7 @@
         <div class="col-auto ms-auto d-print-none"> 
           <a href="{{ url('product')}}" class="btn btn-light">« Kembali</a>
           <a href="{{ url('product/edit',$stocks[0]->id)}}" class="btn btn-primary d-none d-sm-inline-block" >
-            Update Vendor
+            Update Product
           </a>
         </div>
       </div>

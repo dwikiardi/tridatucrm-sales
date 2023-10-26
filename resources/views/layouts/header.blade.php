@@ -193,14 +193,14 @@
                       <!-- <a class="dropdown-item" href="{{url('po')}}" >
                         Purchase Orders
                       </a> -->
-                      <a class="dropdown-item" href="{{url('order')}}" >
-                      Purchase Orders
+                      <!-- <a class="dropdown-item" href="{{url('order')}}" >
+                        Transfer In (Purchase)
+                      </a> -->
+                      <a class="dropdown-item" href="{{url('tranfer_in')}}" >
+                        Transfer In (to Storage)
                       </a>
-                      <a class="dropdown-item" href="{{url('refund')}}" >
-                        Purchase Return
-                      </a>
-                      <a class="dropdown-item" href="{{url('return')}}" >
-                        Revocation Return
+                      <a class="dropdown-item" href="{{url('transfer_out')}}" >
+                        Transfer Out (from Storage)
                       </a>
                       <a class="dropdown-item" href="{{url('report')}}" >
                         Inventory Reports

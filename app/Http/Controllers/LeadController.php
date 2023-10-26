@@ -291,7 +291,7 @@ class LeadController extends Controller
     public function cindex(Request $request){
         if ($request->ajax()) {
             $data = Leads::join('users', 'leads.ownerid', '=', 'users.id')
-            ->select('leads.id as ID','leads.property_name as Name' , 'leads.email AS Email','leads.phone As Phone','leads.website as Website','leads.account_name as Company','leads.status AS Status','users.last_name AS Owners')
+            ->select('leads.id as ID','leads.leadsname as Name' , 'leads.email AS Email','leads.phone As Phone','leads.website as Website','leads.account_name as Company','leads.status AS Status','users.last_name AS Owners','leads.property_name')
             ->where('type','=','contact')
             ->get();
             //dd($data);
@@ -314,6 +314,14 @@ class LeadController extends Controller
                 })
                 ->editColumn('Company', function ($row) {
                     return $row->Company ?: '-';
+                })
+                ->editColumn('Name', function ($row) {
+                    if(is_null($row->Name)){
+                        return $row->property_name;
+                    }else{
+                        return $row->Name.' - '.$row->property_name;
+                    }
+                    
                 })
                 ->make(true);
         }

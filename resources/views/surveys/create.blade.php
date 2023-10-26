@@ -62,11 +62,15 @@
               <div class="col">
                     <select class="form-select" name="leadid">
                       @foreach($Leads as $lead)
+                      <?php
+                        if(is_null($lead->leadsname)){$name=$lead->property_name;}else{ $name=$lead->leadsname; }
+                        
+                      ?>
                         <!-- <option  value="{{ $lead->id }}">{{ $lead->leadsname}}</option> -->
                         @if($lead->id==$id)
-                            <option selected value="{{ $lead->id }}">{{ $lead->leadsname}}</option>
+                            <option selected value="{{ $lead->id }}">{{ $name }}</option>
                           @else
-                            <option  value="{{ $lead->id }}">{{ $lead->leadsname}}</option>
+                            <option  value="{{ $lead->id }}">{{ $name }}</option>
                           @endif
                       @endforeach
                     </select>
