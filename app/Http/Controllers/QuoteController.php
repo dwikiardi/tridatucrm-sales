@@ -83,6 +83,7 @@ class QuoteController extends Controller
         }else{
             $id="";
         }
+        //dd($id);
         $Leads=Leads::get();
         return view('quotes.create',compact('Users','id','Leads'));
     }
@@ -128,7 +129,8 @@ class QuoteController extends Controller
     }
 
     public function view($id){
-        $quotes=quotes::where('id','=',$id)->get();
+        $quotes=quotes::join('leads','leads.id','=','quotes.leadid')->where('quotes.id','=',$id)->select('quotes.*','leads.leadsname AS leadsname','leads.property_name AS property_name','leads.type AS leadtype')->get();
+        //$quotes=quotes::where('id','=',$id)->get();
         $owner=User::where('id','=',$quotes[0]->ownerid)->get();
         $lead=Leads::where('id','=',$quotes[0]->leadid)->get();
         $createbyid=User::where('id','=',$quotes[0]->createbyid)->get();

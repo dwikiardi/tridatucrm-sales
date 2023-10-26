@@ -48,7 +48,7 @@
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">From</label>
                 <div class="col">
-                      <select class="form-select" name="from">
+                      <select class="form-select" name="from" id="from">
                         <option selected value="purchase">Purchase</option>
                         <option value="staff">Staff/Technician</option>
                       </select>
@@ -313,25 +313,33 @@
         nlist =nlist + ',' + $(this).val();
       });
       //check if Exist
+      nlist=nlist.substring(1);
+      let mydata ={
+        'data' : nlist,
+        'from' : $('#from').find(":selected").val(),
+        'to' : $('.to').val(),
+      };
       $.ajaxSetup({
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
       });
-      let mydata = JSON.stringify(Object.assign({},taskArray));
-      mydata ={'data':mydata};
+      
       $.ajax({
         url: "{{route('tranfer_in.icheckExist')}}",
         type: "POST",
         data: mydata,
         success: function( response ) {
-          console.log(response);
+          var result=JSON.parse(response);
+          if(result.status=="error"){
+            alert('Nomor seri : ' + result.message + ' Sudah pernah diinputkan sebelumnya');
+          }
+          
         }
       });
-      
       const duplicateElements = toFindDuplicates(taskArray);
       if(duplicateElements.length >0){
         alert("it's duplicate : \n" + duplicateElements);
       }else{
-        nlist=nlist.substring(1);
+        //nlist=nlist.substring(1);
         var option = $('.sindex').val();
         $('.lsnoseri-'+option).val('');
         $('.lsnoseri-'+option).val(nlist);
@@ -366,13 +374,16 @@
         var arr=$('.indexs').val();
         let listItem=[];
         let valids=true;
+        let allseri="";
         for(let i=0; i<=arr;i++){
           if($('.qtytype-'+i).val()==1){
             var cekit=($('.lsnoseri-'+i).val()).split(',');
+            
             cekit.forEach(element => {
               if(element === undefined || element === null || element === ''){
                 valids=false;
               }
+              
             });
             if(valids==false){
               alert('In Complete Serial Number');
@@ -386,37 +397,52 @@
             'lsnoseri' : $('.lsnoseri-'+i).val()
           };
           listItem.push(items);
-          
+          allseri=allseri + $('.lsnoseri-'+i).val() + ',';
         }
+        allseri ={'data':allseri};
+        $.ajaxSetup({
+          headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+        });
         
+        $.ajax({
+          url: "{{route('tranfer_in.icheckExist')}}",
+          type: "POST",
+          data: allseri,
+          success: function( response ) {
+            var result=JSON.parse(response);
+            if(result.status=="error"){
+              valids=false;
+              alert('Nomor seri : ' + result.message + ' Sudah pernah diinputkan sebelumnya');
+            }
+            
+          }
+        });
         if(valids==true){
-          var mydata={
-            'transfer_date' : $('.transfer_date').val(),
+          var transfer={
+            'transfer_date' : $('#transfer_date').val(),
             'transferdbyid' : $('#transferdbyid').find(":selected").val(),
             'from' : $('#from').find(":selected").val(),
             'to' : $('.to').val(),
             'transfertype' : $('.transfertype').val(),
             'recievedbyid' : $('#recievedbyid').find(":selected").val(),
-            'total' : $('.gtt').val(),
-            'discount' : $('.diskon').val(),
             'note' : $('.note').val(),
-            'createdbyid':$('.createby').val(),
-            'updatedbyid':$('.updateby').val(),
+            'createdbyid':$('.createdbyid').val(),
+            'updatedbyid':$('.updatedbyid').val(),
             'Item_List' : listItem
           };
           //console.log(data);
           $.ajaxSetup({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
           });
-          $('.process').attr("disabled", true);
+          //$('.process').attr("disabled", true);
 
           $.ajax({
             url: "{{route('tranfer_in.istore')}}",
             type: "POST",
-            data: mydata,
+            data: transfer,
             success: function( response ) {
               
-              $('.process').removeAttr('disabled');
+              //$('.process').removeAttr('disabled');
               const obj = JSON.parse(response);
               if(obj.status ==="success"){
                 window.location.href = obj.message;
@@ -464,7 +490,7 @@
         //return [...new Set(uniqueElements)]
     }
 
-    
+   
 
   });
 </script>

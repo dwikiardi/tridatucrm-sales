@@ -93,7 +93,10 @@ display:none!important;
                         <div class="form-group mb-3 row">
                           <label class="form-label col-3 col-form-label">Lead</label>
                           <div class="col">
-                          {{$lead[0]->leadsname}}
+                            <?php
+                              if(($quotes[0]->leadtype=='contact')){$name=$quotes[0]->property_name;}else{ $name=$quotes[0]->leadsname; }
+                            ?>
+                          {{$name}}
                           </div>
                         </div>    
                         <div class="form-group mb-3 row">

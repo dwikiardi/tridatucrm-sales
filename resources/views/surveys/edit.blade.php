@@ -59,14 +59,18 @@
               </div>
             </div>    
             <div class="form-group mb-3 row">
-              <label class="form-label col-3 col-form-label">Lead</label>
+              <label class="form-label col-3 col-form-label">Lead / Contact</label>
               <div class="col">
                     <select class="form-select" name="leadid">
                       @foreach($Leads as $lead)
+                      <?php
+                         if(($lead->type=='contact')){$name=$lead->property_name;}else{ $name=$lead->leadsname; }
+                       
+                      ?>
                         @if($lead->id == $surveys[0]->leadid)
-                          <option selected value="{{ $lead->id }}">{{ $lead->leadsname}}</option>
+                          <option selected value="{{ $lead->id }}">{{ $name }}</option>
                         @else
-                          <option  value="{{ $lead->id }}">{{ $lead->leadsname}}</option>
+                          <option  value="{{ $lead->id }}">{{ $name }}</option>
                         @endif
                         
                       @endforeach

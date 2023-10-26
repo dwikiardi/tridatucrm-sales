@@ -138,7 +138,23 @@ class StocksController extends Controller
                         return $row->Desk;
                     }
                 })
-                
+                ->editColumn('Name', function ($row) {
+                    switch ($row->Name) {
+                        case 'lead':
+                            return "Customer";
+                            break;
+                        case 'staff':
+                            return "Technisian/Staff";
+                            break;
+                        case 'storage':
+                            return "Storage";
+                            break;
+                        
+                        default:
+                            # code...
+                            break;
+                    }
+                })
                 ->make(true);
         }
     }

@@ -15,7 +15,7 @@ class Transfer extends Model
         'to',
         'transferdbyid',
         'recievedbyid',
-        'qtytype',
+        'transfertype',
         'note',
         'createdbyid',
         'updatedbyid',

@@ -1,0 +1,176 @@
+CREATE VIEW stocklist as 
+select `stocks`.`id` AS `id`,`stocks`.`stockid` AS `stockid`,`stocks`.`stockname` AS `stockname`,`stocks_position`.`qty` AS `qty`,`leads`.`leadsname` AS `Name`,`stocks_position`.`posmodule` AS `modules`,`stocks_position`.`module_id` AS `moduleid` from ((`stocks_position` join `stocks` on(`stocks`.`id` = `stocks_position`.`stockid`)) join `leads` on(`leads`.`id` = `stocks_position`.`module_id`)) where `stocks`.`qtytype` = 0 and `stocks_position`.`posmodule` = 'lead' union all select `stocks`.`id` AS `id`,`stocks`.`stockid` AS `stockid`,`stocks`.`stockname` AS `stockname`,`stocks_position`.`qty` AS `qty`,'Storage' AS `Name`,`stocks_position`.`posmodule` AS `modules`,`stocks_position`.`module_id` AS `moduleid` from (`stocks_position` join `stocks` on(`stocks`.`id` = `stocks_position`.`stockid`)) where `stocks`.`qtytype` = 0 and `stocks_position`.`posmodule` = 'storage' union all select `stocks`.`id` AS `id`,`stocks`.`stockid` AS `stockid`,`stocks`.`stockname` AS `stockname`,count(`stocks_no_seri`.`noseri`) AS `qty`,'Storage' AS `Name`,`stocks_no_seri`.`posmodule` AS `modules`,`stocks_no_seri`.`module_id` AS `moduleid` from ((`stocks` join `stock_categories` on(`stocks`.`categoryid` = `stock_categories`.`id`)) join `stocks_no_seri` on(`stocks`.`id` = `stocks_no_seri`.`stockid`)) group by `stocks`.`id`,`stocks`.`stockid`,`stocks`.`stockname`,`stock_categories`.`category_name`,`stocks`.`qtytype`,`stocks_no_seri`.`posmodule`,`stocks_no_seri`.`module_id` having `stocks_no_seri`.`posmodule` = 'storage' and `stocks`.`qtytype` = 1 union all select `stocks`.`id` AS `id`,`stocks`.`stockid` AS `stockid`,`stocks`.`stockname` AS `stockname`,count(`stocks_no_seri`.`noseri`) AS `qty`,`leads`.`leadsname` AS `Name`,`stocks_no_seri`.`posmodule` AS `modules`,`stocks_no_seri`.`module_id` AS `moduleid` from (((`stocks` join `stock_categories` on(`stocks`.`categoryid` = `stock_categories`.`id`)) join `stocks_no_seri` on(`stocks`.`id` = `stocks_no_seri`.`stockid`)) join `leads` on(`stocks_no_seri`.`module_id` = `leads`.`id`)) group by `stocks`.`id`,`stocks`.`stockid`,`stocks`.`stockname`,`stock_categories`.`category_name`,`stocks_no_seri`.`posmodule`,`leads`.`leadsname`,`stocks`.`qtytype`,`stocks_no_seri`.`module_id` having `stocks_no_seri`.`posmodule` = 'lead' and `stocks`.`qtytype` = 1
+
+
+SELECT
+    `tridatu`.`stocks`.`id` AS `id`,
+    `tridatu`.`stocks`.`stockid` AS `stockid`,
+    `tridatu`.`stocks`.`stockname` AS `stockname`,
+    `tridatu`.`stocks_position`.`qty` AS `qty`,
+    `tridatu`.`leads`.`leadsname` AS `Name`,
+    `tridatu`.`stocks_position`.`posmodule` AS `modules`,
+    `tridatu`.`stocks_position`.`module_id` AS `moduleid`
+FROM
+    (
+        (
+            `tridatu`.`stocks_position`
+        JOIN `tridatu`.`stocks` ON
+            (
+                `tridatu`.`stocks`.`id` = `tridatu`.`stocks_position`.`stockid`
+            )
+        )
+    JOIN `tridatu`.`leads` ON
+        (
+            `tridatu`.`leads`.`id` = `tridatu`.`stocks_position`.`module_id`
+        )
+    )
+WHERE
+    `tridatu`.`stocks`.`qtytype` = 0 AND `tridatu`.`stocks_position`.`posmodule` = 'lead'
+UNION ALL
+SELECT
+    `tridatu`.`stocks`.`id` AS `id`,
+    `tridatu`.`stocks`.`stockid` AS `stockid`,
+    `tridatu`.`stocks`.`stockname` AS `stockname`,
+    `tridatu`.`stocks_position`.`qty` AS `qty`,
+    'Storage' AS `Name`,
+    `tridatu`.`stocks_position`.`posmodule` AS `modules`,
+    `tridatu`.`stocks_position`.`module_id` AS `moduleid`
+FROM
+    (
+        `tridatu`.`stocks_position`
+    JOIN `tridatu`.`stocks` ON
+        (
+            `tridatu`.`stocks`.`id` = `tridatu`.`stocks_position`.`stockid`
+        )
+    )
+WHERE
+    `tridatu`.`stocks`.`qtytype` = 0 AND `tridatu`.`stocks_position`.`posmodule` = 'storage'
+UNION ALL
+SELECT
+    `tridatu`.`stocks`.`id` AS `id`,
+    `tridatu`.`stocks`.`stockid` AS `stockid`,
+    `tridatu`.`stocks`.`stockname` AS `stockname`,
+    COUNT(`tridatu`.`stocks_no_seri`.`noseri`) AS `qty`,
+    'Storage' AS `Name`,
+    `tridatu`.`stocks_no_seri`.`posmodule` AS `modules`,
+    `tridatu`.`stocks_no_seri`.`module_id` AS `moduleid`
+FROM
+    (
+        (
+            `tridatu`.`stocks`
+        JOIN `tridatu`.`stock_categories` ON
+            (
+                `tridatu`.`stocks`.`categoryid` = `tridatu`.`stock_categories`.`id`
+            )
+        )
+    JOIN `tridatu`.`stocks_no_seri` ON
+        (
+            `tridatu`.`stocks`.`id` = `tridatu`.`stocks_no_seri`.`stockid`
+        )
+    )
+GROUP BY
+    `tridatu`.`stocks`.`id`,
+    `tridatu`.`stocks`.`stockid`,
+    `tridatu`.`stocks`.`stockname`,
+    `tridatu`.`stock_categories`.`category_name`,
+    `tridatu`.`stocks`.`qtytype`,
+    `tridatu`.`stocks_no_seri`.`posmodule`,
+    `tridatu`.`stocks_no_seri`.`module_id`
+HAVING
+    `tridatu`.`stocks_no_seri`.`posmodule` = 'storage' AND `tridatu`.`stocks`.`qtytype` = 1
+UNION ALL
+SELECT
+    `tridatu`.`stocks`.`id` AS `id`,
+    `tridatu`.`stocks`.`stockid` AS `stockid`,
+    `tridatu`.`stocks`.`stockname` AS `stockname`,
+    COUNT(`tridatu`.`stocks_no_seri`.`noseri`) AS `qty`,
+    `tridatu`.`leads`.`leadsname` AS `Name`,
+    `tridatu`.`stocks_no_seri`.`posmodule` AS `modules`,
+    `tridatu`.`stocks_no_seri`.`module_id` AS `moduleid`
+FROM
+    (
+        (
+            (
+                `tridatu`.`stocks`
+            JOIN `tridatu`.`stock_categories` ON
+                (
+                    `tridatu`.`stocks`.`categoryid` = `tridatu`.`stock_categories`.`id`
+                )
+            )
+        JOIN `tridatu`.`stocks_no_seri` ON
+            (
+                `tridatu`.`stocks`.`id` = `tridatu`.`stocks_no_seri`.`stockid`
+            )
+        )
+    JOIN `tridatu`.`leads` ON
+        (
+            `tridatu`.`stocks_no_seri`.`module_id` = `tridatu`.`leads`.`id`
+        )
+    )
+GROUP BY
+    `tridatu`.`stocks`.`id`,
+    `tridatu`.`stocks`.`stockid`,
+    `tridatu`.`stocks`.`stockname`,
+    `tridatu`.`stock_categories`.`category_name`,
+    `tridatu`.`stocks_no_seri`.`posmodule`,
+    `tridatu`.`leads`.`leadsname`,
+    `tridatu`.`stocks`.`qtytype`,
+    `tridatu`.`stocks_no_seri`.`module_id`
+HAVING
+    `tridatu`.`stocks_no_seri`.`posmodule` = 'lead' AND `tridatu`.`stocks`.`qtytype` = 1
+
+/**
+Final
+*/
+
+SELECT
+    `tridatu`.`stocks`.`id` AS `id`,
+    `tridatu`.`stocks`.`stockid` AS `stockid`,
+    `tridatu`.`stocks`.`stockname` AS `stockname`,
+    `tridatu`.`stocks_position`.`qty` AS `qty`,
+    `tridatu`.`stocks_position`.`posmodule` AS `Name`,
+    `tridatu`.`stocks_position`.`posmodule` AS `modules`,
+    `tridatu`.`stocks_position`.`module_id` AS `moduleid`
+FROM
+    (
+        `tridatu`.`stocks_position`
+    JOIN `tridatu`.`stocks` ON
+        (
+            `tridatu`.`stocks`.`id` = `tridatu`.`stocks_position`.`stockid`
+        )
+    )
+WHERE
+    `tridatu`.`stocks`.`qtytype` = 0 
+UNION ALL
+SELECT
+    `tridatu`.`stocks`.`id` AS `id`,
+    `tridatu`.`stocks`.`stockid` AS `stockid`,
+    `tridatu`.`stocks`.`stockname` AS `stockname`,
+    COUNT(`tridatu`.`stocks_no_seri`.`noseri`) AS `qty`,
+    `tridatu`.`stocks_no_seri`.`posmodule` AS `Name`,
+    `tridatu`.`stocks_no_seri`.`posmodule` AS `modules`,
+    `tridatu`.`stocks_no_seri`.`module_id` AS `moduleid`
+FROM
+    (
+        (
+            `tridatu`.`stocks`
+        JOIN `tridatu`.`stock_categories` ON
+            (
+                `tridatu`.`stocks`.`categoryid` = `tridatu`.`stock_categories`.`id`
+            )
+        )
+    JOIN `tridatu`.`stocks_no_seri` ON
+        (
+            `tridatu`.`stocks`.`id` = `tridatu`.`stocks_no_seri`.`stockid`
+        )
+    )
+GROUP BY
+    `tridatu`.`stocks`.`id`,
+    `tridatu`.`stocks`.`stockid`,
+    `tridatu`.`stocks`.`stockname`,
+    `tridatu`.`stock_categories`.`category_name`,
+    `tridatu`.`stocks`.`qtytype`,
+    `tridatu`.`stocks_no_seri`.`posmodule`,
+    `tridatu`.`stocks_no_seri`.`module_id`
+HAVING
+     `tridatu`.`stocks`.`qtytype` = 1;

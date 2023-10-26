@@ -19,7 +19,7 @@ class SurveyController extends Controller
         if ($request->ajax()) {
             //$data = Accounts::select('*');
             $data = Surveys::join('leads','leads.id','=','surveys.leadid')->join('users','users.id','=','surveys.surveyorid')
-            ->select('surveys.id as ID','surveys.surveydate as SurveyDate' ,'surveys.requestdate as ReqDate' , 'leads.leadsname AS Property', 'users.first_name AS Petugas','surveys.status As Status','surveys.note As Note')
+            ->select('surveys.id as ID','surveys.surveydate as SurveyDate' ,'surveys.requestdate as ReqDate' , 'leads.leadsname AS leadsname', 'leads.property_name AS property_name', 'leads.type AS leadtype', 'users.first_name AS Petugas','surveys.status As Status','surveys.note As Note')
             ->get();
             //dd($data);
             return DataTables::of($data)
@@ -30,6 +30,14 @@ class SurveyController extends Controller
                 //     return $actionBtn;
                 // })
                 // ->rawColumns(['action'])
+                ->addColumn('Property', function($row){
+                    if($row->leadtype=="contact"){
+                        return $row->property_name;
+                    }else{
+                        return $row->leadsname;
+                    }
+                })
+                ->rawColumns(['Property'])
                 ->editColumn('SurveyDate', function ($row) {
                     if(isset($row->SurveyDate)){
                         $date=date('d/m/Y',strtotime($row->SurveyDate));
@@ -96,7 +104,7 @@ class SurveyController extends Controller
     }
 
     public function view($id){
-        $surveys=Surveys::join('leads','leads.id','=','surveys.leadid')->where('surveys.id','=',$id)->select('surveys.*','leads.leadsname AS leadsname')->get();
+        $surveys=Surveys::join('leads','leads.id','=','surveys.leadid')->where('surveys.id','=',$id)->select('surveys.*','leads.leadsname AS leadsname','leads.property_name AS property_name','leads.type AS leadtype')->get();
         if(isset($surveys[0]->surveyorid)){
             $surveyorids=User::where('id','=',$surveys[0]->surveyorid)->get();
             $surveyorid=$surveyorids[0]->first_name." ".$surveyorids[0]->last_name;

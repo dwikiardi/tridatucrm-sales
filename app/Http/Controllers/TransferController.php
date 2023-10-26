@@ -53,81 +53,76 @@ class TransferController extends Controller
         dd($request);
         /// insert setiap request dari form ke dalam database via model
         /// jika menggunakan metode ini, maka nama field dan nama form harus sama
-        $noorder=$this->getNoorder();
-        $old_date = explode('/', $request->date); 
+        $transfer_id=$this->getNoorder('TP');
+        $old_date = explode('/', $request->transfer_date); 
         $date = $old_date[2].'-'.$old_date[1].'-'.$old_date[0];
         $status="success";
         $msg="";
         $data=[
-            'ordernumbers'=>$noorder,
-            'ordername'=>$request->order_name,
-            'orderdate'=>$date,
+            'transfer_id'=>$transfer_id,
+            'transfer_date'=>$date,
+            'from'=>$request->from,
+            'to'=>$request->to,
+            'transferdbyid'=>$request->transferdbyid,
+            'recievedbyid'=>$request->recievedbyid,
+            'transfertype'=>$request->transfertype,
             'note'=>$request->note,
-            'vendorid'=>$request->vendorid,
-            'orderstatus'=>2,
             'createdbyid'=>$request->createdbyid,
             'updatedbyid'=>$request->updatedbyid,
-            'subtotal'=>$request->subtotal,
-            'tax'=>$request->tax,
-            'shipping'=>$request->shipping,
-            'total'=>$request->total,
-            'supno'=>$request->supno,
-            'discount'=>$request->discount
         ];
         
         try {
-            $orders=Orders::create($data);
+            $Transfer=Transfer::create($data);
         }  catch (\Exception $e) {
             $status="failed";
-            $msg=$msg .$e->getMessage();
+            $msg=$msg." ".$e->getMessage();
         }
-        $orderid=$orders->id;
+        $transfer_id=$Transfer->id;
         //var_dump($data);
         //$orderid="1";
         $items=$request->Item_List;
         foreach ($items as $item) {
             $lsitem=[
-                'ordernumbers'=>$orderid,
+                'transfer_id'=>$transfer_id,
                 'stockid'=>$item['stockid'],
                 'qty'=>$item['qty'],
-                'hpp'=>$item['price'],
             ];
             
             try {
-                $dtl=OrdersDetail::create($lsitem);
+                $dtl=TransferDetail::create($lsitem);
             }  catch (\Exception $e) {
                 $status="failed";
-                $msg=$msg .$e->getMessage();
+                $msg=$msg." ".$e->getMessage();
             }
             //var_dump($lsitem);
             if($item['qtytype']==1){
                 $serials = explode(',', $item['lsnoseri']); 
                 foreach ($serials as $serial) {
                     $lserial=[
-                        'ordernumbers'=>$orderid,
+                        'transfer_id'=>$transfer_id,
                         'stockid'=>$item['stockid'],
                         'stockcode'=>$item['stockcode'],
                         'serial'=>$serial,
                     ];
                     //var_dump($lserial);
                     try {
-                        $ListSerial=OrdersSerialDetail::create($lserial);
+                        $ListSerial=TransferSerial::create($lserial);
                     }  catch (\Exception $e) {
                         $status="failed";
-                        $msg=$msg .$e->getMessage();
+                        $msg=$msg." ".$e->getMessage();
                     }
                     
                     $noseri=[
                         'noseri'=>$serial,
                         'stockid'=>$item['stockid'],
-                        'posmodule'=>"storeage",
+                        'posmodule'=>"storage",
                         'module_id'=>0,
                     ];
                     try {
                         $StocksNoSeri=StocksNoSeri::create($noseri);
                     }  catch (\Exception $e) {
                         $status="failed";
-                        $msg=$msg .$e->getMessage();
+                        $msg=$msg." ".$e->getMessage();
                     }
                     
                 }
@@ -143,12 +138,12 @@ class TransferController extends Controller
                         $update=StocksPosition::where('id','=',$current[0]->id)->update($dataupdate);
                     }  catch (\Exception $e) {
                         $status="failed";
-                        $msg=$msg .$e->getMessage();
+                        $msg=$msg." ".$e->getMessage();
                     }
                     
                 }else{
                     $stockpos=[
-                        'posmodule'=>'storeage',
+                        'posmodule'=>'storage',
                         'module_id'=>0,
                         'stockid'=>$item['stockid'],
                         'qty'=>$item['qty'],
@@ -166,7 +161,7 @@ class TransferController extends Controller
         if($status=="success"){
             $response=[
                 'status'=>'success',
-                'message'=>route('order.index')
+                'message'=>route('transfer_in.index')
             ];
         }else{
             $response=[
@@ -213,18 +208,31 @@ class TransferController extends Controller
          return redirect('leads/view/'.$request->id);
     }
     public function icheckExist(Request $request){
-        //dd($request->data);
-        $data=json_decode($request->data);
-        var_dump($data);
+        dd($request);
+        //$data=json_decode($request->data);
+        $data=explode(',',$request->data);
+        //var_dump($data);
+        $status="success";
+        $msg="";
+        foreach ($data as $value) {
+            $cx=StocksNoSeri::where('noseri','=',$value)->where('posmodule','=',"storage")->count();
+            if($cx>0){
+                $status="error";
+                $msg=$msg.$value.",";
+            }
+        }
+        $msg=substr($msg,0,-1);
+        $return=['status'=>$status,'message'=>$msg];
+        return json_encode($return);
     }
   
     public function getNoorder($prefixs){
         $bln=date("m");
         $thn=date("Y");
         $now=$prefixs.$bln."/".$thn;
-        $order=Orders::select('ordernumbers')->where('ordernumbers','LIKE','%'.$now.'%')->orderBy('id', 'DESC')->first();
+        $Transfer=Transfer::select('transfer_id')->where('transfer_id','LIKE','%'.$now.'%')->orderBy('id', 'DESC')->first();
         //dd($order->noorder);
-        if(empty($order)){
+        if(empty($Transfer)){
             $noorder="000001".$now;
         }else{
             $no=$order->noorder;
