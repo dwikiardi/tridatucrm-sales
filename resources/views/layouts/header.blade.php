@@ -196,7 +196,7 @@
                       <!-- <a class="dropdown-item" href="{{url('order')}}" >
                         Transfer In (Purchase)
                       </a> -->
-                      <a class="dropdown-item" href="{{url('tranfer_in')}}" >
+                      <a class="dropdown-item" href="{{url('transfer_in')}}" >
                         Transfer In (to Storage)
                       </a>
                       <a class="dropdown-item" href="{{url('transfer_out')}}" >

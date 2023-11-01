@@ -468,7 +468,7 @@ class PurchaseOrderController extends Controller
         if(empty($order)){
             $noorder="000001".$now;
         }else{
-            $no=$order->noorder;
+            $no=$order->ordernumbers;
             $nnow=substr($no,0,strlen($no)-strlen($now));
             $nnow=(int)$nnow;
             $newnow=$nnow+1;

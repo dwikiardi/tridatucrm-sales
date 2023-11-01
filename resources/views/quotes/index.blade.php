@@ -61,6 +61,7 @@
                 <thead>
                   <tr>
                     <th>Quote No.</th>
+                    <th>Subject</th>
                     <th>Date</th>
                     <th>To</th>
                     <th>Status</th>
@@ -95,6 +96,11 @@
             {data: 'QuoteNo', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
                 $(nTd).html("<a href='{{ url('quotes/view')}}/"+oData.ID+"'>"+oData.QuoteNo+"</a>");
+              }
+            },
+            {data: 'quotename', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+              {
+                $(nTd).html("<a href='{{ url('quotes/view')}}/"+oData.ID+"'>"+oData.quotename+"</a>");
               }
             },
             {data: 'Date', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 

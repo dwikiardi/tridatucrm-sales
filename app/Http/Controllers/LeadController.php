@@ -197,17 +197,20 @@ class LeadController extends Controller
         if ($request->ajax()) {
             //$data = Accounts::select('*');
             $data = Surveys::join('leads','leads.id','=','surveys.leadid')->join('users','users.id','=','surveys.surveyorid')->where('surveys.leadid','=',$id)
-            ->select('surveys.id as ID','surveys.surveydate as SurveyDate' ,'surveys.requestdate as ReqDate' , 'leads.leadsname AS Property', 'users.first_name AS Petugas','surveys.status As Status','surveys.note As Note')
+            ->select('surveys.id as ID','surveys.surveydate as SurveyDate' ,'surveys.requestdate as ReqDate' , 'leads.leadsname AS leadsname', 'leads.property_name AS property_name', 'leads.type AS leadtype', 'users.first_name AS Petugas','surveys.status As Status','surveys.note As Note')
             ->get();
             //dd($data);
             return DataTables::of($data)
                 ->addIndexColumn()
-                // ->addColumn('action', function($row){
-                //     $actionBtn = '<a class="edit btn btn-success btn-sm" data-id="'.$row->ID.'">Edit</a> <a  class="delete btn btn-danger btn-sm" data-id="'.$row->ID.'">DeActive</a>';
-                //     //$actionBtn=$row->ID;
-                //     return $actionBtn;
-                // })
-                // ->rawColumns(['action'])
+                ->addColumn('Property', function($row){
+                    if($row->leadtype=="lead"){
+                        $property=$row->leadsname;
+                    }else{
+                        $property=$row->property_name;
+                    }
+                    return $property;
+                })
+                ->rawColumns(['Property'])
                 ->editColumn('SurveyDate', function ($row) {
                     if(isset($row->SurveyDate)){
                         $date=date('d/m/Y',strtotime($row->SurveyDate));

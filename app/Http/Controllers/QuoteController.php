@@ -18,7 +18,7 @@ class QuoteController extends Controller
         if ($request->ajax()) {
             $data = Quotes::leftjoin('users', 'quotes.approvedbyid', '=', 'users.id')
             ->join('leads', 'quotes.leadid', '=', 'leads.id')
-            ->select('quotes.id as ID','quotes.quotenumber as QuoteNo' , 'quotes.quotedate AS Date','users.first_name As By','quotes.toperson as To','quotes.status AS Status')
+            ->select('quotes.id as ID','quotes.quotenumber as QuoteNo' ,'quotes.quotename as quotename' , 'quotes.quotedate AS Date','users.first_name As By','quotes.toperson as To','quotes.status AS Status')
             //->where('type','=','lead')
             ->get();
             //dd($data);
@@ -91,9 +91,14 @@ class QuoteController extends Controller
         /// insert setiap request dari form ke dalam database via model
         /// jika menggunakan metode ini, maka nama field dan nama form harus sama
         $file = $request->file('file');
+        $mfile="";
+        if(!is_null($file)){
+            $path = "public/attach_file/".str_replace('/','_',$request->quotenumber);
+            $file->move($path,$file->getClientOriginalName());
+            $mfile=$path."/".$file->getClientOriginalName();
+        }
         //dd(date('Y-m-d',strtotime(str_replace('/','-',$request->quotedate))));
-        $path = "public/attach_file/".str_replace('/','_',$request->quotenumber);
-        $file->move($path,$file->getClientOriginalName());
+        
         $dates=date('Y-m-d H:i:s');
         $data=[
             'ownerid'=>$request->ownerid,
@@ -106,7 +111,7 @@ class QuoteController extends Controller
             'approve'=>0,
             'status'=>1,
             'note'=>$request->note,
-            'attcfile'=>$path."/".$file->getClientOriginalName(),
+            'attcfile'=>$mfile,
             'createbyid'=>$request->createbyid,
             'updatebyid'=>$request->updatebyid,
             'created_at'=>$dates,

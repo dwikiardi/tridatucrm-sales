@@ -87,7 +87,7 @@
                             </div>
                           </div>    
                           <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">Lead</label>
+                            <label class="form-label col-3 col-form-label">Lead/ Contact</label>
                             <div class="col">
                             <?php
                               if(($surveys[0]->leadtype=='contact')){$name=$surveys[0]->property_name;}else{ $name=$surveys[0]->leadsname; }
@@ -95,21 +95,51 @@
                             {{ $name }}
                             </div>
                           </div>    
+                          
+                          @if($surveys[0]->leadtype=="leads")
+                          <div class="form-group mb-3 row">
+                            <label class="form-label col-3 col-form-label">Property Name</label>
+                            <div class="col">
+                              {{$surveys[0]->property_name}}
+                           
+                            </div>
+                          </div>  
+                          @endif
+                          <div class="form-group mb-3 row">
+                            <label class="form-label col-3 col-form-label">Address</label>
+                            <div class="col">
+                              {{$surveys[0]->property_address}}
+                           
+                            </div>
+                          </div>  
+                          <div class="form-group mb-3 row">
+                            <label class="form-label col-3 col-form-label">Contact</label>
+                            <div class="col">
+                              {{$surveys[0]->pic_contact}}
+                           
+                            </div>
+                          </div>  
+                          <div class="form-group mb-3 row">
+                            <label class="form-label col-3 col-form-label">Contact Number</label>
+                            <div class="col">
+                              {{$surveys[0]->pic_mobile}}
+                           
+                            </div>
+                          </div>   
                           <div class="form-group mb-3 row">
                             <label class="form-label col-3 col-form-label">Status</label>
                             <div class="col">
                               {{$surveys[0]->status}}
                            
                             </div>
-                          </div>   
-                          
+                          </div>  
                           <div class="form-group mb-3 row">
                             <label class="form-label col-3 col-form-label">Note</label>
                             <div class="col">
                             {{$surveys[0]->note}}
                             </div>
                           </div>  
-                          <div class="form-group mb-3 row">
+                          <!-- <div class="form-group mb-3 row">
                             <label class="form-label col-3 col-form-label">Created By</label>
                             <div class="col" >
                             {{ $createbyid[0]->first_name}} {{ $createbyid[0]->last_name}}
@@ -122,7 +152,7 @@
                             {{ $updatebyid[0]->first_name}} {{ $updatebyid[0]->last_name}}
                             <br>{{ $surveys[0]->updated_at }}
                             </div>
-                          </div> 
+                          </div>  -->
                         </div>
                         
                       </div>

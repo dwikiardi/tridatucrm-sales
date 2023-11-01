@@ -169,19 +169,20 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('order/update/', [PurchaseOrderController::class, 'update'])->name('order.update');
 
     //Transfer In
-    Route::get('tranfer_in', [TransferController::class, 'iindex'])->name('iindex');
-    Route::get('tranfer_in', [TransferController::class, 'iindex'])->name('tranfer_in.iindex');
-    Route::get('tranfer_in/create', [TransferController::class, 'icreate'])->name('tranfer_in.icreate');
-    Route::post('tranfer_in/icheckExist', [TransferController::class, 'icheckExist'])->name('tranfer_in.icheckExist');    
-    Route::post('tranfer_in/store', [TransferController::class, 'istore'])->name('tranfer_in.istore');
-    Route::get('tranfer_in/view/{id}', [TransferController::class, 'iview'])->name('tranfer_in.iview');
-    Route::get('tranfer_in/edit/{id}', [TransferController::class, 'iedit'])->name('tranfer_in.iedit');
-    Route::post('tranfer_in/update/', [TransferController::class, 'iupdate'])->name('tranfer_in.iupdate');
+    Route::get('transfer_in', [TransferController::class, 'iindex'])->name('iindex');
+    Route::get('transfer_in', [TransferController::class, 'iindex'])->name('transfer_in.iindex');
+    Route::get('transfer_in/create', [TransferController::class, 'icreate'])->name('transfer_in.icreate');
+    Route::post('transfer_in/icheckExist', [TransferController::class, 'icheckExist'])->name('transfer_in.icheckExist');    
+    Route::post('transfer_in/store', [TransferController::class, 'istore'])->name('transfer_in.istore');
+    Route::get('transfer_in/view/{id}', [TransferController::class, 'iview'])->name('transfer_in.iview');
+    Route::get('transfer_in/edit/{id}', [TransferController::class, 'iedit'])->name('transfer_in.iedit');
+    Route::post('transfer_in/update/', [TransferController::class, 'iupdate'])->name('transfer_in.iupdate');
 
     //Transfer Out
     Route::get('transfer_out', [TransferController::class, 'oindex'])->name('oindex');
     Route::get('transfer_out', [TransferController::class, 'oindex'])->name('transfer_out.oindex');
     Route::get('transfer_out/create', [TransferController::class, 'ocreate'])->name('transfer_out.ocreate');
+    Route::post('transfer_out/ocheckExist', [TransferController::class, 'ocheckExist'])->name('transfer_out.ocheckExist');    
     Route::post('transfer_out/store', [TransferController::class, 'ostore'])->name('transfer_out.ostore');
     Route::get('transfer_out/view/{id}', [TransferController::class, 'oview'])->name('transfer_out.oview');
     Route::get('transfer_out/edit/{id}', [TransferController::class, 'oedit'])->name('transfer_out.oedit');

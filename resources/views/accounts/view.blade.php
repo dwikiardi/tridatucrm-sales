@@ -296,24 +296,29 @@
         serverSide: true,
         ajax: "{{ route('accounts.contact',$accounts[0]->id) }}",
         columns: [
-            {data: 'Name', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
-              {
-                $(nTd).html("<a href='{{ url('contacts/view')}}/"+oData.ID+"'>"+oData.Name+"</a>");
-              }
-            },
-            {data: 'Contact',  "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
-              {
-                $(nTd).html("<a href='{{ url('contacts/view')}}/"+oData.ID+"'>"+oData.Contact+"</a>");
-              }},
-            {data: 'Mobile',  "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
-              {
-                $(nTd).html("<a href='{{ url('contacts/view')}}/"+oData.ID+"'>"+oData.Mobile+"</a>");
-              }},
-            {data: 'Owners', name: 'Owners'},
-            {data: 'Note',  "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
-              {
-                $(nTd).html("<a href='{{ url('contacts/view')}}/"+oData.ID+"'>"+oData.Note+"</a>");
-              }},
+          {data: 'Name', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+            {
+              $(nTd).html("<a href='{{ url('contacts/view')}}/"+oData.ID+"'>"+oData.Name+"</a>");
+            }
+          },
+          {data: 'Address', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+            {
+              $(nTd).html("<a href='{{ url('contacts/view')}}/"+oData.ID+"'>"+oData.Address+"</a>");
+            }
+          },
+          {data: 'Contact',  "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+            {
+              $(nTd).html("<a href='{{ url('contacts/view')}}/"+oData.ID+"'>"+oData.Contact+"</a>");
+            }},
+          {data: 'Mobile',  "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+            {
+              $(nTd).html("<a href='{{ url('contacts/view')}}/"+oData.ID+"'>"+oData.Mobile+"</a>");
+            }},
+          {data: 'Owners', name: 'Owners'},
+          {data: 'Note',  "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+            {
+              $(nTd).html("<a href='{{ url('contacts/view')}}/"+oData.ID+"'>"+oData.Note+"</a>");
+            }},
         ]
     });
     

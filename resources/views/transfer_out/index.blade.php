@@ -1,5 +1,5 @@
 @extends('layouts/admin')
-@section('title','Transfer In')
+@section('title','Transfer Out')
 @section('add_css')
 <style>
   .dataTables_filter{
@@ -28,7 +28,7 @@
         <div class="col">
           <!-- Page pre-title -->
           <div class="page-pretitle">
-          <h1 class="m-0 text-dark">Transfer In </h1>
+          <h1 class="m-0 text-dark">Transfer Out </h1>
           </div>
           
         </div>
@@ -40,10 +40,10 @@
                 New view
               </a>
             </span>-->
-            <a href="{{ url('transfer_in/create')}}" class="btn btn-primary d-none d-sm-inline-block">
+            <a href="{{ url('transfer_out/create')}}" class="btn btn-primary d-none d-sm-inline-block">
               <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
               <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
-              New Transfer In
+              New Transfer Out
             </a>
            
           </div>
@@ -93,52 +93,52 @@
     var table = $('.datatable').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('transfer_in.iindex') }}",
+        ajax: "{{ route('transfer_out.oindex') }}",
         columns: [
           {data: 'NoTransfer', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('transfer_in/view')}}/"+oData.ID+"'>"+oData.NoTransfer+"</a>");
+                $(nTd).html("<a href='{{ url('transfer_out/view')}}/"+oData.ID+"'>"+oData.NoTransfer+"</a>");
               }
             },
             {data: 'Date', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('transfer_in/view')}}/"+oData.ID+"'>"+oData.Date+"</a>");
+                $(nTd).html("<a href='{{ url('transfer_out/view')}}/"+oData.ID+"'>"+oData.Date+"</a>");
               }
             },
             {data: 'from', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('transfer_in/view')}}/"+oData.ID+"'>"+oData.from+"</a>");
+                $(nTd).html("<a href='{{ url('transfer_out/view')}}/"+oData.ID+"'>"+oData.from+"</a>");
               }
             },
             {data: 'Date', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('transfer_in/view')}}/"+oData.ID+"'>"+oData.TransferBy+"</a>");
+                $(nTd).html("<a href='{{ url('transfer_out/view')}}/"+oData.ID+"'>"+oData.TransferBy+"</a>");
               }
             },
             {data: 'to', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('transfer_in/view')}}/"+oData.ID+"'>"+oData.to+"</a>");
+                $(nTd).html("<a href='{{ url('transfer_out/view')}}/"+oData.ID+"'>"+oData.to+"</a>");
               }
             },
             {data: 'ReceiveBy', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('transfer_in/view')}}/"+oData.ID+"'>"+oData.ReceiveBy+"</a>");
+                $(nTd).html("<a href='{{ url('transfer_out/view')}}/"+oData.ID+"'>"+oData.ReceiveBy+"</a>");
               }
             },
             {data: 'Note', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('transfer_in/view')}}/"+oData.ID+"'>"+oData.Note+"</a>");
+                $(nTd).html("<a href='{{ url('transfer_out/view')}}/"+oData.ID+"'>"+oData.Note+"</a>");
               }
             },
             
             
-            // {data: 'action', name: 'action', transfer_inable: false, searchable: false},
+            // {data: 'action', name: 'action', transfer_outable: false, searchable: false},
         ]
     });
     // $(document).on("click",".edit",function(){
     //   var id=$(this).attr("data-id");
     //   console.log("click id: " + id);
-    //   window.location.href = "{{ url('transfer_in/edit')}}/" + id;
+    //   window.location.href = "{{ url('transfer_out/edit')}}/" + id;
     // });
   });
 </script>

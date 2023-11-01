@@ -136,7 +136,11 @@ display:none!important;
                         <div class="form-group mb-3 row">
                           <label class="form-label col-3 col-form-label">Quotes Documents</label>
                           <div class="col">
-                          <a href="{{ url($quotes[0]->attcfile)}}" target="_blank" class="btn btn-light">view</a>   
+                            @if($quotes[0]->attcfile!="")
+                              <a href="{{ url('public/'.$quotes[0]->attcfile)}}" target="_blank" class="btn btn-light">view</a>   
+                            @else
+                              No File
+                            @endif
                           </div>
                         </div>  
                         

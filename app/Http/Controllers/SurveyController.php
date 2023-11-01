@@ -104,7 +104,7 @@ class SurveyController extends Controller
     }
 
     public function view($id){
-        $surveys=Surveys::join('leads','leads.id','=','surveys.leadid')->where('surveys.id','=',$id)->select('surveys.*','leads.leadsname AS leadsname','leads.property_name AS property_name','leads.type AS leadtype')->get();
+        $surveys=Surveys::join('leads','leads.id','=','surveys.leadid')->where('surveys.id','=',$id)->select('surveys.*','leads.leadsname AS leadsname','leads.property_name AS property_name','leads.type AS leadtype','leads.property_name AS property_name','leads.pic_contact AS pic_contact','leads.pic_mobile AS pic_mobile','leads.property_address AS property_address')->get();
         if(isset($surveys[0]->surveyorid)){
             $surveyorids=User::where('id','=',$surveys[0]->surveyorid)->get();
             $surveyorid=$surveyorids[0]->first_name." ".$surveyorids[0]->last_name;

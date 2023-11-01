@@ -1,5 +1,5 @@
 @extends('layouts/admin')
-@section('title','Create New Transfer In')
+@section('title','Create New Transfer Out')
 
 @section('content_header')
 <!-- <form action="{{ route('order.store') }}" method="POST" enctype="multipart/form-data" id="myform">    -->
@@ -8,13 +8,13 @@
         <div class="col">
           <!-- Page pre-title -->
           <div class="page-pretitle">
-          <h1 class="m-0 text-dark">Create New Transfer In </h1>
+          <h1 class="m-0 text-dark">Create New Transfer Out </h1>
           </div>
           
         </div>
         <!-- Page title actions -->
         <div class="col-auto ms-auto d-print-none"> 
-          <a href="{{ url('transfer_in')}}" class="btn btn-light">« Kembali</a>                 
+          <a href="{{ url('transfer_out')}}" class="btn btn-light">« Kembali</a>                 
           <a href="#" class="btn btn-primary process">Simpan</a>
         </div>
       </div>
@@ -45,15 +45,7 @@
                 </div>
                 
               </div>
-              <div class="form-group mb-3 row">
-                <label class="form-label col-3 col-form-label">From</label>
-                <div class="col">
-                      <select class="form-select" name="from" id="from">
-                        <option selected value="purchase">Purchase</option>
-                        <option value="staff">Staff/Technician</option>
-                      </select>
-                </div>
-              </div>
+              
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Transfer By</label>
                 <div class="col">
@@ -66,15 +58,24 @@
               </div>
              
               
-              <input class="to" type="hidden" name="to" value="storage">
-              <input class="transfertype" type="hidden" name="transfertype" value="0">
+              <input class="to" type="hidden" name="to" value="staff">
+              <input class="from" type="hidden" name="from" value="storage">
+              <input class="transfertype" type="hidden" name="transfertype" value="1">
 
               <input class="createdbyid" type="hidden" name="createdbyid" value="{{Auth::user()->id}}">
               <input class="updatedbyid" type="hidden" name="updatedbyid" value="{{Auth::user()->id}}">
             </div>
             <div class="col-md-6">
-                 
-            <div class="form-group mb-3 row">
+              <!-- <div class="form-group mb-3 row">
+                <label class="form-label col-3 col-form-label">To</label>
+                <div class="col">
+                      <select class="form-select" name="to" id="to">
+                        <option selected value="staff">Staff/Technician</option>
+                        <option value="sales">Sales</option>
+                      </select>
+                </div>
+              </div> -->
+              <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Received By</label>
                 <div class="col">
                   <select class="form-select" name="recievedbyid" id="recievedbyid">
@@ -152,7 +153,7 @@
       </div>
       <!-- Page title actions -->
       <div class="col-auto ms-auto d-print-none"> 
-      <a href="{{ url('transfer_in')}}" class="btn btn-light">« Kembali</a>                 
+      <a href="{{ url('transfer_out')}}" class="btn btn-light">« Kembali</a>                 
       <a href="#" class="btn btn-primary process">Simpan</a>
       </div>
     </div>
@@ -316,8 +317,9 @@
       nlist=nlist.substring(1);
       let mydata ={
         'data' : nlist,
-        'from' : $('#from').find(":selected").val(),
+        // 'to' : $('#to').find(":selected").val(),
         'position' : $('#transferdbyid').find(":selected").val(),
+        'from' : $('.from').val(),
         'to' : $('.to').val(),
       };
       $.ajaxSetup({
@@ -325,13 +327,13 @@
       });
       
       $.ajax({
-        url: "{{route('transfer_in.icheckExist')}}",
+        url: "{{route('transfer_out.ocheckExist')}}",
         type: "POST",
         data: mydata,
         success: function( response ) {
           var result=JSON.parse(response);
           if(result.status=="error"){
-            alert('Nomor seri : \n' + result.message + ' \nPlease recheck your transaction');
+            alert(result.message + ' \nPlease Check your transaction again');
           }
           
         }
@@ -403,8 +405,9 @@
 
         let mydata ={
           'data' : allseri,
-          'from' : $('#from').find(":selected").val(),
+        // 'to' : $('#to').find(":selected").val(),
           'position' : $('#transferdbyid').find(":selected").val(),
+          'from' : $('.from').val(),
           'to' : $('.to').val(),
         };
         $.ajaxSetup({
@@ -412,14 +415,14 @@
         });
         
         $.ajax({
-          url: "{{route('transfer_in.icheckExist')}}",
+          url: "{{route('transfer_out.ocheckExist')}}",
           type: "POST",
           data: mydata,
           success: function( response ) {
             var result=JSON.parse(response);
             if(result.status=="error"){
               valids=false;
-              alert('Nomor seri : ' + result.message + ' Sudah pernah diinputkan sebelumnya');
+              alert('Error: ' + result.message);
             }
             
           }
@@ -428,8 +431,9 @@
           var transfer={
             'transfer_date' : $('#transfer_date').val(),
             'transferdbyid' : $('#transferdbyid').find(":selected").val(),
-            'from' : $('#from').find(":selected").val(),
+            // 'to' : $('#to').find(":selected").val(),
             'to' : $('.to').val(),
+            'from' : $('.from').val(),
             'transfertype' : $('.transfertype').val(),
             'recievedbyid' : $('#recievedbyid').find(":selected").val(),
             'note' : $('.note').val(),
@@ -444,7 +448,7 @@
           //$('.process').attr("disabled", true);
 
           $.ajax({
-            url: "{{route('transfer_in.istore')}}",
+            url: "{{route('transfer_out.ostore')}}",
             type: "POST",
             data: transfer,
             success: function( response ) {
