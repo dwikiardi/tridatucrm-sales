@@ -49,7 +49,7 @@
             <div class="form-group mb-3 row">
               <label class="form-label col-3 col-form-label">Lead Name</label>
               <div class="col">
-                <input type="text" class="form-control" name="leadsname" placeholder="Lead Name">
+                <input type="text" class="form-control" name="leadsname" placeholder="Lead Name" required>
               </div>
             </div>
             <div class="form-group mb-3 row">
@@ -228,7 +228,7 @@
             <div class="form-group mb-3 row">
               <label class="form-label col-3 col-form-label">Property Name</label>
               <div class="col">
-                <input type="text" class="form-control" name="property_name" placeholder="Property Name">
+                <input type="text" class="form-control" name="property_name" placeholder="Property Name" required>
               </div>
             </div> 
             <div class="form-group mb-3 row">

@@ -50,7 +50,7 @@
             <div class="form-group mb-3 row">
               <label class="form-label col-3 col-form-label">Contact Name</label>
               <div class="col">
-                <input type="text" class="form-control" name="leadsname" placeholder="Contacts Name" value="">
+                <input type="text" class="form-control" name="leadsname" placeholder="Contacts Name" value="" required>
               </div>
             </div>
             <div class="form-group mb-3 row">
@@ -75,19 +75,19 @@
             <div class="form-group mb-3 row">
               <label class="form-label col-3 col-form-label">Address</label>
               <div class="col">
-              <textarea readonly class="form-control address" name="address" placeholder="">@if($acc!=""){{ $acc[0]->address }}@endif</textarea>
+              <textarea readonly class="form-control address" name="address" placeholder="">@if($acc!=''){{ $acc[0]->address }}@endif</textarea>
               </div>
             </div>  
             <div class="form-group mb-3 row">
               <label class="form-label col-3 col-form-label">City</label>
               <div class="col">
-                <input readonly type="text" class="form-control city" name="city" placeholder="City"  value="@if($acc!=""){{ $acc[0]->city }}@endif">
+                <input readonly type="text" class="form-control city" name="city" placeholder="City"  value="@if($acc!=''){{ $acc[0]->city }}@endif">
               </div>
             </div>
             <div class="form-group mb-3 row">
               <label class="form-label col-3 col-form-label">State/Province</label>
               <div class="col">
-                <input readonly type="text" class="form-control state" name="state" aria-describedby="emailHelp" placeholder="Province"  value="@if($acc!=""){{ $acc[0]->state }}@endif">
+                <input readonly type="text" class="form-control state" name="state" aria-describedby="emailHelp" placeholder="Province"  value="@if($acc!=''){{ $acc[0]->state }}@endif">
               </div>
             </div>  
             
@@ -99,31 +99,31 @@
             <div class="form-group mb-3 row">
               <label class="form-label col-3 col-form-label">Country</label>
               <div class="col">
-                <input readonly type="text" class="form-control country" name="country" aria-describedby="emailHelp" placeholder="Country"  value="@if($acc!=""){{ $acc[0]->country }}@endif">
+                <input readonly type="text" class="form-control country" name="country" aria-describedby="emailHelp" placeholder="Country"  value="@if($acc!=''){{ $acc[0]->country }}@endif">
               </div>
             </div>  
             <div class="form-group mb-3 row">
               <label class="form-label col-3 col-form-label">ZIP Code</label>
               <div class="col">
-                <input readonly type="text" class="form-control zipcode" name="zipcode" aria-describedby="emailHelp" placeholder="ZIP Code"  value="@if($acc!=""){{ $acc[0]->zipcode }}@endif">
+                <input readonly type="text" class="form-control zipcode" name="zipcode" aria-describedby="emailHelp" placeholder="ZIP Code"  value="@if($acc!=''){{ $acc[0]->zipcode }}@endif">
               </div>
             </div>
             <div class="form-group mb-3 row">
               <label class="form-label col-3 col-form-label">E-mail</label>
               <div class="col">
-                <input readonly type="email" class="form-control email" name="email" aria-describedby="emailHelp" placeholder="Email" value="@if($acc!=""){{ $acc[0]->email }}@endif">
+                <input readonly type="email" class="form-control email" name="email" aria-describedby="emailHelp" placeholder="Email" value="@if($acc!=''){{ $acc[0]->email }}@endif">
               </div>
             </div>  
             <div class="form-group mb-3 row">
               <label class="form-label col-3 col-form-label">Website</label>
               <div class="col">
-                <input readonly type="text" class="form-control website" name="website" aria-describedby="emailHelp" placeholder="" value="@if($acc!=""){{ $acc[0]->website }}@endif">
+                <input readonly type="text" class="form-control website" name="website" aria-describedby="emailHelp" placeholder="" value="@if($acc!=''){{ $acc[0]->website }}@endif">
               </div>
             </div>  
             <div class="form-group mb-3 row">
               <label class="form-label col-3 col-form-label">Phone</label>
               <div class="col">
-                <input readonly type="text" class="form-control phone" name="phone" aria-describedby="emailHelp" placeholder="" value="@if($acc!=""){{ $acc[0]->phone }}@endif">
+                <input readonly type="text" class="form-control phone" name="phone" aria-describedby="emailHelp" placeholder="" value="@if($acc!=''){{ $acc[0]->phone }}@endif">
               </div>
             </div>  
             
@@ -208,7 +208,7 @@
             <div class="form-group mb-3 row">
               <label class="form-label col-3 col-form-label">Property Name</label>
               <div class="col">
-              <input type="text" class="form-control" name="property_name" placeholder="Property Name" value="">
+              <input type="text" class="form-control" name="property_name" placeholder="Property Name" value="" required>
               </div>
             </div> 
             <div class="form-group mb-3 row">

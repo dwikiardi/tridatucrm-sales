@@ -44,11 +44,11 @@
               </a>
             </span>-->
             <!-- <a href="{{ url('ipaddress/create')}}" class="btn btn-primary d-none d-sm-inline-block"> -->
-            <!-- <a href="#" class="btn btn-primary d-none d-sm-inline-block Generate">
-              
+            <a href="#" class="btn btn-primary d-none d-sm-inline-block Generate">
+              <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
               <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
               Generate New Netwoek IP
-            </a> -->
+            </a>
            
           </div>
         </div>
@@ -106,7 +106,6 @@
     </div>
 @stop
 @section('content')
-<input type="hidden" name="postip" class="postip" value="{{$id}}">
 <div class="container-xl">
     <div class="row row-deck row-cards">
         <div class="col-12">
@@ -117,10 +116,7 @@
               <table class="table card-table table-vcenter text-nowrap datatable">
                 <thead>
                   <tr>
-                    <th>IP Address</th>
-                    <th>Descriptions</th>
-                    <th>Type</th>
-                    <th>Position</th>
+                    <th>Network IP</th>
                   </tr>
                 </thead>
                 <tbody></tbody>
@@ -141,32 +137,19 @@
 
 <script type="text/javascript">
   $(function () {
-    var ip=$('.postip').val();
+    
     var table = $('.datatable').DataTable({
         processing: true,
         serverSide: true,
         pageLength: 256,
-        ajax: "{{ url('ipaddress') }}/" + ip,
+        ajax: "{{ route('ipaddress.netid') }}",
         columns: [
-            {data: 'Name', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+            {data: 'Network', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('ipaddress/view')}}/"+oData.ID+"'>"+oData.Name+"</a>");
+                oData.Network.replace
+                $(nTd).html("<a href='{{ url('ipaddress/')}}/"+oData.detail+"'>"+oData.Network+"</a>");
               }
-            },
-            {data: 'Desk', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
-            {
-              $(nTd).html("<a href='{{ url('ipaddress/view')}}/"+oData.ID+"'>"+oData.Desk+"</a>");
-            }},
-            {data: 'ip_type', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
-            {
-              $(nTd).html("<a href='{{ url('ipaddress/view')}}/"+oData.ID+"'>"+oData.ip_type+"</a>");
-            }},
-            {data: 'position', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
-            {
-              $(nTd).html("<a href='{{ url('ipaddress/view')}}/"+oData.ID+"'>"+oData.position+"</a>");
-            }},
-            
-            
+            }
         ]
     });
     $(document).on("click",".edit",function(){
@@ -182,36 +165,36 @@
       $('.creates').removeClass('show');
       $('.creates').addClass('hides');
     });
-    // $(document).on("click",".createNetwork",function(){
-    //   var ipadd=$('#ipaddress').val();
-    //   var type= $('#type').find(":selected").val();
-    //   var isvalid=validIP(ipadd);
-    //   if(isvalid==true){
-    //     //ajax check on database
-    //     var mydata={
-    //         'ipaddress' : ipadd
-    //       };
-    //     $.ajaxSetup({
-    //         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
-    //       });
-    //     $.ajax({
-    //         url: "{{url('ipaddress.checkip')}}",
-    //         type: "GET",
-    //         data: mydata,
-    //         success: function( response ) {
-    //           if (response!=0){
-    //             alert("IP Network already exist!");
-    //           }else{
-    //             var result=generate(ipadd,type);
-    //             //alert(result);
-    //           }
+    $(document).on("click",".createNetwork",function(){
+      var ipadd=$('#ipaddress').val();
+      var type= $('#type').find(":selected").val();
+      var isvalid=validIP(ipadd);
+      if(isvalid==true){
+        //ajax check on database
+        var mydata={
+            'ipaddress' : ipadd
+          };
+        $.ajaxSetup({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+          });
+        $.ajax({
+            url: "{{url('ipaddress/checkip')}}/" + ipadd,
+            type: "GET",
+            success: function( response ) {
+              console.log(response);
+              if (response!=0){
+                alert("IP Network already exist!");
+              }else{
+                var result=generate(ipadd,type);
+                //alert(result);
+              }
               
-    //         }
-    //       });
-    //   }else{
-    //     alert("Invalid IP Address");
-    //   }
-    // });
+            }
+          });
+      }else{
+        alert("Invalid IP Address");
+      }
+    });
     function generate(param,type) {
       var mydata={'ip' : param,'type':type};
       $.ajaxSetup({
@@ -222,9 +205,8 @@
             type: "POST",
             data: mydata,
             success: function( response ) {
-              if(response.status=='error'){
-                alert(response.message);
-              }
+              
+              alert(response.msg);
               var filter= param.slice(0, param.lastIndexOf('.'));
               $('.dataTable').DataTable().search( filter ).draw();
             }

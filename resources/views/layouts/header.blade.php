@@ -183,7 +183,7 @@
                         Products
                       </a>
                       <hr style="padding:0!important;margin:0!important">
-                      <a class="dropdown-item" href="{{url('ipaddress')}}" >
+                      <a class="dropdown-item" href="{{url('netid')}}" >
                         IP Address
                       </a>
                       <a class="dropdown-item" href="{{url('pops')}}" >

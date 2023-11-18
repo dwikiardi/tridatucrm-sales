@@ -15,6 +15,7 @@ use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\PoPsController;
 use App\Http\Controllers\IPAddressController;
 use App\Http\Controllers\TransferController;
+use App\Http\Controllers\InstallController;
 
 
 
@@ -107,8 +108,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('pops/update/', [PoPsController::class, 'update'])->name('pops.update');
 
     //IP Address
-    Route::get('ipaddress', [IPAddressController::class, 'index'])->name('ipaddress.index');
-    Route::get('ipaddress/checkip', [IPAddressController::class, 'checkip'])->name('ipaddress.checkip');
+    Route::get('ipaddress/{id}', [IPAddressController::class, 'index'])->name('ipaddress.index');
+    Route::get('netid', [IPAddressController::class, 'netid'])->name('ipaddress.netid');
+    Route::get('ipaddress/checkip/{id}', [IPAddressController::class, 'checkip'])->name('ipaddress.checkip');
     Route::get('ipaddress/create', [IPAddressController::class, 'create'])->name('ipaddress.create');
     Route::post('ipaddress/store', [IPAddressController::class, 'store'])->name('ipaddress.store');
     Route::get('ipaddress/view/{id}', [IPAddressController::class, 'view'])->name('ipaddress.view');
@@ -188,5 +190,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('transfer_out/edit/{id}', [TransferController::class, 'oedit'])->name('transfer_out.oedit');
     Route::post('transfer_out/update/', [TransferController::class, 'oupdate'])->name('transfer_out.oupdate');
 
-
+     //Installation
+     Route::get('installasi', [InstallController::class, 'index'])->name('installasi');
+     Route::get('installasi', [InstallController::class, 'index'])->name('installasi.index');
+     Route::get('installasi/create/{id?}', [InstallController::class, 'create'])->name('installasi.create');  
+     Route::post('installasi/store', [InstallController::class, 'store'])->name('installasi.store');
+     Route::get('installasi/view/{id}', [InstallController::class, 'view'])->name('installasi.view');
+     Route::get('installasi/edit/{id}', [InstallController::class, 'edit'])->name('installasi.edit');
+     Route::post('installasi/update/', [InstallController::class, 'update'])->name('installasi.update');
 });

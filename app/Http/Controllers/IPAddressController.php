@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\DataLogs;
 use App\Models\ipaddress;
+use App\Models\pops;
 use App\Models\Leads;
 
 use DataTables;
@@ -14,40 +15,119 @@ use DataTables;
 class IPAddressController extends Controller
 {
     //Index ListView
-    public function index(Request $request){
+    public function index(Request $request, $id){
+        //dd($request->search["value"]);
+        
+        if(isset($request->search["value"])){
+            if ($request->ajax()) {
+                //$data = Accounts::select('*');
+                $data = ipaddress::leftJoin('leads','leads.id','=','ip_address.leadid')
+                ->leftJoin('pops','pops.id','=','ip_address.popid')
+                ->select('ip_address.id as ID' , 'ip_address.name as Name' , 'ip_address.description AS Desk','leads.leadsname','pops.name as popname','ip_address.ip_type as ip_type','ip_address.peruntukan','ip_address.netID')
+                ->get();
+                //dd($data);
+                return DataTables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('position', function($row){
+                        $peruntukan="";
+                        if($row->peruntukan == "customer"){
+                            $peruntukan='Customer: '.$row->leadsname;
+                        }
+                        if($row->peruntukan == "pop"){
+                            $peruntukan='POP: '.$row->popname;
+                        }
+                        if($row->peruntukan == "server"){
+                            $peruntukan="Server";
+                        }
+                        return $peruntukan;
+                    })
+                    ->rawColumns(['position'])
+                    ->editColumn('ip_type', function ($row) {
+                        if($row->ip_type ==  0){
+                            $ip_type="Privat IP";
+                        }else{
+                            $ip_type="Public IP";
+                        }
+                        return $ip_type;
+                    })
+                    ->editColumn('netID', function ($row) {
+                        $netID=str_replace('/','_',$row->netID);
+                        return $netID;
+                    })
+                    ->make(true);
+            }
+        }
+        if(isset($id)){
+            //echo "id is set";
+            $ids=str_replace("_","/",$id);
+            //dd($id);
+            if ($request->ajax()) {
+                //$data = Accounts::select('*');
+                $data = ipaddress::leftJoin('leads','leads.id','=','ip_address.leadid')
+                ->leftJoin('pops','pops.id','=','ip_address.popid')
+                ->select('ip_address.id as ID' , 'ip_address.name as Name' , 'ip_address.description AS Desk','leads.leadsname','pops.name as popname','ip_address.ip_type as ip_type','ip_address.peruntukan')
+                ->where('ip_address.netID','=',$ids)
+                ->get();
+                //dd($data);
+                return DataTables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('position', function($row){
+                        $peruntukan="";
+                        if($row->peruntukan == "customer"){
+                            $peruntukan='Customer: '.$row->leadsname;
+                        }
+                        if($row->peruntukan == "pop"){
+                            $peruntukan='POP: '.$row->popname;
+                        }
+                        if($row->peruntukan == "server"){
+                            $peruntukan="Server";
+                        }
+                        return $peruntukan;
+                    })
+                    ->rawColumns(['position'])
+                    ->editColumn('ip_type', function ($row) {
+                        if($row->ip_type ==  0){
+                            $ip_type="Privat IP";
+                        }else{
+                            $ip_type="Public IP";
+                        }
+                        return $ip_type;
+                    })
+                    ->editColumn('netID', function ($row) {
+                        $netID=str_replace('/','_',$row->netID);
+                        return $netID;
+                    })
+                    ->make(true);
+            }
+        }
+        
+
+        return view('ipaddr.index',compact('id'));
+    }
+    public function netid(Request $request){
         if ($request->ajax()) {
             //$data = Accounts::select('*');
-            $data = ipaddress::leftJoin('leads','leads.id','=','ip_address.leadid')
-            ->leftJoin('pops','pops.id','=','ip_address.popid')
-            ->select('ip_address.id as ID' , 'ip_address.name as Name' , 'ip_address.description AS Desk','leads.leadsname','pops.name as popname','ip_address.ip_type','ip_address.peruntukan')
+            $data = ipaddress::select('ip_address.netID as Network','ip_address.netID as detail')->groupby('ip_address.netID')
             ->get();
             //dd($data);
             return DataTables::of($data)
                 ->addIndexColumn()
-                ->addColumn('position', function($row){
-                    $peruntukan="";
-                    if($row->peruntukan == "customer"){
-                        $peruntukan='Customer: '.$row->leadsname;
-                    }
-                    if($row->peruntukan == "pop"){
-                        $peruntukan='POP: '.$row->popname;
-                    }
-                    if($row->peruntukan == "server"){
-                        $peruntukan="Server";
-                    }
-                    return $peruntukan;
+                ->editColumn('detail', function ($row) {
+                    $detail=str_replace("/","_",$row->detail);
+                    return $detail;
                 })
-                ->rawColumns(['position'])
                 ->make(true);
         }
 
-        return view('ipaddr.index');
+        return view('ipaddr.netid');
     }
-
-    public function checkip(Request $request){
-        
-        $ip=$request->ipaddress;
+    //public function checkip(Request $request){
+    public function checkip($ip){
+        //echo "checkIP";
+        //dd($ip);
+        //$ip=$request->ipaddress;
         $data = ipaddress::where('ip_address','=',$ip)->count();
+        //dd($data);
         return $data;
     }
     // public function create($id=null)
@@ -64,19 +144,21 @@ class IPAddressController extends Controller
         $range[1] = long2ip((ip2long($range[0])) + pow(2, (32 - (int)$cidr[1])) - 1);
         //var_dump($range);
         $prefix=substr($range[0],0,-1);
-        
+        $netID=$prefix."0/24";
         try {
 
             for($i=0;$i<=255;$i++){
                 if($i==0){
                     $ip= $prefix.$i;
+                    
                     $data=[
                         'ip_address'=>$ip,
                         'name'=>$ip,
                         'description'=>'Network ID',
                         'ip_type'=>$type,
                         'createdbyid'=>$user_id,
-                        'updatedbyid'=>$user_id
+                        'updatedbyid'=>$user_id,
+                        'netID'=>$netID
                     ];
                 }elseif($i==255){
                     $ip= $prefix.$i;
@@ -86,7 +168,8 @@ class IPAddressController extends Controller
                         'description'=>'Broadcast',
                         'ip_type'=>$type,
                         'createdbyid'=>$user_id,
-                        'updatedbyid'=>$user_id
+                        'updatedbyid'=>$user_id,
+                        'netID'=>$netID
                     ];
                 }else{
                     $ip= $prefix.$i;
@@ -96,7 +179,8 @@ class IPAddressController extends Controller
                         'description'=>'',
                         'ip_type'=>$type,
                         'createdbyid'=>$user_id,
-                        'updatedbyid'=>$user_id
+                        'updatedbyid'=>$user_id,
+                        'netID'=>$netID
                     ];
                 }
                
@@ -135,33 +219,77 @@ class IPAddressController extends Controller
         $updatedbyid=User::where('id','=',$ipaddress[0]->updatedbyid)->get();
         $logs=DataLogs::where('moduleid','=',$id)->where('module','=','ipaddress')->orderBy('created_at', 'DESC')->join('users', 'datalogs.createbyid', '=', 'users.id')
         ->select('datalogs.*' ,'users.first_name as firstname', 'users.last_name as lastname')->get();
-        
-        return view('ipaddr.view',compact('ipaddress','createdbyid','updatedbyid','logs'));
+        $netID=str_replace("/","_",$ipaddress[0]->netID);
+        return view('ipaddr.view',compact('ipaddress','createdbyid','updatedbyid','logs','netID'));
     }
 
     public function edit($id){
-        $pops=pops::where('id','=',$id)->get();
-        return view('pops.edit',compact('pops'));
+        $ipaddress=ipaddress::where('id','=',$id)->get();
+        $leads=Leads::select('id','leadsname','property_name')->where('active','=',1)->get();
+        $pops=pops::select('id','name')->get();
+        return view('ipaddr.edit',compact('ipaddress','leads','pops'));
     }
     public function update(Request $request){
         $data=$request->all();
+        //dd($data);
+        switch ($request->peruntukan) {
+            case 'customer':
+                $ndata=[
+                    'name'=>$request->name,
+                    'ip_address'=>$request->name,
+                    'description'=>$request->description,
+                    'leadid'=>$request->leadid,
+                    'popid'=>null,
+                    'ip_type'=>$request->type,
+                    'peruntukan'=>$request->peruntukan,
+                    'updatedbyid'=>$request->updatedbyid
+                ];
+                break;
+            case 'pops':
+                $ndata=[
+                    'name'=>$request->name,
+                    'ip_address'=>$request->name,
+                    'description'=>$request->description,
+                    'leadid'=>null,
+                    'popid'=>$request->popid,
+                    'ip_type'=>$request->type,
+                    'peruntukan'=>$request->peruntukan,
+                    'updatedbyid'=>$request->updatedbyid
+                ];
+                break;
+            default:
+                $ndata=[
+                    'name'=>$request->name,
+                    'ip_address'=>$request->name,
+                    'description'=>$request->description,
+                    'leadid'=>null,
+                    'popid'=>null,
+                    'ip_type'=>$request->type,
+                    'peruntukan'=>$request->peruntukan,
+                    'updatedbyid'=>$request->updatedbyid
+                ];
+                break;
+        }
         
-        
-        unset($data['_token']);
-        $accdata=pops::where('id','=',$request->id)->get();
+        $accdata=ipaddress::where('id','=',$request->id)->get();
         $olddata = json_encode($accdata[0]);
-        $newdata = json_encode($data);
+        $newdata = json_encode($ndata);
         $logs=[
-            'module'=>'Stock_Categories',
+            'module'=>'ipaddress',
             'moduleid'=>$request->id,
             'createbyid'=>Auth::user()->id,
-            'logname'=>'Stock Categories Updated',
+            'logname'=>'IP Address Updated',
             'olddata'=>$olddata,
             'newdata'=>$newdata
         ];
-        $pops=pops::where('id',$request->id)->update($data);
+        $pops=ipaddress::where('id',$request->id)->update($ndata);
         $ids=DataLogs::create($logs);
         /// redirect jika sukses menyimpan data
-         return redirect('pops/view/'.$request->id);
+         //return redirect('ipaddress/view/'.$data->id);
+        $response=[
+            'status'=>'success',
+            'message'=>route('ipaddress.view',$request->id)
+        ];
+        return json_encode($response);
     }
 }

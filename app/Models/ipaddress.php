@@ -17,6 +17,7 @@ class ipaddress extends Model
         'ip_type',
         'peruntukan',
         'createdbyid',
+        'netID',
         'updatedbyid'
     ];
     protected $table = "ip_address";

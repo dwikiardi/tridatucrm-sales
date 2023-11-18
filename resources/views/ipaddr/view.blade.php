@@ -48,7 +48,7 @@
         </div>
         <!-- Page title actions -->
         <div class="col-auto ms-auto d-print-none"> 
-          <a href="{{ url('ipaddress')}}" class="btn btn-light">« Kembali</a>
+          <a href="{{ url('ipaddress')}}/{{$netID}}" class="btn btn-light">« Kembali</a>
           <a href="{{ url('ipaddress/edit',$ipaddress[0]->id)}}" class="btn btn-primary d-none d-sm-inline-block" >
             Update IP Address
           </a>
@@ -67,7 +67,7 @@
                   <div class="col-12">
                     <div class="card">
                       <div class="card-header bg-blue-lt">
-                        <h3 class="card-title"> POP Information</h3>
+                        <h3 class="card-title"> IP Address Information</h3>
                       </div>
                       <div class="card-body row">
                         <div class="col-md-6">
@@ -89,7 +89,11 @@
                           <div class="form-group mb-3 row">
                             <label class="form-label col-3 col-form-label">Type</label>
                             <div class="col">
-                            {{$ipaddress[0]->ip_type}}
+                              @if($ipaddress[0]->ip_type==0)
+                                Private IP
+                              @else
+                                Public IP
+                              @endif
                             </div>
                           </div>
                           <div class="form-group mb-3 row">
@@ -100,7 +104,7 @@
                               @elseif($ipaddress[0]->peruntukan=="pops")
                               <a href='{{$ipaddress[0]->popid}}'>POP </a>
                               @elseif($ipaddress[0]->peruntukan=="leads")
-                              <a href='{{$ipaddress[0]->leadid}}'>POP </a>
+                              <a href='{{$ipaddress[0]->leadid}}'>Customer </a>
                               @else
 
                               @endif
@@ -128,7 +132,7 @@
                     </div>
                     <!-- Page title actions -->
                     <div class="col-auto ms-auto d-print-none"> 
-                    <a href="{{ url('ipaddress')}}" class="btn btn-light">« Kembali</a>  
+                    <a href="{{ url('ipaddress')}}/{{$netID}}" class="btn btn-light">« Kembali</a>
                     <a href="{{ url('ipaddress/edit',$ipaddress[0]->id)}}" class="btn btn-primary d-none d-sm-inline-block" >
                       Update Vendor
                     </a> 
