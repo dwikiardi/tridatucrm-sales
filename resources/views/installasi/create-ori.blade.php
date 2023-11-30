@@ -33,7 +33,7 @@
           </div>
           <div class="card-body row">
             <div class="col-md-6">
-              <div class="form-group mb-3 row">
+            <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Customer</label>
                 <div class="col">
                       <select class="form-select customer" name="customer">
@@ -73,6 +73,7 @@
                 <label class="form-label col-3 col-form-label">Technision</label>
                 <div class="col">
                   <select class="form-select installerid" name="installerid">
+                  <option >-- Select One --</option>
                     @foreach($Users as $user)
                     <option value="{{$user->id}}">{{$user->first_name}} {{$user->last_name}}</option>
                     @endforeach
@@ -113,7 +114,66 @@
               </div>   
           </div>
         </div>
-        
+        <div class="card">
+          <div class="table-responsive"  style="min-height: 150px;">
+          <input type="hidden" class="form-control lsprod" name="lsprod" value='<?php echo json_encode($Stocks); ?>' readonly>
+          <input type="hidden" class="form-control noseri" name="noseri" value='<?php echo json_encode($StocksNoSeri); ?>' readonly>
+          <input type="hidden" class="form-control stockpos" name="stockpos" value='<?php echo json_encode($stockPos); ?>' readonly>
+            <table class="table card-table table-vcenter text-nowrap datatable">
+              <thead> 
+                <tr>
+                  <th>Category</th>
+                  <th>Product ID</th>
+                  <th>Product Name</th>
+                  <th>Qty</th>
+                  <th>Unit</th>
+                  <th>NoSeri</th>
+                  
+                  <!-- <th>Action</th> -->
+                </tr>
+              </thead>
+              <tbody class='listItem'>
+                <?php
+                $i=1;
+                ?>
+                @foreach($Category as $cat)
+                <tr>
+                  <td><input class="catID{{$i}}" type="hidden" name="catID[{{$i}}]" value="{{$i}}">{{$cat->category_name}}</td>
+                  <td><select class="form-select stockid stockid-{{$cat->id}}" name="stockid[{{$cat->id}}]">
+                  <option >-- Select One --</option>
+                      @foreach($mstock as $stock)
+                        @if($stock->categoryid == $cat->id)
+                            <option data-dtl='{{$cat->id}}|{{ $stock->stockname}}||{{ $stock->unit}}|{{ $stock->stockid}}' value="{{ $stock->id }}">{{ $stock->stockid}}</option>
+                        @endif
+                      @endforeach
+                    </select></td>
+                  <td><input class="name-{{$cat->id}}" type="text" name="ProductName[]" value=""></td>
+                  <td><input class="qty-{{$cat->id}}" type="text" name="qty[]" value="1"></td>
+                  <td><input class="unit-{{$cat->id}}" type="text" name="unit[]" value=""readonly></td>
+                  <td><select class="select2-multiple form-control lsseri lsseri-{{$cat->id}}" name="lsseri[{{$cat->id}}][]" multiple="multiple" > </select>
+                  </td>
+                  
+                </tr>
+                <?php
+                $i++;
+                ?>
+                @endforeach
+
+              </tbody>
+              <!-- <tfooter>
+                <tr class="index">
+                  <td>&nbsp;</td>
+                  <td>
+                  <input type="hidden" class="form-control indexs" name="indexs" value="0" readonly><a href="#" class="addrows  btn btn-primary">add New Rows</a>
+                  </td>
+                </tr>
+              </tfooter> -->
+              
+              
+            </table>
+          </div>
+            
+        </div>
         
       </div>
       
@@ -148,7 +208,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 
 <script type="text/javascript">
   $(function () {
@@ -172,7 +232,27 @@
     });
     $('.date').datetimepicker({format: 'DD/MM/YYYY',defaultDate:'now' });
     
-   
+    $(document).on("change",'.stockid', function () {
+      var option = $('option:selected', this).attr('data-dtl');
+      var options=option.split("|");
+      console.log(options[0]);
+      
+      $('.name-'+options[0]).val(options[1]);
+      $('.unit-'+options[0]).val(options[3]);
+      $('.qty-'+options[0]).focus();
+      
+      var series=JSON.parse($('.noseri').val());
+      var stockid=$('option:selected', this).val();
+      
+      $(series).each(function(index, value){ //loop through your elements  
+        if(value.stockid == stockid){
+          $('.lsseri-'+options[0]).append($('<option>', { 
+              value: value.noseri,
+              text : value.noseri 
+          }));
+        }
+      });  
+    });
     $('.process').on("click",function(){
       //var mydata=$('#myform').serializeArray();
       var mydata = $('#myform').serializeArray();
@@ -188,14 +268,14 @@
         data: mydata,
         success: function( response ) {
           // $('.process').removeAttr('disabled');
-          const obj = JSON.parse(response);
-          if(obj.status ==="success"){
-            window.location.href = obj.message;
-          }
-          if(obj.status ==="failed"){
-            alert(obj.message);
-          }
-          //console.log(response);
+          // const obj = JSON.parse(response);
+          // if(obj.status ==="success"){
+          //   window.location.href = obj.message;
+          // }
+          // if(obj.status ==="failed"){
+          //   alert(obj.message);
+          // }
+          console.log(response);
         }
       });
     });

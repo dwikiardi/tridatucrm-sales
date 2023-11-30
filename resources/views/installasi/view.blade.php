@@ -1,21 +1,26 @@
 @extends('layouts/admin')
-@section('title','Create New Order')
+@section('title','Detail Instalation')
 
 @section('content_header')
 
-<!-- <form action="{{ route('order.store') }}" method="POST" enctype="multipart/form-data" id="myform">    -->
+
     <div class="page-header d-print-none">
       <div class="row align-items-center">
         <div class="col">
           <!-- Page pre-title -->
           <div class="page-pretitle">
-          <h1 class="m-0 text-dark">Create New Order </h1>
+          <h1 class="m-0 text-dark"> Instalation </h1>
           </div>
           
         </div>
         <!-- Page title actions -->
         <div class="col-auto ms-auto d-print-none"> 
-          <a href="{{ url('order')}}" class="btn btn-light">« Kembali</a> 
+          <a href="{{ url('installasi/edit')}}/{{ $Instalation[0]->id}}" class="btn btn-primary d-none d-sm-inline-block">
+            <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+            Edit Installasi
+          </a>
+          <a href="{{ url('installasi')}}" class="btn btn-light">« Kembali</a> 
         </div>
       </div>
     </div>
@@ -28,28 +33,26 @@
       <div class="col-12">
         <div class="card">
           <div class="card-header bg-blue-lt">
-            <h3 class="card-title"> Order's Information</h3>
+            <h3 class="card-title"> Instalation's Information</h3>
           </div>
           <div class="card-body row">
             <div class="col-md-6">
-              
               <div class="form-group mb-3 row">
-                <label class="col-3">Orders Name</label>
-                <div class="col">
-                  {{$order[0]->ordername}}
+                <label class="form-label col-3 col-form-label">Customer</label>
+                <div class="col" style="margin-top: 6px;">
+                     {{ $Instalation[0]->customer}}
+                </div>
+              </div>   
+              <div class="form-group mb-3 row">
+                <label class="form-label col-3 col-form-label">Address</label>
+                <div class="col" style="margin-top: 6px;">
+                {{$Instalation[0]->address}}
                 </div>
               </div>
               <div class="form-group mb-3 row">
-                <label class="col-3">Suppiler Inv.No</label>
-                <div class="col">
-                {{$order[0]->supno}}
-                </div>
-              </div>
-             
-              <div class="form-group mb-3 row">
-                <label class="col-3">Date</label>
-                <div class="col">
-                {{ date('d/m/Y', strtotime($order[0]->orderdate)) }}
+                <label class="form-label col-3 col-form-label">Date</label>
+                <div class="col" style="margin-top: 6px;">
+                  {{$Instalation[0]->date}}
                 </div>
                 
               </div>
@@ -57,106 +60,40 @@
             </div>
             <div class="col-md-6">
               <div class="form-group mb-3 row">
-                <label class="col-3">Vendors</label>
-                <div class="col">
-                    {{ $Vendor[0]->vendor_name}}
-                      
+                <label class="form-label col-3 col-form-label">Technision</label>
+                <div class="col" style="margin-top: 6px;">
+                {{$Instalation[0]->teknisia}} {{$Instalation[0]->teknisib}}
                 </div>
-              </div>    
+              </div>
+                  
               <div class="form-group mb-3 row">
-                <label class="col-3">Address</label>
-                <div class="col">
-                {{$Vendor[0]->address}},{{$Vendor[0]->city}},{{$Vendor[0]->state}},{{$Vendor[0]->country}}
+                <label class="form-label col-3 col-form-label">Note</label>
+                <div class="col" style="margin-top: 6px;">
+                {{$Instalation[0]->note}}
                 </div>
-              </div>  
-              <div class="form-group mb-3 row">
-                <label class="col-3">Note</label>
-                <div class="col">
-                {{$order[0]->note}}
               </div>  
               
             </div>
           </div>
-        </div>
-        <div class="card">
-          <div class="table-responsive"  style="min-height: 150px;">
-          <input type="hidden" class="form-control lsnoseri" name="lsnoseri" placeholder="List NoSeri" value="{{$serial}}">
-            <table class="table card-table table-vcenter text-nowrap datatable">
-              <thead>
-                <tr>
-                  <th>Product ID</th>
-                  <th>Product Name</th>
-                  <th>Qty</th>
-                  <th>Price</th>
-                  <th>Unit</th>
-                  <th>Total</th>
-                  
-                  <!-- <th>Action</th> -->
-                </tr>
-              </thead>
-              <tbody class='listItem'>
-                @foreach($details as $detail)
-                
-                <tr class="ix">
-                  <td>
-                    {{$detail->Stockcode}}
-                  </td>
-                  <td>{{ $detail->stockname }}</td>
-                  <td>{{ $detail->qty}}<br>
-                    @if($detail->qtytype==1)
-                    <a href="#" class="seelist " data-ix="{{$detail->StockId}}">see list</a>
-                    @endif
-                    
-                  </td>
-                  <td>{{ $detail->hpp}}</td>
-                  <td>{{ $detail->unit}}</td>
-                  <td style="text-align:right;">{{number_format(($detail->qty * $detail->hpp), 2)}}</td>
-                </tr>
-                @endforeach
-              </tbody>
-              
-              <tfooter>
-              <tr>
-                  <td colspan=4>&nbsp;</td>
-                  <td >Total</td>
-                  <td colspan=1 style="text-align:right;">
-                  {{number_format($order[0]->subtotal, 2)}}
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan=4>&nbsp;</td>
-                  <td >Shipping Cost</td>
-                  <td colspan=1 style="text-align:right;">
-                  {{number_format($order[0]->shipping, 2)}}
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan=4>&nbsp;</td>
-                  <td >TAX</td>
-                  <td colspan=1 style="text-align:right;">
-                  {{number_format($order[0]->tax, 2)}}
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan=4>&nbsp;</td>
-                  <td >Diskon</td>
-                  <td colspan=1 style="text-align:right;">
-                  {{number_format($order[0]->discount, 2)}}
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan=4>&nbsp;</td>
-                  <td >Grand Total</td>
-                  <td colspan=1 style="text-align:right;">
-                  {{number_format($order[0]->total, 2)}}
-                  </td>
-                </tr>
-                
-              </tfooter>
-              
-            </table>
+          <div class="card-body row">
+            <div class="col-12">
+              <div class="form-group col-md-6 row">
+                <label class="form-label col-3 col-form-label">IP Address</label>
+                <div class="col">
+                <div class="col" style="margin-top: 6px;">
+                {{$Instalation[0]->ips}} 
+                </div>
+                </div>
+              </div>   
+              <div class="form-group col-md-6 row">
+                <label class="form-label col-3 col-form-label">POP </label>
+                <div class="col">
+                <div class="col" style="margin-top: 6px;">
+                {{$Instalation[0]->pops}}
+                </div>
+                </div>
+              </div>   
           </div>
-            
         </div>
         
       </div>
@@ -173,41 +110,13 @@
       </div>
       <!-- Page title actions -->
       <div class="col-auto ms-auto d-print-none"> 
-      <a href="{{ url('leads')}}" class="btn btn-light">« Kembali</a> 
+      <a href="{{ url('installasi')}}" class="btn btn-light">« Kembali</a> 
       </div>
     </div>
   </div>
 </div>
 <!-- </form> -->
-<!-- Modal -->
-<div class="modal fade" id="popup" tabindex="-1" role="dialog" aria-labelledby="popupLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="popupLabel">Input Serial Number</h5>
-        <td><input type="hidden" class="form-control sindex sindex-0" name="sindex"  readonly></td>
-      </div>
-      <div class="modal-body">
-              <table class="table card-table ">
-                <thead>
-                  <tr>
-                  <th>Stock Code</th><th>Serial Number</th>
-                  </tr>
-                </thead>
-                <tbody class="lsSerial">
 
-                </tbody>
-                
-              </table>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary saveserial" >Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-<button type="button" class="btn btn-primary hide modal-btn" data-toggle="modal" data-target="#popup">
-</button>
 @stop
 @push('js')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -219,72 +128,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">
 <script type="text/javascript">
   $(function () {
-    
-  
-    $('.saveserial').on('click',function () {
-      $(".modal-btn").click();
-    });
-    $('.date').datetimepicker({format: 'DD/MM/YYYY',defaultDate:'now' });
-    //$('.stockid').on("change", function () {
-   
-    $(document).on('click','.seelist',function () {
-      console.log('see list');
-      var ix=$(this).attr('data-ix');
-      var data=JSON.parse($('.lsnoseri').val());
-      var list="";
-      data.forEach(function(item) {
-        if(item.stockid==ix){
-          list= list + '<tr><td>'+ item.stockcode +'</td><td>'+ item.serial +'</td></tr>';
-        }
-      });
-      
-        
-          // var datals=exsist.split(',');
-          // for(let i=0;i<arr;i++){
-          //   list= list + '<tr><td><input type="text" class="form-control list list-0" name="list['+i+']" placeholder="Serial Number" value="'+ datals[i] +'"></td></tr>';
-          // }
-        
-        $('.lsSerial').empty();
-        $('.lsSerial').append(list);
-        $('.sindex').empty();
-        $('.sindex').val(ix);
-        $(".modal-btn").click(); 
-        //callModals();
-    });
-    
-    $('#popup').modal({
-      backdrop: 'static',
-      keyboard: false  // to prevent closing with Esc button (if you want this too)
-    });
-    
-    $(document).on("input propertychange",'.tax', function () {
-      summaries();
-    });
-    $(document).on("input propertychange",'.shipping', function () {
-      summaries();
-    });
-    $(document).on("input propertychange",'.diskon', function () {
-      summaries();
-    });
-    function calculates(params) {
-      var a =$('.qty-' + params).val();
-      var b =$('.price-' + params).val();
-      return (a * b);
-    }
-    function summaries() {
-      let total=0;
-      $('.total').each(function(){
-        //console.log(this.value);
-        total= total + parseInt(this.value);
-      });
-      $('.totals').val(total);
-      //console.log(total);
-      var shipping=parseInt($('.shipping').val());
-      var tax=parseInt($('.tax').val());
-      var diskon=parseInt($('.diskon').val());
-      var gtt=total + shipping + tax - diskon;
-      $('.gtt').val(gtt);
-    }
     
 
   });

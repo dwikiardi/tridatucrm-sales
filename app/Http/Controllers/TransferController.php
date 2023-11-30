@@ -55,7 +55,7 @@ class TransferController extends Controller
         //dd($request);
         /// insert setiap request dari form ke dalam database via model
         /// jika menggunakan metode ini, maka nama field dan nama form harus sama
-        $transfer_id=$this->getNoorder('TP');
+        $transfer_id=$this->getNoorder('TPI');
         $old_date = explode('/', $request->transfer_date); 
         $date = $old_date[2].'-'.$old_date[1].'-'.$old_date[0];
         $status="success";
@@ -71,7 +71,6 @@ class TransferController extends Controller
             'note'=>$request->note,
             'createdbyid'=>$request->createdbyid,
             'updatedbyid'=>$request->updatedbyid,
-            'transcation_number'=>$transfer_id,
         ];
         
         try {
@@ -83,6 +82,14 @@ class TransferController extends Controller
         $tID=$Transfer->id;
         //var_dump($data);
         //$orderid="1";
+        switch ($request->from) {
+            case 'purchase':
+                $transtype=1;
+                break;
+            case 'staff':
+                $transtype=2;
+                break;
+        }
         $items=$request->Item_List;
         foreach ($items as $item) {
             $lsitem=[
@@ -139,14 +146,7 @@ class TransferController extends Controller
                         $status="failed";
                         $msg=$msg." ".$e->getMessage();
                     }
-                    switch ($request->from) {
-                        case 'purchase':
-                            $transtype=1;
-                            break;
-                        case 'staff':
-                            $transtype=2;
-                            break;
-                    }
+                    
                     $seriallogs=[
                         'stockid'=>$item['stockid'],
                         'stockcode'=>$item['stockcode'],
@@ -193,19 +193,20 @@ class TransferController extends Controller
                     }
                     
                 }
-                // $seriallogs=[
-                //     'stockid'=>$item['stockid'],
-                //     'stockcode'=>$item['stockcode'],
-                //     'serial'=>$serial,
-                //     'qty'=>1,
-                //     'transtype'=>$transtype,
-                //     'module'=>'transfer',
-                //     'moduleid'=>$tID,
-                //     'note'=>$request->note,
-                //     'createdbyid'=>$request->createdbyid,
-                //     'updatedbyid'=>$request->updatedbyid,
-                // ];
-                // $logslist=StockLogs::create($seriallogs);
+                $seriallogs=[
+                    'stockid'=>$item['stockid'],
+                    'stockcode'=>$item['stockcode'],
+                    'serial'=>'',
+                    'qty'=>$item['qty'],
+                    'transtype'=>$transtype,
+                    'module'=>'transfer',
+                    'moduleid'=>$tID,
+                    'note'=>$request->note,
+                    'createdbyid'=>$request->createdbyid,
+                    'updatedbyid'=>$request->updatedbyid,
+                    'transcation_number'=>$transfer_id,
+                ];
+                $logslist=StockLogs::create($seriallogs);
             }
             
         }
@@ -319,7 +320,7 @@ class TransferController extends Controller
         //dd($request);
         /// insert setiap request dari form ke dalam database via model
         /// jika menggunakan metode ini, maka nama field dan nama form harus sama
-        $transfer_id=$this->getNoorder('TP');
+        $transfer_id=$this->getNoorder('TPO');
         $old_date = explode('/', $request->transfer_date); 
         $date = $old_date[2].'-'.$old_date[1].'-'.$old_date[0];
         $status="success";

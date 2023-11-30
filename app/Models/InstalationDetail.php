@@ -15,6 +15,10 @@ class InstalationDetail extends Model
         'stockcode',
         'serial',
         'qty',
+        'status',
+        'instaled',
+        'instaledserial',
+        'installedqty',
     ];
     protected $table = "installationdtl";
 }

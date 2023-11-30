@@ -17,9 +17,14 @@ return new class extends Migration
             $table->bigInteger('category')->default(1);//Product Category
             $table->bigInteger('stockid');
             $table->string('stockcode')->nullable();
-            $table->string('serial')->nullable();
-            $table->integer('qty')->default(0);
+            $table->text('serial')->nullable();
+            $table->integer('qty')->nullable()->default(0);
+            $table->boolean('status')->nullable()->default(1);//1:dipinjamkan, 0:dijual
+            $table->boolean('instaled')->nullable()->default(1);//1:terpasang , 0:tidak
+            $table->string('instaledserial')->nullable();
+            $table->integer('installedqty')->nullable()->default(0);
             $table->timestamps();
+
         });
     }
 

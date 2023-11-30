@@ -198,4 +198,11 @@ Route::group(['middleware' => 'auth'], function () {
      Route::get('installasi/view/{id}', [InstallController::class, 'view'])->name('installasi.view');
      Route::get('installasi/edit/{id}', [InstallController::class, 'edit'])->name('installasi.edit');
      Route::post('installasi/update/', [InstallController::class, 'update'])->name('installasi.update');
+     Route::get('installasi/process/{id}', [InstallController::class, 'process'])->name('installasi.process');
+     Route::post('installasi/reprocess/', [InstallController::class, 'reprocess'])->name('installasi.reprocess');
+     Route::get('installasi/finish/{id}', [InstallController::class, 'finish'])->name('installasi.finish');
+     Route::post('installasi/refinish/', [InstallController::class, 'refinish'])->name('installasi.refinish');
+     Route::get('installasi/printjo/{id}', [InstallController::class, 'printjo'])->name('installasi.printjo');
+     Route::get('installasi/installed/{id}', [InstallController::class, 'installed'])->name('installasi.installed');
+     Route::get('installasi/cancel/{id}', [InstallController::class, 'cancel'])->name('installasi.cancel');
 });

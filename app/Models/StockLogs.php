@@ -19,6 +19,7 @@ class StockLogs extends Model
         'note',
         'createdbyid',
         'updatedbyid',
+        'transcation_number',
     ];
     protected $table = "stock_logs";
 }

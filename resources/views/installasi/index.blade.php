@@ -95,34 +95,34 @@
         serverSide: true,
         ajax: "{{ route('installasi.index') }}",
         columns: [
-          {data: 'NoInstalltion', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+          {data: 'NoInstallation', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('installasi/view')}}/"+oData.ID+"'>"+oData.NoInstalltion+"</a>");
+                $(nTd).html(oData.NoInstallation);
               }
             },
             {data: 'Date', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('installasi/view')}}/"+oData.ID+"'>"+oData.Date+"</a>");
+                $(nTd).html(oData.Date);
               }
             },
             {data: 'customer', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('installasi/view')}}/"+oData.ID+"'>"+oData.customer+"</a>");
+                $(nTd).html(oData.customer);
               }
             },
-            {data: 'InstalltionBy', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+            {data: 'InstallationBy', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('installasi/view')}}/"+oData.ID+"'>"+oData.InstalltionBy+"</a>");
+                $(nTd).html(oData.InstallationBy);
               }
             },
             {data: 'Note', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('installasi/view')}}/"+oData.ID+"'>"+oData.Note+"</a>");
+                $(nTd).html(oData.Note);
               }
             },
             {data: 'status', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('installasi/view')}}/"+oData.ID+"'>"+oData.status+"</a>");
+                $(nTd).html(oData.status);
               }
             },
             

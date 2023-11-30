@@ -116,16 +116,46 @@
                       <a class="dropdown-item" href="{{url('surveys')}}" >
                         Survey's
                       </a>
-                      <a class="dropdown-item" href="{{url('installasi')}}" >
+                      <div class="dropend">
+                        <a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
                         Instalations
-                      </a>
-                      <a class="dropdown-item" href="{{url('revocation')}}" >
+                        </a>
+                        <div class="dropdown-menu">
+                          <a class="dropdown-item" href="{{url('installasi')}}" >
+                            NOC
+                          </a>
+                          <a class="dropdown-item" href="{{url('installasi')}}" >
+                            Sales
+                          </a>
+                        </div>
+                      </div>
+                      <div class="dropend">
+                        <a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
                         Revocation
-                      </a>
-                      <a class="dropdown-item" href="{{url('maintenance')}}" >
+                        </a>
+                        <div class="dropdown-menu">
+                          <a class="dropdown-item" href="{{url('revocation')}}" >
+                            Technician
+                          </a>
+                          <a class="dropdown-item" href="{{url('revocation')}}" >
+                            Sales
+                          </a>
+                        </div>
+                      </div>
+                      <div class="dropend">
+                        <a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
                         Maintenance's
-                      </a>
-
+                        </a>
+                        <div class="dropdown-menu">
+                          <a class="dropdown-item" href="{{url('maintenance')}}" >
+                            NOC
+                          </a>
+                          <a class="dropdown-item" href="{{url('maintenance')}}" >
+                            Technition
+                          </a>
+                        </div>
+                      </div>
+                      
                       <hr style="padding:0!important;margin:0!important">
                       
                       
@@ -190,18 +220,53 @@
                         Lokasi POP
                       </a>
                       <hr style="padding:0!important;margin:0!important">
+                      <div class="dropend">
+                        <a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
+                        Transfer In
+                        </a>
+                        <div class="dropdown-menu">
+                          <a class="dropdown-item" href="{{url('transfer_in')}}" >
+                            From Puschasing
+                          </a>
+                          <a class="dropdown-item" href="{{url('installations')}}" >
+                            Installation
+                          </a>
+                          <a class="dropdown-item" href="{{url('revocation')}}" >
+                            Revocation
+                          </a>
+                          <a class="dropdown-item" href="{{url('maintenances')}}" >
+                            Maintenance
+                          </a>
+                        </div>
+                      </div>
+                      <div class="dropend">
+                        <a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
+                        Transfer Out
+                        </a>
+                        <div class="dropdown-menu">
+                          <a class="dropdown-item" href="{{url('transfer_out')}}" >
+                            Sales
+                          </a>
+                          <a class="dropdown-item" href="{{url('transfer_out')}}" >
+                            Installation
+                          </a>
+                          <a class="dropdown-item" href="{{url('transfer_out')}}" >
+                            Maintenance
+                          </a>
+                        </div>
+                      </div>
                       <!-- <a class="dropdown-item" href="{{url('po')}}" >
                         Purchase Orders
                       </a> -->
                       <!-- <a class="dropdown-item" href="{{url('order')}}" >
                         Transfer In (Purchase)
                       </a> -->
-                      <a class="dropdown-item" href="{{url('transfer_in')}}" >
+                      <!-- <a class="dropdown-item" href="{{url('transfer_in')}}" >
                         Transfer In (to Storage)
                       </a>
                       <a class="dropdown-item" href="{{url('transfer_out')}}" >
                         Transfer Out (from Storage)
-                      </a>
+                      </a> -->
                       <a class="dropdown-item" href="{{url('report')}}" >
                         Inventory Reports
                       </a>
