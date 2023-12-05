@@ -19,6 +19,10 @@ use App\Models\StocksNoSeri;
 
 use DB;
 use DataTables;
+use PDF;
+use URL;
+use Storage;
+use File;
 
 
 class InstallController extends Controller
@@ -44,13 +48,13 @@ class InstallController extends Controller
                             $actionBtn = $actionBtn . '<a class="cancel btn btn-danger btn-sm" data-id="'.$row->ID.'" href="'. route('installasi.cancel',$row->ID) .'">Cancel</a> ';
                             break;
                         case '2':
-                            $actionBtn = '<a class="printjo btn btn-primary btn-sm" data-id="'.$row->ID.'" href="'. route('installasi.printjo',$row->ID) .'">Job Order</a> ';
+                            $actionBtn = '<a class="printjo btn btn-primary btn-sm" data-id="'.$row->ID.'" ">Job Order</a> ';
                             $actionBtn = $actionBtn . '<a  class="finish btn btn-success btn-sm" data-id="'.$row->ID.'" href="'. route('installasi.finish',$row->ID) .'">Finish</a> ';
                             $actionBtn = $actionBtn . '<a class="cancel btn btn-danger btn-sm" data-id="'.$row->ID.'" href="'. route('installasi.cancel',$row->ID) .'">Cancel</a> ';
                             break;
                         case '3':
                             $actionBtn="";
-                            $actionBtn = $actionBtn . '<a class="prininstal btn btn-primary btn-sm" data-id="'.$row->ID.'" href="'. route('installasi.installed',$row->ID) .'">Report</a> ';
+                            $actionBtn = $actionBtn . '<a class="prininstal btn btn-primary btn-sm" data-id="'.$row->ID.'" >Report</a> ';
                             break;
                         default:
                             # code...
@@ -116,7 +120,7 @@ class InstallController extends Controller
         // dd($request);
         /// insert setiap request dari form ke dalam database via model
         /// jika menggunakan metode ini, maka nama field dan nama form harus sama
-        $installation_id=$this->getNoorder('TP');
+        $installation_id=$this->getNoorder('INS');
         $old_date = explode('/', $request->installasidate); 
         $date = $old_date[2].'-'.$old_date[1].'-'.$old_date[0];
         $status="success";
@@ -332,9 +336,10 @@ class InstallController extends Controller
         $installerid=$Instalation[0]->installerid;
         $InItem=array();
         $rows=$request->row;
+        //set Detail Item For Instalation
         for($i=0;$i<$rows;$i++){
-            //save per line item of Instalasi
-            if($request->qty[$i] >0){
+            //save per line item of Instalasi if qty is not 0
+            if($request->qty[$i] >0 || $request->qty[$i]!='' || $request->qty[$i]!=null){
                 $items=[
                     'noinstall'=>$noinstall,
                     'category'=>$request->catID[$i],
@@ -343,15 +348,6 @@ class InstallController extends Controller
                     'qty'=>$request->qty[$i],
                     'status'=>$request->status[$i]
                 ];
-            // }else{
-            //     $items=[
-            //         'noinstall'=>$noinstall,
-            //         'category'=>$request->catID[$i],
-            //         'stockid'=>$request->stockid[$i],
-            //         'serial'=>$request->mserial[$i],
-            //         'qty'=>$request->qty[$i],
-            //         'status'=>$request->status[$i]
-            //     ];
            
                 $InItem[]=$items;
                 try {
@@ -374,7 +370,7 @@ class InstallController extends Controller
                 }
             }
         }
-        $insUpd=[ 'status'=>2 ];
+        $insUpd=[ 'status'=>2,'processbyid'=>Auth::user()->id];
         $updInst=Instalation::where('installation.id','=',$request->id)->update($insUpd);
         $newdata="";
         $newIns=Instalation::where('installation.id','=',$request->id)->get();
@@ -404,19 +400,6 @@ class InstallController extends Controller
         
     }
     
-    public function cancel($id)
-    {
-        $Users=User::select('id','first_name','last_name')->get();
-        $Customers=Leads::select('id','property_name','property_address')->get();
-        $pops=pops::get();
-        $ipaddress=ipaddress::where('peruntukan','=','')->orWhere('peruntukan', '=', null)->get();
-        $Instalation=Instalation::join('leads','leads.id','=','installation.leadid')
-        ->select('installation.*','leads.property_address as address')
-        ->where('installation.id','=',$id)->get();
-        //dd($Instalation);
-        return view('installasi.edit',compact('Users','Customers','ipaddress','pops','Instalation'));
-    }
-
     public function finish($id){
         //dd($id);
         $Instalation=Instalation::join('leads','leads.id','=','installation.leadid')
@@ -446,7 +429,7 @@ class InstallController extends Controller
         $date = $old_date[2].'-'.$old_date[1].'-'.$old_date[0];
         $status="success";
         $msg="";
-        //dd($olddata[0]->ipid != $request->ipaddr);
+        // //dd($olddata[0]->ipid != $request->ipaddr);
         if($olddata[0]->ipid != $request->ipaddr){
             //reset old IP data
             $IPAdd=ipaddress::where('id','=',$olddata[0]->ipid)->get();
@@ -490,19 +473,14 @@ class InstallController extends Controller
 
 
         //Update Instalation Detail
-        //'status',
-        //'instaled',
-        //'instaledserial',
-        //'installedqty',
-
         $InItem=array();
         $rows=$request->row;
         if ($rows==1){
             $rowID=$request->detail[0];
             $ditem=[
                 'status'=>$request->status[$rowID],
-                'instaledserial'=>$request->status[$rowID],
-                'installedqty'=>$request->status[$rowID],
+                'instaledserial'=>count($request->installserial[$rowID]),
+                'installedqty'=>$request->qty[$rowID],
             ];
             // $InItem[]=$ditem;
             try {
@@ -511,15 +489,25 @@ class InstallController extends Controller
                 $status="failed";
                 $msg=$msg." ".$e->getMessage();
             }
+            //Stock type is serial
             if($request->qtytype[$rowID] == 1 ){
-                //untuk semua list item yang memiliki nomor seri pindahkan status dari gudang ke teknisi
+                //Installed Serial Number Set To Customer/leads
                 $serials=$request->installserial[$rowID];
+                $lsserial=[
+                    'posmodule'=>'leads',
+                    'module_id'=>$leadid,
+                ];
                 foreach($serials as $noseri){
-                    $lsserial=[
-                        'posmodule'=>'leads',
-                        'module_id'=>$leadid,
-                    ];
+                    
                     $setnoseri=StocksNoSeri::where('noseri','=',$noseri)->update($lsserial);
+                }
+                //Un Installed Serial Number return To Storage
+                $uninstall= $Installation=InstalationDetail::where('id','=',$rowID)->get();
+                $lsuninstall=explode(',',$uninstall[0]->serial);
+                $rnoseri=array_diff($lsuninstall,$serials);
+                $returnit=['posmodule'=>'storage', 'module_id'=>0,];
+                foreach ($rnoseri as $rtnoseri) {
+                    $returnNoseri=StocksNoSeri::where('noseri','=',$rtnoseri)->update($returnit);
                 }
                 
             }
@@ -527,13 +515,52 @@ class InstallController extends Controller
             foreach ($request->detail as  $value) {
                 // $rowID=$request->detail[$value];
                 echo "<br> ID : ".$value;
+                $rowID=$value;
+                if($request->qtytype[$rowID] == 1 ){
+                    $instaledserial=count($request->installserial[$rowID]);
+                }else{
+                    $instaledserial=0;
+                }
+                $ditem=[
+                    'status'=>$request->status[$rowID],
+                    'instaledserial'=>$instaledserial,
+                    'installedqty'=>$request->qty[$rowID],
+                ];
+                
+                // $InItem[]=$ditem;
+                try {
+                    $Installation=InstalationDetail::where('id','=',$rowID)->update($ditem);
+                }  catch (\Exception $e) {
+                    $status="failed";
+                    $msg=$msg." ".$e->getMessage();
+                }
+                if($request->qtytype[$rowID] == 1 ){
+                    //Set Installser No Seri From Teknisi to Customer/Lead
+                    $serials=$request->installserial[$rowID];
+                    $lsserial=[
+                        'posmodule'=>'leads',
+                        'module_id'=>$leadid,
+                    ];
+                    foreach($serials as $noseri){
+                        $setnoseri=StocksNoSeri::where('noseri','=',$noseri)->update($lsserial);
+                    }
+                    //Un Installed Serial Number return To Storage
+                    $uninstall= $Installation=InstalationDetail::where('id','=',$rowID)->get();
+                    $lsuninstall=explode(',',$uninstall[0]->serial);
+                    $rnoseri=array_diff($lsuninstall,$serials);
+                    $returnit=['posmodule'=>'storage', 'module_id'=>0,];
+                    foreach ($rnoseri as $rtnoseri) {
+                        $returnNoseri=StocksNoSeri::where('noseri','=',$rtnoseri)->update($returnit);
+                    }
+                    
+                }
             }
-            dd('here');
+            //dd($request);
         }
         
         //End Update
 
-        //Set Main Update
+        // //Set Main Update
         $data=[
             'ipid'=>$request->ipaddr,
             'popid'=>$request->pops,
@@ -575,10 +602,170 @@ class InstallController extends Controller
 
     }
     public function printjo($id){
-        dd($id);
+        $instalation=Instalation::join('leads','leads.id','=','installation.leadid')
+        ->join('users','users.id','=','installation.installerid')
+        ->join('ip_address','ip_address.id','=','installation.ipid')
+        ->join('pops','pops.id','=','installation.popid')
+        ->select('installation.*','users.first_name as teknisia','users.last_name as teknisib','ip_address.ip_address as ips','pops.name as pops',
+        'leads.property_name as contact','leads.property_address as address','leads.property_city as city','leads.pic_contact as contactname','leads.pic_mobile as contactmobile')
+        ->where('installation.id','=',$id)->get();
+
+        $detail=InstalationDetail::join('stocks','stocks.id','=','installationdtl.stockid')
+        ->select('installationdtl.*','stocks.stockname as stocknames','stocks.stockid as stockcodename','stocks.unit as unit','stocks.qtytype as type')
+        ->where('installationdtl.noinstall','=',$instalation[0]->noinstall)->get();
+        
+        $fileName=str_replace('/','_',$instalation[0]->noinstall) . '.pdf';
+        //dd(File::exists( URL::to('/storage/app/public/pdf/'.$fileName)));
+        if (File::exists( URL::to('/storage/app/public/pdf/'.$fileName))){
+            $returnfile= URL::to('/storage/app/public/pdf/'.$fileName);
+            $results=array(
+                'status'=>'exist',
+                'file'=>$returnfile
+            );
+        }else{
+            $pdf = PDF::loadView('installasi.printjo', compact('instalation','detail'));
+            $content=$pdf->download($fileName);
+            Storage::put('public/pdf/'.$fileName ,$content) ;
+            $path = storage_path('app/public/pdf/'.$fileName);
+            $returnfile= URL::to('/storage/app/public/pdf/'.$fileName);
+            $results=array(
+                'status'=>'success',
+                'file'=>$returnfile
+            );
+        }
+        
+
+        return json_encode($results);        
+        // return view('installasi.printjo',compact('instalation','detail'));
     }
+    
     public function installed($id){
-        dd($id);
+        $instalation=Instalation::join('leads','leads.id','=','installation.leadid')
+        ->join('users','users.id','=','installation.installerid')
+        ->join('ip_address','ip_address.id','=','installation.ipid')
+        ->join('pops','pops.id','=','installation.popid')
+        ->select('installation.*','users.first_name as teknisia','users.last_name as teknisib','ip_address.ip_address as ips','pops.name as pops',
+        'leads.property_name as contact','leads.property_address as address','leads.property_city as city','leads.pic_contact as contactname','leads.pic_mobile as contactmobile')
+        ->where('installation.id','=',$id)->get();
+
+        $detail=InstalationDetail::join('stocks','stocks.id','=','installationdtl.stockid')
+        ->select('installationdtl.*','stocks.stockname as stocknames','stocks.stockid as stockcodename','stocks.unit as unit','stocks.qtytype as type')
+        ->where('installationdtl.noinstall','=',$instalation[0]->noinstall)->get();
+        
+        $fileName=str_replace('/','_',$instalation[0]->noinstall) . '.pdf';
+        //dd(File::exists( URL::to('/storage/app/public/pdf/'.$fileName)));
+        if (File::exists( URL::to('/storage/app/public/pdf/'.$fileName))){
+            $returnfile= URL::to('/storage/app/public/pdf/'.$fileName);
+            $results=array(
+                'status'=>'exist',
+                'file'=>$returnfile
+            );
+        }else{
+            $pdf = PDF::loadView('installasi.report', compact('instalation','detail'));
+            $content=$pdf->download($fileName);
+            Storage::put('public/pdf/'.$fileName ,$content) ;
+            $path = storage_path('app/public/pdf/'.$fileName);
+            $returnfile= URL::to('/storage/app/public/pdf/'.$fileName);
+            $results=array(
+                'status'=>'success',
+                'file'=>$returnfile
+            );
+        }
+        
+
+        return json_encode($results);   
+    }
+
+    public function cancel($id)
+    {
+        $Instalation=Instalation::where('id','=',$id)->get(); 
+        $InstalationDetail=InstalationDetail::join('stocks','stocks.id','=','installationdtl.stockid')->where('noinstall','=',$Instalation[0]->noinstall)
+        ->select('installationdtl.*','stocks.qtytype','stocks.stockid as stockcode')->get();
+        $staffid=$Instalation[0]->instaled;
+        $laststatus=$Instalation[0]->status;
+        //Reset Ip status;
+        $ips=[
+            'leadid'=>null,
+        ];
+        $accdata=ipaddress::where('id','=',$Instalation[0]->ipid)->update($ips);
+
+
+        //Update Status To Cancel
+        $insUpdate=[
+            'status'=>0
+        ];
+        $updInst=Instalation::where('id','=',$id)->update($insUpdate);
+        
+        if($laststatus==2){ 
+            foreach ($InstalationDetail as $detail) {
+                if($detail->qtytype==0){
+                    //last Position in Technisi
+                    $getCurentPosition=StocksPosition::where('posmodule','=','staff')->where('module_id','=',$staffid)->where('stockid','=',$detail->stockid)->get();
+                    //then Add it to Storage
+                    $OnStorage=StocksPosition::where('posmodule','=','storage')->where('stockid','=',$detail->stockid)->get();
+                    $dataupdate=[
+                        'qty'=>(int)$OnStorage[0]->qty + (int)$detail->installedqty,
+                    ];
+                    $update=StocksPosition::where('id','=',$OnStorage[0]->id)->update($dataupdate);
+                    //Remove From technisi
+                    $dataupdate2=[
+                        'qty'=>(int)$getCurentPosition[0]->qty - (int)$detail->installedqty,
+                    ];
+                    $update=StocksPosition::where('id','=',$getCurentPosition[0]->id)->update($dataupdate2);
+                }
+                if($detail->qtytype==1){
+                    $lsseri=explode(',',$detail->serial);
+                    foreach ($lsseri as $noseri) {
+                        //Set Nomor seri To Storage
+                        $data=[
+                            'posmodule'=>'storage',
+                            'module_id'=>0,
+                        ];
+                        $update=StocksNoSeri::where('noseri','=',$noseri)->update($data);
+                        $seriallogs=[
+                            'stockid'=>$detail->stockid,
+                            'stockcode'=>$detail->stockid,
+                            'serial'=>$noseri,
+                            'qty'=>1,
+                            'transtype'=>8,
+                            'module'=>'Installation',
+                            'moduleid'=>$Instalation[0]->id,
+                            'note'=>"cancel Installation",
+                            'createdbyid'=>Auth::user()->id,
+                            'updatedbyid'=>Auth::user()->id,
+                            'transcation_number'=>$detail->noinstall,
+                        ];
+                        $logslist=StockLogs::create($seriallogs);
+                    }
+
+                }
+            }
+        }
+        $oldData=$Instalation[0];
+        $olddata['ItemDetail']=$InstalationDetail;
+        $oldData=json_encode($oldData);
+        $nInstalation=Instalation::where('id','=',$id)->get(); 
+        $nInstalationDetail=InstalationDetail::join('stocks','stocks.id','=','installationdtl.stockid')->where('noinstall','=',$nInstalation[0]->noinstall)->get();
+        $newdata=$nInstalation;
+        $newdata['ItemDetail']=$nInstalationDetail;
+        $newdata=json_encode($newdata);
+        $logs=[
+            'module'=>'Installation',
+            'moduleid'=>$id,
+            'createbyid'=>Auth::user()->id,
+            'logname'=>'Installation Canceled',
+            'olddata'=>$oldData,
+            'newdata'=>$newdata
+        ];
+        $ids=DataLogs::create($logs);
+        
+        $response=[
+            'status'=>'success',
+            'message'=>'Data Canceled Successfully.'
+        ];
+    
+        return json_encode($response);
+
     }
 
     public function getNoorder($prefixs){

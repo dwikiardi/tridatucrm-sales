@@ -130,11 +130,48 @@
              {data: 'action', name: 'action', installasiable: false, searchable: false},
         ]
     });
-    // $(document).on("click",".edit",function(){
-    //   var id=$(this).attr("data-id");
-    //   console.log("click id: " + id);
-    //   window.location.href = "{{ url('installasi/edit')}}/" + id;
-    // });
+    $(document).on("click",".printjo",function(){
+      var id=$(this).attr("data-id");
+      console.log(id);
+      $.ajaxSetup({
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+      });
+      // $('.process').attr("disabled", true);
+
+      $.ajax({
+        url: "{{url('installasi/printjo')}}/" + id ,
+        type: "GET",
+        data: id,
+        success: function( response ) {
+          const obj = JSON.parse(response);
+          if(obj.status ==="success"){
+            window.open(obj.file,'_blank');
+          }
+          
+        }
+      });
+    });
+    $(document).on("click",".prininstal",function(){
+      var id=$(this).attr("data-id");
+      console.log(id);
+      $.ajaxSetup({
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+      });
+      // $('.process').attr("disabled", true);
+
+      $.ajax({
+        url: "{{url('installasi/installed')}}/" + id ,
+        type: "GET",
+        data: id,
+        success: function( response ) {
+          const obj = JSON.parse(response);
+          if(obj.status ==="success"){
+            window.open(obj.file,'_blank');
+          }
+          
+        }
+      });
+    });
   });
 </script>
 @endpush

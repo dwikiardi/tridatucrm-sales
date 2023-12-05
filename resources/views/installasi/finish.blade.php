@@ -157,7 +157,7 @@
                       <option value="0">Di Jual</option>
                     </select>
                   </td>
-                  <td class="onqty-{{$details->id}}"><input style="width: 75px;" class="details-{{$details->id}} qty" type="text" name="qty[{{$details->id}}]"  data-ix="{{$details->id}}" value="{{$details->qty}}"><input class="qtytype-{{$details->id}}" type="hidden" name="qtytype[{{$details->id}}]" value="{{$details->qtytype}}"></td>
+                  <td class="onqty-{{$details->id}}"><input style="width: 75px;" class="qty-{{$details->id}}" type="text" name="qty[{{$details->id}}]"  data-ix="{{$details->id}}" value="{{$details->qty}}"><input class="qtytype-{{$details->id}}" type="hidden" name="qtytype[{{$details->id}}]" value="{{$details->qtytype}}"></td>
                   <td>{{$details->unit}}</td>
                   <td>
                   <?php
@@ -199,7 +199,7 @@
           </div>
         </div>
       </div>
-      <input class="row" type="hidden" name="row" value="{{$i}}">
+      <input class="row" id="rows" type="text" name="row" value="{{$i}}">
   </div> <!-- END Container-XL -->
 </div>
   
@@ -265,15 +265,12 @@
           type: "POST",
           data: mydata,
           success: function( response ) {
-            // $('.process').removeAttr('disabled');
-            // const obj = JSON.parse(response);
-            // if(obj.status ==="success"){
-            //   window.location.href = obj.message;
-            // }
-            // if(obj.status ==="failed"){
-            //   alert(obj.message);
-            // }
-            console.log(response);
+            $('.process').removeAttr('disabled');
+            const obj = JSON.parse(response);
+            if(obj.status ==="success"){
+              window.location.href = obj.message;
+            }
+           
           }
         });
       }
@@ -299,52 +296,39 @@
     function validate(){
       // var series=$('.qtytype-' + ix).val();
       // var count=$('.qtytype-' + ix).val();
-      // if(series == '1'){
-      //   var exsist=$('.mserial-'+ix).val();
-      //   if(exsist === undefined || exsist === null || exsist === ''){
-      //     for(let i=0;i<arr;i++){
-      //       list= list + '<tr><td><input type="text" class="form-control textlist list-0" name="list['+i+']" placeholder="Serial Number"></td></tr>';
-      //     }
-          
-      //   }else{
-      //     var datals=exsist.split(',');
-      //     for(let i=0;i<arr;i++){
-      //       if(datals[i] === undefined){
-      //         datals[i]="";
-      //       }
-      //       list= list + '<tr><td><input type="text" class="form-control textlist list-0" name="list['+i+']" placeholder="Serial Number" value="'+ datals[i] +'"></td></tr>';
-      //     }
-      //   }
-      //   $('.lsSerial').empty();
-      //   $('.lsSerial').append(list);
-      //   var source=[];
-      //   $.each(lisNoseries,function(index,value) {
-      //     if(value.stockid == $('.stockid-' + ix).find(":selected").val()){
-      //       source.push(value.noseri);
-      //       console.log(value.noseri);  
-      //     }
-          
-      //   });
-      //   $('.textlist').autocomplete({
-      //     source: source
-      //   });	
-      //   $('.sindex').empty();
-      //   $('.sindex').val(ix);
-      //   $(".modal-btn").click(); 
-      //   //callModals();
-      // }
+      
       let returns=true;
-      if($('.row').val()>1){
+      console.log($('#rows').val());
+      if($('#rows').val()>1){
         console.log('more than 1 row');
+        $('.details').each(function() {
+          let ix= $(this).val();
+          if( $('.qtytype-'+ix).val()==1){
+            let total=0;
+            let item="";
+            $('.serials-'+ix+':checkbox:checked').each(function () {
+                total++;
+            });
+            if(total != $('.qty-'+ix).val()){
+              returns=false;
+            }
+          }
+         
+        });
+        if  (returns == false){
+          alert('Some Instaled Qty not same with Checked Serial Number');
+        }
+        return returns;
       }else{
         var ix= $('.details').val();
         let total=0;
-        let item="";
-        $('.serials-'+ix+':checkbox:checked').each(function () {
-            item=item + $(this).val() +',';
-            total++;
-        });
-        if(total != $('.qty').val()){
+        if( $('.qtytype-'+ix).val()==1){
+          $('.serials-'+ix+':checkbox:checked').each(function () {
+              // item=item + $(this).val() +',';
+              total++;
+          });
+        }
+        if(total != $('.qty-'+ix).val()){
           alert('Instaled Qty not same with Chacked Serial');
           returns=false;
         }
