@@ -140,7 +140,7 @@ class StocksController extends Controller
                 })
                 ->editColumn('Name', function ($row) {
                     switch ($row->Name) {
-                        case 'lead':
+                        case 'leads':
                             return "Customer";
                             break;
                         case 'staff':

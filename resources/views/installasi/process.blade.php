@@ -234,20 +234,14 @@
     
     
     
-    $('.customer').on("change",function(){
-      var text=$('.customer option:selected').attr("data-addr");
-      //console.log(text);
-      $('.vaddress').text(text);
-    });
+    
     $('.ipaddr').select2({
       placeholder: 'Select an option'
     });
     $('.pops').select2({
       placeholder: 'Select an option'
     });
-    $('.customer').select2({
-      placeholder: 'Select an option'
-    });
+   
     $('.lsseri').select2({
       placeholder: 'Select an option'
     });

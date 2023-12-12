@@ -16,9 +16,9 @@ use App\Http\Controllers\PoPsController;
 use App\Http\Controllers\IPAddressController;
 use App\Http\Controllers\TransferController;
 use App\Http\Controllers\InstallController;
+use App\Http\Controllers\MaintenanceController;
 
-
-
+use Illuminate\Support\Facades\Artisan;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -32,6 +32,33 @@ use App\Http\Controllers\InstallController;
 
 // Route::get('/', function () {
 //     return view('welcome');
+// });
+// Route::get('/clear', function () {
+//     Artisan::call('config:cache ');
+//     Artisan::call('config:clearr');
+//     Artisan::call('cache:clear');
+//     Artisan::call('key:generate');
+//     Artisan::call('migrate');
+//     return 'Cleared!!!';
+// });
+Route::get('/migrate', function () {
+    Artisan::call('cache:clear');
+    Artisan::call('migrate');
+    return 'Migrate Success!!!';
+});
+// Route::get('/generate', function () {
+//     $user = new App\Models\User();
+//     $user->password = Hash::make('123456');
+//     $user->email = 'oka.rjw@gmail.com';
+//     $user->username = 'administrator';
+//     $user->first_name = 'Administrator';
+//     $user->last_name = 'Systems';
+//     $user->save();
+//     return " username = 'administrator';<br> password = Hash::make('123456');<br>
+//     email = 'oka.rjw@gmail.com';<br>
+//     first_name = 'Administrator';<br>
+//     last_name = 'Systems';<br>
+//     ";
 // });
 Route::get('/', [AuthController::class, 'login'])->name('login');
 Route::get('actionlogin', [AuthController::class, 'login'])->name('login');
@@ -190,19 +217,37 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('transfer_out/edit/{id}', [TransferController::class, 'oedit'])->name('transfer_out.oedit');
     Route::post('transfer_out/update/', [TransferController::class, 'oupdate'])->name('transfer_out.oupdate');
 
-     //Installation
-     Route::get('installasi', [InstallController::class, 'index'])->name('installasi');
-     Route::get('installasi', [InstallController::class, 'index'])->name('installasi.index');
-     Route::get('installasi/create/{id?}', [InstallController::class, 'create'])->name('installasi.create');  
-     Route::post('installasi/store', [InstallController::class, 'store'])->name('installasi.store');
-     Route::get('installasi/view/{id}', [InstallController::class, 'view'])->name('installasi.view');
-     Route::get('installasi/edit/{id}', [InstallController::class, 'edit'])->name('installasi.edit');
-     Route::post('installasi/update/', [InstallController::class, 'update'])->name('installasi.update');
-     Route::get('installasi/process/{id}', [InstallController::class, 'process'])->name('installasi.process');
-     Route::post('installasi/reprocess/', [InstallController::class, 'reprocess'])->name('installasi.reprocess');
-     Route::get('installasi/finish/{id}', [InstallController::class, 'finish'])->name('installasi.finish');
-     Route::post('installasi/refinish/', [InstallController::class, 'refinish'])->name('installasi.refinish');
-     Route::get('installasi/printjo/{id}', [InstallController::class, 'printjo'])->name('installasi.printjo');
-     Route::get('installasi/installed/{id}', [InstallController::class, 'installed'])->name('installasi.installed');
-     Route::get('installasi/cancel/{id}', [InstallController::class, 'cancel'])->name('installasi.cancel');
+    //Installation
+    Route::get('installasi', [InstallController::class, 'index'])->name('installasi');
+    Route::get('installasi', [InstallController::class, 'index'])->name('installasi.index');
+    Route::get('installasi/create/{id?}', [InstallController::class, 'create'])->name('installasi.create');  
+    Route::post('installasi/store', [InstallController::class, 'store'])->name('installasi.store');
+    Route::get('installasi/view/{id}', [InstallController::class, 'view'])->name('installasi.view');
+    Route::get('installasi/edit/{id}', [InstallController::class, 'edit'])->name('installasi.edit');
+    Route::post('installasi/update/', [InstallController::class, 'update'])->name('installasi.update');
+    Route::get('installasi/process/{id}', [InstallController::class, 'process'])->name('installasi.process');
+    Route::post('installasi/reprocess/', [InstallController::class, 'reprocess'])->name('installasi.reprocess');
+    Route::get('installasi/finish/{id}', [InstallController::class, 'finish'])->name('installasi.finish');
+    Route::post('installasi/refinish/', [InstallController::class, 'refinish'])->name('installasi.refinish');
+    Route::get('installasi/printjo/{id}', [InstallController::class, 'printjo'])->name('installasi.printjo');
+    Route::get('installasi/installed/{id}', [InstallController::class, 'installed'])->name('installasi.installed');
+    Route::get('installasi/cancel/{id}', [InstallController::class, 'cancel'])->name('installasi.cancel');
+
+    //Maintenance
+    Route::get('maintenance', [MaintenanceController::class, 'index'])->name('maintenance');
+    Route::get('maintenance', [MaintenanceController::class, 'index'])->name('maintenance.index');
+    Route::get('maintenance/create/{id?}', [MaintenanceController::class, 'create'])->name('maintenance.create');  
+    Route::post('maintenance/store', [MaintenanceController::class, 'store'])->name('maintenance.store');
+    Route::get('maintenance/view/{id}', [MaintenanceController::class, 'view'])->name('maintenance.view');
+    Route::get('maintenance/edit/{id}', [MaintenanceController::class, 'edit'])->name('maintenance.edit');
+    Route::post('maintenance/update/', [MaintenanceController::class, 'update'])->name('maintenance.update');
+    Route::get('maintenance/process/{id}', [MaintenanceController::class, 'process'])->name('maintenance.process');
+    Route::post('maintenance/reprocess/', [MaintenanceController::class, 'reprocess'])->name('maintenance.reprocess');
+    Route::get('maintenance/finish/{id}', [MaintenanceController::class, 'finish'])->name('maintenance.finish');
+    Route::post('maintenance/refinish/', [MaintenanceController::class, 'refinish'])->name('maintenance.refinish');
+    Route::get('maintenance/printjo/{id}', [MaintenanceController::class, 'printjo'])->name('maintenance.printjo');
+    Route::get('maintenance/installed/{id}', [MaintenanceController::class, 'installed'])->name('maintenance.installed');
+    Route::get('maintenance/cancel/{id}', [MaintenanceController::class, 'cancel'])->name('maintenance.cancel');
+
+
 });

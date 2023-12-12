@@ -13,6 +13,7 @@ class StocksNoSeri extends Model
         'stockid',
         'posmodule',
         'module_id',
+        'status'
     ];
     protected $table = "stocks_no_seri";
 }

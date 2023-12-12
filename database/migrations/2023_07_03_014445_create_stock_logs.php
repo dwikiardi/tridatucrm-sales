@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('stockcode');
             $table->string('serial')->nullable();
             $table->integer('qty');
-            $table->integer('transtype');//1:Pembelian;2:transfer_in;3:transfer_out; 4:instalasi; 5:penarikan; 6: returnpembelian; 7:barangrusak; 8:cancelInstalasi
+            $table->integer('transtype');//1:Pembelian;2:transfer_in;3:transfer_out; 4:instalasi; 5:penarikan/revocation; 6: returnpembelian; 7:barangrusak; 8:cancelInstalasi 9:maintenance; 10:Cancel Maintenance;
             $table->string('module');
             $table->bigInteger('moduleid');
             $table->text('note')->nullable();

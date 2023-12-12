@@ -129,7 +129,7 @@
       </div>
       <!-- Page title actions -->
       <div class="col-auto ms-auto d-print-none"> 
-      <a href="{{ url('leads')}}" class="btn btn-light">« Kembali</a>                 
+      <a href="{{ url('installasi')}}" class="btn btn-light">« Kembali</a>                 
       <a href="#" class="btn btn-primary process">Simpan</a>
       </div>
     </div>

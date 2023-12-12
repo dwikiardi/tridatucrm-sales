@@ -150,12 +150,16 @@ class InstallController extends Controller
         $IPAdd=ipaddress::where('id','=',$request->ipaddr)->get();
         $ipold=json_encode($IPAdd);
         $ipupdate=['leadid'=>$request->customer];
+       
         try {
             $IPAdd=ipaddress::where('id','=',$request->ipaddr)->update($ipupdate);
         }  catch (\Exception $e) {
             $status="failed";
             $msg=$msg." ".$e->getMessage();
         }
+        $leadupd=['popid'=>$request->pops];
+        $leads=Leads::where('id','=',$request->customer)->update($leadupd);
+
         $logs=[
             'module'=>'ip_address',
             'moduleid'=>$request->ipaddr,
@@ -222,7 +226,8 @@ class InstallController extends Controller
         /// jika menggunakan metode ini, maka nama field dan nama form harus sama
         $id=$request->id;
         $olddata=Instalation::where('installation.id','=',$id)->get();
-
+        
+        $oldleads=Leads::where('id','=',$request->customer)->get();
         $old_date = explode('/', $request->installasidate); 
         $date = $old_date[2].'-'.$old_date[1].'-'.$old_date[0];
         $status="success";
@@ -266,8 +271,19 @@ class InstallController extends Controller
                 'olddata'=>json_encode($IPAdd),
                 'newdata'=>json_encode($ipupdate)
             ];
+            $ids=DataLogs::create($logs);
         }
-
+        if($oldleads[0]->popid != $request->pops){
+            //set New POP Data
+            $uppops=['popid'=>$request->pops];
+            try {
+                $popupd=Leads::where('id','=',$request->customer)->update($uppops);
+            }  catch (\Exception $e) {
+                $status="failed";
+                $msg=$msg." ".$e->getMessage();
+            }
+           
+        }
         $data=[
             'date'=>$date,
             'ipid'=>$request->ipaddr,
@@ -331,45 +347,124 @@ class InstallController extends Controller
         //dd($request);
         $status="success";
         $msg="";
+        $id=$request->id;
         $Instalation=Instalation::where('installation.id','=',$request->id)->get();
         $noinstall=$Instalation[0]->noinstall;
         $installerid=$Instalation[0]->installerid;
+        $leadid=$Instalation[0]->leadid;
         $InItem=array();
         $rows=$request->row;
         //set Detail Item For Instalation
         for($i=0;$i<$rows;$i++){
             //save per line item of Instalasi if qty is not 0
-            if($request->qty[$i] >0 || $request->qty[$i]!='' || $request->qty[$i]!=null){
-                $items=[
-                    'noinstall'=>$noinstall,
-                    'category'=>$request->catID[$i],
-                    'stockid'=>$request->stockid[$i],
-                    'serial'=>$request->mserial[$i],
-                    'qty'=>$request->qty[$i],
-                    'status'=>$request->status[$i]
-                ];
-           
-                $InItem[]=$items;
-                try {
-                    $Installation=InstalationDetail::create($items);
-                }  catch (\Exception $e) {
-                    $status="failed";
-                    $msg=$msg." ".$e->getMessage();
-                }
-                if($request->qtytype[$i] == 1 ){
-                    //untuk semua list item yang memiliki nomor seri pindahkan status dari gudang ke teknisi
-                    $serials=explode(',',$request->mserial[$i]);
-                    foreach($serials as $noseri){
-                        $lsserial=[
-                            'posmodule'=>'staff',
-                            'module_id'=>$installerid,
-                        ];
-                        $setnoseri=StocksNoSeri::where('noseri','=',$noseri)->update($lsserial);
+            if($request->qty[$i]!='' || $request->qty[$i]!=null){
+                if($request->qty[$i] >0){
+                    $items=[
+                        'noinstall'=>$noinstall,
+                        'category'=>$request->catID[$i],
+                        'stockid'=>$request->stockid[$i],
+                        'serial'=>$request->mserial[$i],
+                        'qty'=>$request->qty[$i],
+                        'status'=>$request->status[$i]
+                    ];
+                
+                    $InItem[]=$items;
+                    try {
+                        $Installation=InstalationDetail::create($items);
+                    }  catch (\Exception $e) {
+                        $status="failed";
+                        $msg=$msg." ".$e->getMessage();
                     }
-                    
+                    if($request->qtytype[$i] == 1 ){
+                        //untuk semua list item yang memiliki nomor seri pindahkan status dari gudang ke teknisi
+                        $serials=explode(',',$request->mserial[$i]);
+                        foreach($serials as $noseri){
+                            $lsserial=[
+                                'posmodule'=>'staff',
+                                'module_id'=>$installerid,
+                                'status'=>$request->status[$i],
+                            ];
+                            $setnoseri=StocksNoSeri::where('noseri','=',$noseri)->update($lsserial);
+                            $seriallogs=[
+                                'stockid'=>$request->stockid[$i],
+                                'stockcode'=>'',
+                                'serial'=>$noseri,
+                                'qty'=>1,
+                                'transtype'=>4,
+                                'module'=>'install',
+                                'moduleid'=>$id,
+                                'note'=>"Transfer For Installation",
+                                'createdbyid'=>Auth::user()->id,
+                                'updatedbyid'=>Auth::user()->id,
+                                'transcation_number'=>$noinstall,
+                            ];
+                            $logslist=StockLogs::create($seriallogs);
+                        }
+                        
+                    }else{
+                        //set non serial
+                        //Get Current Stock from Staff and Add
+                        $currentPosition=StocksPosition::where('posmodule','=','staff')->where('module_id','=',$installerid)->where('stockid','=',$request->stockid[$i])->get();
+                        if($currentPosition->count()>0){
+                            $qty=(int)$currentPosition[0] + (int)$request->qty[$i];
+                            $CreateNeStock=[
+                                'qty'=>$qty,
+                            ];
+                            $setNewStock=StocksPosition::where('id','=',$currentPosition[0]->id)->update($CreateNeStock);
+                        }else{
+                            $qty=$request->qty[$i];
+                            $CreateNeStock=[
+                                'posmodule'=>'staff',
+                                'module_id'=>$installerid,
+                                'stockid'=>$request->stockid[$i],
+                                'qty'=>$qty,
+                            ];
+                            $setNewStock=StocksPosition::create($CreateNeStock);
+                        }
+                        
+                        $seriallogs=[
+                            'stockid'=>$request->stockid[$i],
+                            'stockcode'=>'',
+                            'serial'=>'',
+                            'qty'=>$request->qty[$i],
+                            'transtype'=>4,
+                            'module'=>'install',
+                            'moduleid'=>$id,
+                            'note'=>"Transfer For Installation",
+                            'createdbyid'=>Auth::user()->id,
+                            'updatedbyid'=>Auth::user()->id,
+                            'transcation_number'=>$noinstall,
+                        ];
+                        $logslist=StockLogs::create($seriallogs);
+
+                        //Check Stock from Storeage Add Reduce
+                        $currentPositions=StocksPosition::where('posmodule','=','storage')->where('stockid','=',$request->stockid[$i])->get();
+                        $updateStock=[
+                            'qty'=>(int)$currentPosition[0]->qty - (int)$request->qty[$i],
+                        ];
+                        $updStock=StocksPosition::where('id','=',$currentPositions[0]->id)->update($updateStock);
+                        
+                        
+                        
+                        $seriallogs=[
+                            'stockid'=>$request->stockid[$i],
+                            'stockcode'=>'',
+                            'serial'=>'',
+                            'qty'=>$posQty,
+                            'transtype'=>4,
+                            'module'=>'install',
+                            'moduleid'=>$id,
+                            'note'=>"Add Stock to Customer",
+                            'createdbyid'=>Auth::user()->id,
+                            'updatedbyid'=>Auth::user()->id,
+                            'transcation_number'=>$noinstall,
+                        ];
+                        $logslist=StockLogs::create($seriallogs);
+                    }
                 }
             }
         }
+        //update Instalation Status
         $insUpd=[ 'status'=>2,'processbyid'=>Auth::user()->id];
         $updInst=Instalation::where('installation.id','=',$request->id)->update($insUpd);
         $newdata="";
@@ -385,6 +480,7 @@ class InstallController extends Controller
             'newdata'=>$newdata
         ];
         $ids=DataLogs::create($logs);
+        
         if($status=="success"){
             $response=[
                 'status'=>'success',
@@ -424,11 +520,13 @@ class InstallController extends Controller
         //Change IP Allocation
         $id=$request->id;
         $olddata=Instalation::where('installation.id','=',$id)->get();
+        $installerid=$olddata[0]->installerid;
         $leadid=$olddata[0]->leadid;
         $old_date = explode('/', $request->installasidate); 
         $date = $old_date[2].'-'.$old_date[1].'-'.$old_date[0];
         $status="success";
         $msg="";
+        $noinstall=$olddata[0]->noinstall;
         // //dd($olddata[0]->ipid != $request->ipaddr);
         if($olddata[0]->ipid != $request->ipaddr){
             //reset old IP data
@@ -450,6 +548,7 @@ class InstallController extends Controller
                 'olddata'=>$ipold,
                 'newdata'=>json_encode($resetIP)
             ];
+            $ids=DataLogs::create($logs);
             //set New IP Data
             $IPAdd=ipaddress::where('id','=',$request->ipaddr)->get();
             $ipupdate=['leadid'=>$olddata[0]->leadid];
@@ -468,6 +567,12 @@ class InstallController extends Controller
                 'olddata'=>json_encode($IPAdd),
                 'newdata'=>json_encode($ipupdate)
             ];
+            $ids=DataLogs::create($logs);
+        }
+        //Update POP on Leads
+        if($olddata[0]->popid != $request->pops){
+            $leadupd=['popid'=>$request->pops];
+            $leads=Leads::where('id','=',$request->customer)->update($leadupd);
         }
         //End Change
 
@@ -496,19 +601,118 @@ class InstallController extends Controller
                 $lsserial=[
                     'posmodule'=>'leads',
                     'module_id'=>$leadid,
+                    'status'=>$request->status[$rowID],
                 ];
                 foreach($serials as $noseri){
                     
                     $setnoseri=StocksNoSeri::where('noseri','=',$noseri)->update($lsserial);
+                    $seriallogs=[
+                        'stockid'=>$request->stockid[$i],
+                        'stockcode'=>'',
+                        'serial'=>$noseri,
+                        'qty'=>1,
+                        'transtype'=>4,
+                        'module'=>'install',
+                        'moduleid'=>$id,
+                        'note'=>$olddata[0]->note,
+                        'createdbyid'=>Auth::user()->id,
+                        'updatedbyid'=>Auth::user()->id,
+                        'transcation_number'=>$noinstall,
+                    ];
+                    $logslist=StockLogs::create($seriallogs);
                 }
                 //Un Installed Serial Number return To Storage
                 $uninstall= $Installation=InstalationDetail::where('id','=',$rowID)->get();
                 $lsuninstall=explode(',',$uninstall[0]->serial);
                 $rnoseri=array_diff($lsuninstall,$serials);
-                $returnit=['posmodule'=>'storage', 'module_id'=>0,];
+                $returnit=['posmodule'=>'storage', 'module_id'=>0, 'status'=>''];
                 foreach ($rnoseri as $rtnoseri) {
                     $returnNoseri=StocksNoSeri::where('noseri','=',$rtnoseri)->update($returnit);
+                    $seriallogs=[
+                        'stockid'=>$request->stockid[$i],
+                        'stockcode'=>'',
+                        'serial'=>$rtnoseri,
+                        'qty'=>1,
+                        'transtype'=>4,
+                        'module'=>'storage',
+                        'moduleid'=>0,
+                        'note'=>'Return To Storage: '.$olddata[0]->note,
+                        'createdbyid'=>Auth::user()->id,
+                        'updatedbyid'=>Auth::user()->id,
+                        'transcation_number'=>$noinstall,
+                    ];
+                    $logslist=StockLogs::create($seriallogs);
                 }
+                
+            }else{
+                //Set Stock Non Serial
+                //Get Current Stock from Staff and reduce
+                $current=StocksPosition::where('stockid','=',$request->stockid[$rowID])->where('posmodule','=','staff')->where('module_id','=',$installerid)->get();
+                //dd($current[0]->id);
+                if ($current->count() > 0) {
+                    $cqty=$current[0]->qty;
+                    $nqty=(int)$cqty - (int)$request->qty[$rowID];
+                    $dataupdate=['qty'=>$nqty];
+                    $update=StocksPosition::where('id','=',$current[0]->id)->update($dataupdate);
+                   
+                }else{
+                    $stockpos=[
+                        'posmodule'=>'leads',
+                        'module_id'=>$leadid,
+                        'stockid'=>$request->stockid[$rowID],
+                        'qty'=>-1*$request->qty[$rowID],
+                        'status'=>$request->status[$rowID],
+                    ];
+                    $update=StocksPosition::create($stockpos);
+                }
+                $seriallogs=[
+                    'stockid'=>$request->stockid[$rowID],
+                    'stockcode'=>'',
+                    'serial'=>'',
+                    'qty'=>$request->qty[$rowID],
+                    'transtype'=>4,
+                    'module'=>'install',
+                    'moduleid'=>$id,
+                    'note'=>'Reduce From Staff',
+                    'createdbyid'=>Auth::user()->id,
+                    'updatedbyid'=>Auth::user()->id,
+                    'transcation_number'=>$noinstall,
+                ];
+                $logslist=StockLogs::create($seriallogs);
+                //Get Current Stock On Customer
+                $currentLead=StocksPosition::where('stockid','=',$request->stockid[$rowID])->where('posmodule','=','lead')->where('module_id','=',$leadid)->get();
+                if ($currentLead->count() > 0) {
+                    $cqty=$currentLead[0]->qty;
+                    $nqty=(int)$cqty + (int)$request->qty[$rowID];
+                    $dataupdate=['qty'=>$nqty];
+                    $update=StocksPosition::where('id','=',$currentLead[0]->id)->update($dataupdate);
+                   
+                }else{
+                    $stockpos=[
+                        'posmodule'=>'leads',
+                        'module_id'=>$leadid,
+                        'stockid'=>$request->stockid[$rowID],
+                        'qty'=>$request->qty[$rowID],
+                        'status'=>$request->status[$rowID],
+                    ];
+                    $update=StocksPosition::create($stockpos);
+                }
+               
+                
+                $seriallogs=[
+                    'stockid'=>$request->stockid[$rowID],
+                    'stockcode'=>'',
+                    'serial'=>'',
+                    'qty'=>$request->qty[$rowID],
+                    'transtype'=>4,
+                    'module'=>'install',
+                    'moduleid'=>$id,
+                    'note'=>'Transfer Postion To Customer',
+                    'createdbyid'=>Auth::user()->id,
+                    'updatedbyid'=>Auth::user()->id,
+                    'transcation_number'=>$noinstall,
+                ];
+                $logslist=StockLogs::create($seriallogs);
                 
             }
         }else{
@@ -540,18 +744,120 @@ class InstallController extends Controller
                     $lsserial=[
                         'posmodule'=>'leads',
                         'module_id'=>$leadid,
+                        'status'=>$request->status[$rowID],
                     ];
                     foreach($serials as $noseri){
                         $setnoseri=StocksNoSeri::where('noseri','=',$noseri)->update($lsserial);
+                        $seriallogs=[
+                            'stockid'=>$request->stockid[$i],
+                            'stockcode'=>'',
+                            'serial'=>$noseri,
+                            'qty'=>1,
+                            'transtype'=>4,
+                            'module'=>'install',
+                            'moduleid'=>$id,
+                            'note'=>$olddata[0]->note,
+                            'createdbyid'=>Auth::user()->id,
+                            'updatedbyid'=>Auth::user()->id,
+                            'transcation_number'=>$noinstall,
+                        ];
+                        $logslist=StockLogs::create($seriallogs);
                     }
                     //Un Installed Serial Number return To Storage
                     $uninstall= $Installation=InstalationDetail::where('id','=',$rowID)->get();
                     $lsuninstall=explode(',',$uninstall[0]->serial);
                     $rnoseri=array_diff($lsuninstall,$serials);
-                    $returnit=['posmodule'=>'storage', 'module_id'=>0,];
+                    $returnit=['posmodule'=>'storage', 'module_id'=>0, 'status'=>''];
                     foreach ($rnoseri as $rtnoseri) {
                         $returnNoseri=StocksNoSeri::where('noseri','=',$rtnoseri)->update($returnit);
+                        $seriallogs=[
+                            'stockid'=>$request->stockid[$i],
+                            'stockcode'=>'',
+                            'serial'=>$rtnoseri,
+                            'qty'=>1,
+                            'transtype'=>4,
+                            'module'=>'storage',
+                            'moduleid'=>0,
+                            'note'=>'Return To Storage: '.$olddata[0]->note,
+                            'createdbyid'=>Auth::user()->id,
+                            'updatedbyid'=>Auth::user()->id,
+                            'transcation_number'=>$noinstall,
+                        ];
+                        $logslist=StockLogs::create($seriallogs);
                     }
+                    
+                }else{
+                   //Set Stock Non Serial
+                    //Get Current Stock from Staff and reduce
+                    $current=StocksPosition::where('stockid','=',$request->stockid[$rowID])->where('posmodule','=','staff')->where('module_id','=',$installerid)->get();
+                    //dd($current[0]->id);
+                    if ($current->count() > 0) {
+                        $cqty=$current[0]->qty;
+                        $nqty=(int)$cqty - (int)$request->qty[$rowID];
+                        $dataupdate=['qty'=>$nqty];
+                        $update=StocksPosition::where('id','=',$current[0]->id)->update($dataupdate);
+                    
+                    }else{
+                        $stockpos=[
+                            'posmodule'=>'staff',
+                            'module_id'=>$installerid,
+                            'stockid'=>$request->stockid[$rowID],
+                            'qty'=>-1*$request->qty[$rowID],
+                            'status'=>$request->status[$rowID],
+                        ];
+                        $update=StocksPosition::create($stockpos);
+                    }
+                    $seriallogs=[
+                        'stockid'=>$request->stockid[$rowID],
+                        'stockcode'=>'',
+                        'serial'=>'',
+                        'qty'=>$request->qty[$rowID],
+                        'transtype'=>4,
+                        'module'=>'install',
+                        'moduleid'=>$id,
+                        'note'=>'Reduce From Staff',
+                        'createdbyid'=>Auth::user()->id,
+                        'updatedbyid'=>Auth::user()->id,
+                        'transcation_number'=>$noinstall,
+                    ];
+                    $logslist=StockLogs::create($seriallogs);
+
+                    //Get Current Stock On Customer and Add It
+                    $currentLead=StocksPosition::where('stockid','=',$request->stockid[$rowID])->where('posmodule','=','leads')->where('module_id','=',$leadid)->get();
+                    if ($currentLead->count() > 0) {
+                        //if any add
+                        $cqty=$currentLead[0]->qty;
+                        $nqty=(int)$cqty + (int)$request->qty[$rowID];
+                        $dataupdate=['qty'=>$nqty];
+                        $update=StocksPosition::where('id','=',$currentLead[0]->id)->update($dataupdate);
+                    
+                    }else{
+                        //if not avalable yet create
+                        $stockpos=[
+                            'posmodule'=>'leads',
+                            'module_id'=>$leadid,
+                            'stockid'=>$request->stockid[$rowID],
+                            'qty'=>$request->qty[$rowID],
+                            'status'=>$request->status[$rowID],
+                        ];
+                        $update=StocksPosition::create($stockpos);
+                    }
+                
+                    
+                    $seriallogs=[
+                        'stockid'=>$request->stockid[$rowID],
+                        'stockcode'=>'',
+                        'serial'=>'',
+                        'qty'=>$request->qty[$rowID],
+                        'transtype'=>4,
+                        'module'=>'install',
+                        'moduleid'=>$id,
+                        'note'=>'Transfer Postion To Customer',
+                        'createdbyid'=>Auth::user()->id,
+                        'updatedbyid'=>Auth::user()->id,
+                        'transcation_number'=>$noinstall,
+                    ];
+                    $logslist=StockLogs::create($seriallogs);
                     
                 }
             }
@@ -560,7 +866,7 @@ class InstallController extends Controller
         
         //End Update
 
-        // //Set Main Update
+        // //Set Main Instalation
         $data=[
             'ipid'=>$request->ipaddr,
             'popid'=>$request->pops,
@@ -704,14 +1010,29 @@ class InstallController extends Controller
                     //then Add it to Storage
                     $OnStorage=StocksPosition::where('posmodule','=','storage')->where('stockid','=',$detail->stockid)->get();
                     $dataupdate=[
-                        'qty'=>(int)$OnStorage[0]->qty + (int)$detail->installedqty,
+                        'qty'=>(int)$OnStorage[0]->qty + (int)$detail->qty,
                     ];
                     $update=StocksPosition::where('id','=',$OnStorage[0]->id)->update($dataupdate);
                     //Remove From technisi
                     $dataupdate2=[
-                        'qty'=>(int)$getCurentPosition[0]->qty - (int)$detail->installedqty,
+                        'qty'=>(int)$getCurentPosition[0]->qty - (int)$detail->qty,
                     ];
                     $update=StocksPosition::where('id','=',$getCurentPosition[0]->id)->update($dataupdate2);
+                    $seriallogs=[
+                        'stockid'=>$request->stockid[$rowID],
+                        'stockcode'=>'',
+                        'serial'=>'',
+                        'qty'=>$request->qty[$rowID],
+                        'transtype'=>8,
+                        'module'=>'install',
+                        'moduleid'=>$id,
+                        'note'=>'Cancel Instalation Return to Storage',
+                        'createdbyid'=>Auth::user()->id,
+                        'updatedbyid'=>Auth::user()->id,
+                        'transcation_number'=>$noinstall,
+                    ];
+                    $logslist=StockLogs::create($seriallogs);
+
                 }
                 if($detail->qtytype==1){
                     $lsseri=explode(',',$detail->serial);
@@ -741,6 +1062,7 @@ class InstallController extends Controller
                 }
             }
         }
+       
         $oldData=$Instalation[0];
         $olddata['ItemDetail']=$InstalationDetail;
         $oldData=json_encode($oldData);

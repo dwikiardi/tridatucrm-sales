@@ -149,6 +149,7 @@
                       @endforeach
                     </select> -->
                     {{$details->stockid}}
+                    <input class="details detail-{{$details->id}}" type="hidden" name="stockid[]" value="{{$details->stockid}}">
                   </td>
                   <td>{{$details->stockid}}</td>
                   <td>
@@ -199,7 +200,6 @@
           </div>
         </div>
       </div>
-      <input class="row" id="rows" type="text" name="row" value="{{$i}}">
   </div> <!-- END Container-XL -->
 </div>
   

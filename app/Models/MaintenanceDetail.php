@@ -5,15 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class StocksPosition extends Model
+class MaintenanceDetail extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'nomaintenance',
         'stockid',
-        'posmodule',
-        'module_id',
         'qty',
-        'status'
+        'serial',
+        'status',
+        'instaledserial',
+        'installedqty',
     ];
-    protected $table = "stocks_position";
+    protected $table = "maintenance_detail";
 }
