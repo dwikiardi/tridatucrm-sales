@@ -65,7 +65,12 @@
                 {{$Instalation[0]->teknisia}} {{$Instalation[0]->teknisib}}
                 </div>
               </div>
-                  
+              <div class="form-group mb-3 row">
+                <label class="form-label col-3 col-form-label">Package</label>
+                <div class="col" style="margin-top: 6px;">
+                {{$Instalation[0]->services}}
+                </div>
+              </div>  
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Note</label>
                 <div class="col" style="margin-top: 6px;">

@@ -61,7 +61,12 @@
                 {{$Instalation[0]->teknisia}} {{$Instalation[0]->teknisib}}
                 </div>
               </div>
-                  
+              <div class="form-group mb-3 row">
+                <label class="form-label col-3 col-form-label">Package</label>
+                <div class="col" style="margin-top: 6px;">
+                {{$Instalation[0]->service}}
+                </div>
+              </div>
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Note</label>
                 <div class="col" style="margin-top: 6px;">
@@ -91,10 +96,11 @@
               </div>   
           </div>
         </div>
+        
         <div class="card">
           <div class="table-responsive"  style="min-height: 150px;">
           <input type="hidden" class="form-control id" name="id" value='{{$Instalation[0]->id}}' readonly>
-          <input type="hidden" class="form-control lsprod" name="lsprod" value='<?php echo json_encode($Stocks); ?>' readonly>
+          <input type="hidden" class="form-control lsprod" name="lsprod" value='<?php echo json_encode($mstock); ?>' readonly>
           <input type="hidden" class="form-control noseri" name="noseri" value='<?php echo json_encode($StocksNoSeri); ?>' readonly>
           <input type="hidden" class="form-control stockpos" name="stockpos" value='<?php echo json_encode($stockPos); ?>' readonly>
             <table class="table card-table table-vcenter text-nowrap datatable">
@@ -117,27 +123,27 @@
                 ?>
                 @foreach($Category as $cat)
                 <tr>
-                  <td><input class="catID{{$i}}" type="hidden" name="catID[{{$i}}]" value="{{$i}}">{{$cat->category_name}}</td>
+                  <td><input class="catID catID{{$i}}" type="hidden" name="catID[{{$i}}]" value="{{$i}}">{{$cat->category_name}}</td>
                   <td>
-                    <select class="form-select stockid stockid-{{$cat->id}}" name="stockid[]">
+                    <select class="form-select stockid stockid-{{$i}}" name="stockid[{{$i}}]">
                     <option value="">-- Select One --</option>
                       @foreach($mstock as $stock)
                         @if($stock->categoryid == $cat->id)
-                            <option data-dtl='{{$cat->id}}|{{ $stock->stockname}}|{{ $stock->qtytype}}|{{ $stock->unit}}|{{ $stock->stockid}}' value="{{ $stock->id }}">{{ $stock->stockid}}</option>
+                            <option data-dtl='{{$i}}|{{ $stock->stockname}}|{{ $stock->qtytype}}|{{ $stock->unit}}|{{ $stock->stockid}}' value="{{ $stock->id }}">{{ $stock->stockid}}</option>
                         @endif
                       @endforeach
                     </select>
                   </td>
-                  <td><input class="name-{{$cat->id}}" type="text" name="ProductName[]" value=""></td>
+                  <td><input class="name-{{$i}}" type="text" name="ProductName[{{$i}}]" value=""></td>
                   <td>
-                    <select style="min-width: 150px;" class="form-select status" name="status[]">
+                    <select style="min-width: 150px;" class="form-select status" name="status[{{$i}}]">
                       <option value="1">Dipinjamkan</option>
                       <option value="0">Di Jual</option>
                     </select>
                   </td>
-                  <td class="onqty-{{$cat->id}}"><input style="width: 75px;" class="qty-{{$cat->id}} qty" type="text" name="qty[]"  data-ix="{{$cat->id}}" value="0"><input class="qtytype-{{$cat->id}}" type="hidden" name="qtytype[]" value="0"></td>
-                  <td><input  style="width: 75px;" class="unit-{{$cat->id}}" type="text" name="unit[]" value=""readonly></td>
-                  <td><div class='mnoseri-{{$cat->id}}'></div><input class="mserial-{{$cat->id}}" type="hidden" name="mserial[]" value="">
+                  <td class="onqty-{{$i}}"><input style="width: 75px;" class="qty-{{$i}} qty" type="text" name="qty[{{$i}}]"  data-ix="{{$i}}" value="0"><input class="qtytype qtytype-{{$i}}" type="hidden" name="qtytype[{{$i}}]" value="0"></td>
+                  <td><input  style="width: 75px;" class="unit unit-{{$i}}" type="text" name="unit[{{$i}}]" value=""readonly></td>
+                  <td><div class='mnoseri-{{$i}}'></div><input class="mserial mserial-{{$i}}" type="hidden" name="mserial[{{$i}}]" value="">
                   </td>
                   
                 </tr>
@@ -147,25 +153,25 @@
                 @endforeach
 
               </tbody>
-              <!-- <tfooter>
+              <tfooter>
                 <tr class="index">
                   <td>&nbsp;</td>
                   <td>
-                  <input type="hidden" class="form-control indexs" name="indexs" value="0" readonly><a href="#" class="addrows  btn btn-primary">add New Rows</a>
+                  <input type="hidden" class="form-control indexs" name="indexs" value="{{$i}}" readonly><a href="#" class="addrows  btn btn-primary">add New Rows</a>
                   </td>
                 </tr>
-              </tfooter> -->
+              </tfooter>
               
               
             </table>
           </div>
-          <input class="row" type="hidden" name="row" value="{{$i}}">
+          <!-- <input class="row" type="text" name="row" value="{{$i}}"> -->
         </div>
       </div>
       
   </div> <!-- END Container-XL -->
 </div>
-  
+  process blade
 <div class="container-xl">
   <!-- Page title -->
   <div class="page-header d-print-none">
@@ -252,16 +258,18 @@
     $(document).on("change",'.stockid', function () {
       var option = $('option:selected', this).attr('data-dtl');
       var options=option.split("|");
-      console.log(options[0]);
+      //console.log(options[0]);
       
       $('.name-'+options[0]).val(options[1]);
       $('.unit-'+options[0]).val(options[3]);
       $('.qtytype-'+options[0]).val(options[2]);
+      $('.mserial-'+options[0]).val("");
+      $('.mnoseri-'+options[0]).empty();
       $('.qty-'+options[0]).focus();
       if(options[2]==0){
         $('.seelist-'+options[0]).remove();
       }else{
-        if($('.qty-'+options[0]).val()!=0){
+        if($('.qty-'+options[0]).val()!=0 && $('.mserial-'+options[0]).val()!=""){
           $('.seelist-'+options[0]).remove();
           $('.onqty-'+options[0]).append('<a href="#" class="seelist seelist-'+options[0]+'" data-ix="'+options[0]+'">see list</a>');
         }
@@ -269,8 +277,51 @@
       
     });
     $('.process').on("click",function(){
-      //var mydata=$('#myform').serializeArray();
-      var mydata = $('#myform').serializeArray();
+      var mydata=$('#myform').serializeArray();
+      // $('.catID').each(function(i, obj) {
+      //     console.log('index: ' + i + '; obj: ' + obj);
+      // });
+      var values = [];
+      $('.catID').each(function(){
+          values.push(this.value); 
+      });
+
+      var stockid = [];
+      $('.stockid').each(function(){
+        stockid.push(this.value); 
+      });
+      
+      var status = [];
+      $('.status').each(function(){
+        status.push(this.value); 
+      });
+      
+      var qty = [];
+      $('.qty').each(function(){
+        qty.push(this.value); 
+      });
+      var qtytype = [];
+      $('.qtytype').each(function(){
+        qtytype.push(this.value); 
+      });
+      
+      var mserial = [];
+      $('.mserial').each(function(){
+        mserial.push(this.value); 
+      });
+      //use values after the loop
+      
+      var mydata = {
+        id : $('.id').val(),
+        row : $('.indexs').val(),
+        catID : values ,
+        stockid : stockid,
+        status : status,
+        qty : qty,
+        mserial : mserial,
+        qtytype : qtytype,
+      };
+
       console.log(mydata);
       $.ajaxSetup({
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
@@ -290,7 +341,7 @@
           if(obj.status ==="failed"){
             alert(obj.message);
           }
-          console.log(response);
+          //console.log(response);
         }
       });
     });
@@ -326,7 +377,7 @@
             $.each(lisNoseries,function(index,value) {
               if(value.stockid == $('.stockid-' + ix).find(":selected").val()){
                 source.push(value.noseri);
-                console.log(value.noseri);  
+                //console.log(value.noseri);  
               }
               
             });
@@ -337,6 +388,8 @@
             $('.sindex').val(ix);
             $(".modal-btn").click(); 
             //callModals();
+            $('.seelist-'+ix).remove();
+            $('.onqty-'+ix).append('<a href="#" class="seelist seelist-'+ix+'" data-ix="'+ix+'">see list</a>');
           }
         }
         return false;
@@ -368,7 +421,7 @@
         $('.mnoseri-'+option).append(listview);
         $(".modal-btn").click(); 
       }
-      console.log(duplicateElements);
+      //console.log(duplicateElements);
     });
 
     function toFindDuplicates(arry) {
@@ -383,6 +436,69 @@
         return filteredElements;
         //return [...new Set(uniqueElements)]
     }
+
+    $(document).on('click','.seelist',function () {
+      //console.log('see list');
+      var ix=$(this).attr('data-ix');
+      var series=$('.qtytype-' + ix).val();
+      var arr=$('.qty-' + ix).val();
+      var list="";
+      if(series == '1'){
+        var exsist=$('.mserial-'+ix).val();
+        if(exsist === undefined || exsist === null || exsist === ''){
+          for(let i=0;i<arr;i++){
+            list= list + '<tr><td><input type="text" class="form-control textlist list-0" name="list['+i+']" placeholder="Serial Number"></td></tr>';
+          }
+          
+        }else{
+          var datals=exsist.split(',');
+          for(let i=0;i<arr;i++){
+            if(datals[i] === undefined){
+              datals[i]="";
+            }
+            list= list + '<tr><td><input type="text" class="form-control textlist list-0" name="list['+i+']" placeholder="Serial Number" value="'+ datals[i] +'"></td></tr>';
+          }
+        }
+        $('.lsSerial').empty();
+        $('.lsSerial').append(list);
+        var source=[];
+        $.each(lisNoseries,function(index,value) {
+          if(value.stockid == $('.stockid-' + ix).find(":selected").val()){
+            source.push(value.noseri);
+            //console.log(value.noseri);  
+          }
+          
+        });
+        $('.textlist').autocomplete({
+          source: source
+        });	
+        $('.sindex').empty();
+        $('.sindex').val(ix);
+        $(".modal-btn").click(); 
+        //callModals();
+      }
+    });
+    
+    $('.addrows').on('click', function() {
+      let ix = $('.indexs').val();;
+      $('.indexs').val(parseInt($('.indexs').val()) + 1);
+      var options='';
+      var text ='<tr class="ix-'+ix+'"><td><input class="catID catID'+ix+'" type="hidden" name="catID['+ix+']" value="'+ix+'"></td><td> <select class="form-select stockid stockid-'+ix+'" name="stockid['+ix+']"><option>-- select one --</option>';
+      var series=JSON.parse($('.lsprod').val());
+      $(series).each(function(index, value){ //loop through your elements
+            options += '<option data-dtl="'+ix+'|'+value.stockname+'|'+value.qtytype+'|'+value.unit+'|'+value.stockid+'" value="'+ value.id +'">'+value.stockname+'</option>'; //add the option element as a string
+      });                        
+      text=text + options;                      
+      text=text + '</select><input type="hidden" class=" stockcode-'+ix+'" name="stockcode['+ix+']" ></td>';
+      text=text + '<td><input type="text" style="min-width: 150px;" class="name name-'+ix+'" name="name['+ix+']" placeholder="Stock Name"></td>';
+      text=text + '<td><select style="min-width: 150px;" class="form-select status" name="status['+ix+']"><option value="1">Dipinjamkan</option> <option value="0">Di Jual</option></select></td>';
+      text=text + '<td class="onqty-'+ix+'"><input type="text" class="qty qty-'+ix+'" style="width: 75px;" name="qty['+ix+']" data-ix="'+ix+'" placeholder="Qty" value="0"><input type="hidden" class="qtytype qtytype-'+ix+'" name="qtytype['+ix+']" ></td>';
+      
+      text=text + '<td><input type="text" style="width: 75px;" class="unit unit-'+ix+'" name="unit['+ix+']" placeholder="Unit"readonly></td>';
+      text=text + '<td><div class="mnoseri-'+ix+'"></div><input class="mserial mserial-'+ix+'" type="hidden" name="mserial['+ix+']" value=""></td>';
+      
+      $('.listItem').append(text);
+    });
 
   });
 </script>

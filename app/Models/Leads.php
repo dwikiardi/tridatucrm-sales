@@ -49,6 +49,7 @@ class Leads extends Model
         'note',
         'createbyid',
         'updatebyid',
+        'packageid',
     ];
     protected $table = "leads";
 }

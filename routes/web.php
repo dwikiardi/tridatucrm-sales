@@ -17,6 +17,7 @@ use App\Http\Controllers\IPAddressController;
 use App\Http\Controllers\TransferController;
 use App\Http\Controllers\InstallController;
 use App\Http\Controllers\MaintenanceController;
+use App\Http\Controllers\RevocationController;
 
 use Illuminate\Support\Facades\Artisan;
 /*
@@ -249,5 +250,20 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('maintenance/installed/{id}', [MaintenanceController::class, 'installed'])->name('maintenance.installed');
     Route::get('maintenance/cancel/{id}', [MaintenanceController::class, 'cancel'])->name('maintenance.cancel');
 
-
+    //Revocation
+    Route::get('revocation', [RevocationController::class, 'index'])->name('revocation');
+    Route::get('revocation', [RevocationController::class, 'index'])->name('revocation.index');
+    Route::get('revocation/create/{id?}', [RevocationController::class, 'create'])->name('revocation.create');  
+    Route::post('revocation/store', [RevocationController::class, 'store'])->name('revocation.store');
+    Route::get('revocation/view/{id}', [RevocationController::class, 'view'])->name('revocation.view');
+    Route::get('revocation/edit/{id}', [RevocationController::class, 'edit'])->name('revocation.edit');
+    Route::post('revocation/update/', [RevocationController::class, 'update'])->name('revocation.update');
+    Route::get('revocation/process/{id}', [RevocationController::class, 'process'])->name('revocation.process');
+    Route::post('revocation/reprocess/', [RevocationController::class, 'reprocess'])->name('revocation.reprocess');
+    Route::get('revocation/finish/{id}', [RevocationController::class, 'finish'])->name('revocation.finish');
+    Route::post('revocation/refinish/', [RevocationController::class, 'refinish'])->name('revocation.refinish');
+    Route::get('revocation/printjo/{id}', [RevocationController::class, 'printjo'])->name('revocation.printjo');
+    Route::get('revocation/installed/{id}', [RevocationController::class, 'installed'])->name('revocation.installed');
+    Route::get('revocation/cancel/{id}', [RevocationController::class, 'cancel'])->name('revocation.cancel');
+    Route::get('revocation/checkCustomer/{id}', [RevocationController::class, 'checkCustomer'])->name('revocation.checkCustomer');
 });

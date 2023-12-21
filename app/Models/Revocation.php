@@ -5,24 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Instalation extends Model
+class Revocation extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'noinstall',
+        'notrans',
         'date',
-        'installdate',
         'leadid',
-        'iptype',
+        'staffid',
         'ipid',
-        'popid',
-        'installerid',
-        'processbyid',
-        'note',
+        'pops',
+        'packageid',
         'status',
+        'note',
         'createdbyid',
         'updatedbyid',
-        'packageid',
     ];
-    protected $table = "installation";
+    protected $table = "revocation";
 }

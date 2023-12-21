@@ -153,6 +153,11 @@
             <td width="30%">{{$instalation[0]->teknisia}} {{$instalation[0]->teknisib}}</td>
           </tr>
           <tr>
+            <td width="30%">Internet Package</td>
+            <td width="10%">:</td>
+            <td width="30%">{{$instalation[0]->services}}</td>
+          </tr>
+          <tr>
             <td width="30%">Note</td>
             <td width="10%">:</td>
             <td width="30%">{{$instalation[0]->note}}</td>

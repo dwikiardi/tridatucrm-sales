@@ -50,6 +50,7 @@
                 <textarea class="form-control vaddress" name="vaddress" placeholder=""></textarea>
                 </div>
               </div>
+             
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Date</label>
                 <div class="col">
@@ -79,7 +80,17 @@
                   </select>
                 </div>
               </div>
-                  
+              <div class="form-group mb-3 row">
+                <label class="form-label col-3 col-form-label">Package</label>
+                <div class="col">
+                      <select class="form-select packageid" name="packageid">
+                      
+                       @foreach($services as $service)
+                          <option value="{{$service->id}}" data-addr="{{$service->services_name}}">{{$service->services_name}}</option>
+                        @endforeach
+                      </select>
+                </div>
+              </div>   
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Note</label>
                 <div class="col">
@@ -167,6 +178,10 @@
     $('.customer').select2({
       placeholder: 'Select an option'
     });
+    $('.packageid').select2({
+      placeholder: 'Select an option'
+    });
+    
     $('.lsseri').select2({
       placeholder: 'Select an option'
     });

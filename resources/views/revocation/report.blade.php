@@ -95,7 +95,7 @@
       <td width="30%" style="text-align:center;vertical-align: top;">
       <table class="lside" style="margin-bottom: 10px;">
           <tr>
-            <td>Denpasar, {{ date("d/M/Y",strtotime($instalation[0]->date))}}</td>
+            <td>Denpasar, {{ date("d/M/Y",strtotime($revocation[0]->date))}}</td>
           </tr>
          
         </table>
@@ -110,8 +110,8 @@
         <table style="margin-bottom: 10px;width: 100%;">
           <tr>
             <td style="text-align: center;">
-                <u>JOB ORDER INSTALASI</u><br>
-                Nomor : {{$instalation[0]->noinstall}}<br>
+                <u>Report Revocation</u><br>
+                Nomor : {{$revocation[0]->notrans}}<br>
 
             </td>
           </tr>
@@ -130,75 +130,82 @@
         <tr>
             <td width="30%">Property Name</td>
             <td width="10%">:</td>
-            <td width="30%">{{$instalation[0]->contact}}</td>
+            <td width="30%">{{$revocation[0]->customer}}</td>
           </tr>
           <tr>
             <td width="30%">Alamat</td>
             <td width="10%">:</td>
-            <td width="30%">{{$instalation[0]->address}}, {{ $instalation[0]->city }} </td>
+            <td width="30%">{{$revocation[0]->address}}, {{ $revocation[0]->city }} </td>
           </tr>
           <tr>
             <td width="30%">Contact </td>
             <td width="10%">:</td>
-            <td width="30%">{{$instalation[0]->contactname}} (mobile : {{$instalation[0]->contactmobile}})</td>
-          </tr>    
+            <td width="30%">{{$revocation[0]->contact}} (mobile : {{$revocation[0]->mobile}})</td>
+          </tr>   
+         
         </table>
       </td>
       <td width="10%"></td>
       <td width="40%">
         <table class="body " style="margin-bottom: 10px;width:100%;">
-          <tr>
+        <tr>
             <td width="30%">Teckhnisi</td>
             <td width="10%">:</td>
-            <td width="30%">{{$instalation[0]->teknisia}} {{$instalation[0]->teknisib}}</td>
+            <td width="30%">{{$revocation[0]->teknisia}} {{$revocation[0]->teknisib}}</td>
           </tr>
           <tr>
-            <td width="30%">Internet package</td>
+            <td width="30%">IP Address</td>
             <td width="10%">:</td>
-            <td width="30%">{{$instalation[0]->services}}</td>
+            <td width="30%">{{$revocation[0]->ips}}</td>
           </tr>
           <tr>
-            <td width="30%">Note</td>
+            <td width="30%">POPs</td>
             <td width="10%">:</td>
-            <td width="30%">{{$instalation[0]->note}}</td>
-          </tr>    
+            <td width="30%">{{$revocation[0]->pops}}</td>
+          </tr>
+          
         </table>
       </td>
     </tr>    
   </table>
-<!-- //List Item -->
+<!-- //List Revocation -->
 
 <table class="body_table " style="margin-bottom: 10px;width:100%;">
-<tr>
-        <td style=" border: solid 1px #000;">Stock Code</td>
-        <td style=" border: solid 1px #000;">Name</td>
-        <td style=" border: solid 1px #000;">Qty</td>
-        <td style=" border: solid 1px #000;">Serial Number</td>
-          
-    </tr>
-    @foreach($detail as $pdf)
+  <tr>
+      <td colspan="4">Installed List</td>
+        
+  </tr>
+  <tr>
+      <td style=" border: solid 1px #000;">Stock Code</td>
+      <td style=" border: solid 1px #000;">Name</td>
+      <td style=" border: solid 1px #000;">Qty</td>
+      <td style=" border: solid 1px #000;">Serial Number</td>
+        
+  </tr>
+  @foreach($detail as $pdf)
     <tr>
         <td style=" border: solid 1px #000;">{{$pdf->stockcodename}}</td>
-        <td style=" border: solid 1px #000;">{{$pdf->stocknames}}</td>
-        <td style=" border: solid 1px #000;">{{$pdf->installedqty}} {{$pdf->unit}}</td>
+        <td style=" border: solid 1px #000;">{{$pdf->stockname}}</td>
+        <td style=" border: solid 1px #000;">{{$pdf->revqty}} {{$pdf->unit}}</td>
         
         <td style=" border: solid 1px #000;">
-        @if($pdf->type==1)
-          List Installed Serial Number : <br>
+        @if($pdf->qtytype==1)
+          List Revocation Serial Number : <br>
           <?php
-          $serial=explode(',',$pdf->instaledserial);
+          $serial=explode(',',$pdf->revserial);
           foreach($serial as $noseri){
+            if($noseri){
               echo '[V]'.$noseri.' &nbsp; &nbsp;';
+            }
           }
           ?>
         @endif
         </td>
         
     </tr>
-    
-    @endforeach        
+  @endforeach        
 </table>
-    
+ 
 <!-- //End List Item -->
     
     <table class="asign" style="margin-bottom: 10px;width:100%;">
@@ -206,7 +213,7 @@
     <tr>
       <td width="30%"></td>
       <td width="39%"></td>
-      <td width="30%">Denpasar, {{ date("d/M/Y",strtotime($instalation[0]->date))}}<br>PT. TRIDATU NETWORK <br><br><br><br>{{$instalation[0]->teknisia}} {{$instalation[0]->teknisib}}<br> (Technian)</td>
+      <td width="30%">Denpasar, {{ date("d/M/Y",strtotime($revocation[0]->date))}}<br>PT. TRIDATU NETWORK <br><br><br><br>{{$revocation[0]->teknisia}} {{$revocation[0]->teknisib}}<br> (Technian)</td>
     </tr>
     
   </table>

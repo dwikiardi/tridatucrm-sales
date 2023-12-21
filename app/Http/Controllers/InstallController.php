@@ -16,6 +16,7 @@ use App\Models\StockLogs;
 use App\Models\Instalation;
 use App\Models\InstalationDetail;
 use App\Models\StocksNoSeri;
+use App\Models\Services;
 
 use DB;
 use DataTables;
@@ -29,8 +30,8 @@ class InstallController extends Controller
 {
     public function index(Request $request){
         if ($request->ajax()) {
-            $data = Instalation::join('users as a','a.id','=','installation.installerid')->join('leads as b','b.id','=','installation.leadid')
-            ->select('installation.id as ID','installation.noinstall as NoInstallation' ,'installation.date AS Date' , 'installation.status AS status','installation.note as Note','a.first_name as InstallationBy','b.property_name as customer')
+            $data = Instalation::join('users as a','a.id','=','installation.installerid')->join('leads as b','b.id','=','installation.leadid')->join('services','services.id','=','installation.packageid')
+            ->select('installation.id as ID','installation.noinstall as NoInstallation' ,'installation.date AS Date' , 'installation.status AS status','installation.note as Note','a.first_name as InstallationBy','b.property_name as customer' ,'services.services_name as services')
             ->get();
             //dd($data);
             return DataTables::of($data)
@@ -108,12 +109,13 @@ class InstallController extends Controller
         $Customers=Leads::select('id','property_name','property_address')->get();
         // $stockPos=StocksPosition::where('posmodule','=','staff')->get();
         $pops=pops::get();
+        $services=Services::get();
         // $StocksNoSeri=StocksNoSeri::select('stockid','posmodule','noseri','module_id')->where('posmodule','=','staff')->get();
         $ipaddress=ipaddress::where('peruntukan','=','')->orWhere('peruntukan', '=', null)->get();
         //dd($ipaddress);
         $mstock=DB::select("select stocks.id,stocks.stockid,stocks.stockname,stocks.categoryid,stocks.unit,stocks_position.posmodule from stocks inner JOIN stocks_position on stocks.id=stocks_position.stockid WHERE stocks_position.posmodule='staff' UNION ALL select stocks.id,stocks.stockid,stocks.stockname,stocks.categoryid,stocks.unit,stocks_no_seri.posmodule from stocks inner JOIN stocks_no_seri on stocks.id=stocks_no_seri.stockid WHERE stocks_no_seri.posmodule='staff' GROUP BY stocks.id,stocks.stockid,stocks.stockname,stocks.categoryid,stocks.unit,stocks_no_seri.posmodule;");
         //return view('installasi.create-sales',compact('Users','Stocks','Customers','Category','StocksNoSeri','stockPos','mstock','ipaddress','pops'));
-        return view('installasi.create',compact('Users','Customers','ipaddress','pops'));
+        return view('installasi.create',compact('Users','Customers','ipaddress','pops','services'));
     }
 
     public function store(Request $request){
@@ -132,6 +134,7 @@ class InstallController extends Controller
             'ipid'=>$request->ipaddr,
             'popid'=>$request->pops,
             'installerid'=>$request->installerid,
+            'packageid'=>$request->packageid,
             'note'=>$request->note,
             'status'=>1,
             'createdbyid'=>$request->createbyid,
@@ -199,8 +202,9 @@ class InstallController extends Controller
         $Instalation=Instalation::join('ip_address','ip_address.id','=','installation.ipid')
         ->join('leads','leads.id','=','installation.leadid')
         ->join('pops','pops.id','=','installation.popid')
+        ->join('services','services.id','=','installation.packageid')
         ->join('users','users.id','=','installation.installerid')
-        ->select('installation.*','ip_address.ip_address as ips','leads.property_name as customer','leads.property_address as address','pops.name as pops','users.first_name as teknisia','users.last_name as teknisib')
+        ->select('installation.*','ip_address.ip_address as ips','leads.property_name as customer','leads.property_address as address','pops.name as pops','users.first_name as teknisia','users.last_name as teknisib','services.services_name as services')
         ->where('installation.id','=',$id)->get();
         // $Instalation=Instalation::where('installation.id','=',$id)->get();
         //dd($Instalation);
@@ -212,12 +216,13 @@ class InstallController extends Controller
         $Users=User::select('id','first_name','last_name')->get();
         $Customers=Leads::select('id','property_name','property_address')->get();
         $pops=pops::get();
+        $services=Services::get();
         $ipaddress=ipaddress::where('peruntukan','=','')->orWhere('peruntukan', '=', null)->get();
         $Instalation=Instalation::join('leads','leads.id','=','installation.leadid')
         ->select('installation.*','leads.property_address as address')
         ->where('installation.id','=',$id)->get();
         //dd($Instalation);
-        return view('installasi.edit',compact('Users','Customers','ipaddress','pops','Instalation'));
+        return view('installasi.edit',compact('Users','Customers','ipaddress','pops','Instalation','services'));
     }
 
     public function update(Request $request){
@@ -289,6 +294,7 @@ class InstallController extends Controller
             'ipid'=>$request->ipaddr,
             'popid'=>$request->pops,
             'installerid'=>$request->installerid,
+            'packageid'=>$request->packageid,
             'note'=>$request->note,
             'updatedbyid'=>$request->updatebyid,
         ];
@@ -337,9 +343,11 @@ class InstallController extends Controller
         ->join('leads','leads.id','=','installation.leadid')
         ->join('pops','pops.id','=','installation.popid')
         ->join('users','users.id','=','installation.installerid')
-        ->select('installation.*','ip_address.ip_address as ips','leads.property_name as customer','leads.property_address as address','pops.name as pops','users.first_name as teknisia','users.last_name as teknisib')
+        ->join('services','services.id','=','installation.packageid')
+        ->select('installation.*','ip_address.ip_address as ips','leads.property_name as customer','leads.property_address as address','pops.name as pops','users.first_name as teknisia','users.last_name as teknisib','services.services_name as services')
         ->where('installation.id','=',$id)->get();
-        $mstock=DB::select("select stocks.id,stocks.stockid,stocks.qtytype,stocks.stockname,stocks.categoryid,stocks.unit,stocks_position.posmodule from stocks inner JOIN stocks_position on stocks.id=stocks_position.stockid WHERE stocks_position.posmodule='storage' UNION ALL select stocks.id,stocks.stockid,stocks.qtytype,stocks.stockname,stocks.categoryid,stocks.unit,stocks_no_seri.posmodule from stocks inner JOIN stocks_no_seri on stocks.id=stocks_no_seri.stockid WHERE stocks_no_seri.posmodule='storage' GROUP BY stocks.id,stocks.stockid,stocks.stockname,stocks.categoryid,stocks.unit,stocks_no_seri.posmodule,stocks.qtytype;");
+        //$mstock=DB::select("select stocks.id,stocks.stockid,stocks.qtytype,stocks.stockname,stocks.categoryid,stocks.unit,stocks_position.posmodule from stocks inner JOIN stocks_position on stocks.id=stocks_position.stockid WHERE stocks_position.posmodule='storage' UNION ALL select stocks.id,stocks.stockid,stocks.qtytype,stocks.stockname,stocks.categoryid,stocks.unit,stocks_no_seri.posmodule from stocks inner JOIN stocks_no_seri on stocks.id=stocks_no_seri.stockid WHERE stocks_no_seri.posmodule='storage' GROUP BY stocks.id,stocks.stockid,stocks.stockname,stocks.categoryid,stocks.unit,stocks_no_seri.posmodule,stocks.qtytype;");
+        $mstock=DB::select("SELECT stocks.id, stocks.stockid, stocks.qtytype, stocks.stockname, stocks.categoryid, stocks.unit, stocks_position.posmodule,stocks_position.qty as qty FROM stocks INNER JOIN stocks_position ON stocks.id = stocks_position.stockid WHERE stocks_position.posmodule = 'storage' AND stocks_position.module_id = 0 UNION ALL SELECT stocks.id, stocks.stockid, stocks.qtytype, stocks.stockname, stocks.categoryid, stocks.unit, stocks_no_seri.posmodule, count(stocks_no_seri.noseri) as qty FROM stocks INNER JOIN stocks_no_seri ON stocks.id = stocks_no_seri.stockid WHERE stocks_no_seri.posmodule = 'storage' AND stocks_no_seri.module_id = 0 GROUP BY stocks.id, stocks.stockid, stocks.stockname, stocks.categoryid, stocks.unit, stocks_no_seri.posmodule, stocks.qtytype;;");
         return view('installasi.process',compact('Stocks','Category','StocksNoSeri','stockPos','mstock','Instalation'));
     }
     
@@ -405,8 +413,9 @@ class InstallController extends Controller
                         //set non serial
                         //Get Current Stock from Staff and Add
                         $currentPosition=StocksPosition::where('posmodule','=','staff')->where('module_id','=',$installerid)->where('stockid','=',$request->stockid[$i])->get();
+                        //dd($currentPosition);
                         if($currentPosition->count()>0){
-                            $qty=(int)$currentPosition[0] + (int)$request->qty[$i];
+                            $qty=(int)$currentPosition[0]->qty + (int)$request->qty[$i];
                             $CreateNeStock=[
                                 'qty'=>$qty,
                             ];
@@ -438,11 +447,13 @@ class InstallController extends Controller
                         $logslist=StockLogs::create($seriallogs);
 
                         //Check Stock from Storeage Add Reduce
-                        $currentPositions=StocksPosition::where('posmodule','=','storage')->where('stockid','=',$request->stockid[$i])->get();
+                        $currentPositions=StocksPosition::where('posmodule','=','storage')->where('stockid','=',$request->stockid[$i])->first();
+                        $qtys=((int)$currentPositions->qty) - ((int)$request->qty[$i]);
+                        
                         $updateStock=[
-                            'qty'=>(int)$currentPosition[0]->qty - (int)$request->qty[$i],
+                            'qty'=>$qtys,
                         ];
-                        $updStock=StocksPosition::where('id','=',$currentPositions[0]->id)->update($updateStock);
+                        $updStock=StocksPosition::where('id','=',$currentPositions->id)->update($updateStock);
                         
                         
                         
@@ -450,7 +461,7 @@ class InstallController extends Controller
                             'stockid'=>$request->stockid[$i],
                             'stockcode'=>'',
                             'serial'=>'',
-                            'qty'=>$posQty,
+                            'qty'=>$qty,
                             'transtype'=>4,
                             'module'=>'install',
                             'moduleid'=>$id,
@@ -503,20 +514,21 @@ class InstallController extends Controller
         ->select('installation.*','leads.property_name as customer','leads.property_address as address','users.first_name as teknisia','users.last_name as teknisib')
         ->where('installation.id','=',$id)->get();
         $detail=InstalationDetail::join('stocks','stocks.id','=','installationdtl.stockid')
-        ->select('installationdtl.*','stocks.stockname','stocks.stockid','stocks.unit','stocks.qtytype')
+        ->select('installationdtl.*','stocks.stockname','stocks.stockid as stockcode','stocks.unit','stocks.qtytype')
         ->where('installationdtl.noinstall','=',$Instalation[0]->noinstall)->get();
-        $Stocks=Stocks::select('id','stockid','stockname','qtytype','unit','categoryid')->get();
         $stockPos=StocksPosition::where('posmodule','=','staff')->get();
         $StocksNoSeri=StocksNoSeri::select('stockid','posmodule','noseri','module_id')->where('posmodule','=','staff')->where('module_id','=',$Instalation[0]->installerid)->get();
         $ipaddress=ipaddress::where('peruntukan','=','')->orWhere('peruntukan', '=', null)->orWhere('leadid', '=', $Instalation[0]->leadid)->get();
         //dd($ipaddress);
         $pops=pops::get();
+        $services=Services::get();
         $mstock=DB::select("select stocks.id,stocks.stockid,stocks.qtytype,stocks.stockname,stocks.categoryid,stocks.unit,stocks_position.posmodule from stocks inner JOIN stocks_position on stocks.id=stocks_position.stockid WHERE stocks_position.posmodule='staff' and stocks_position.module_id='".$Instalation[0]->installerid."' UNION ALL select stocks.id,stocks.stockid,stocks.qtytype,stocks.stockname,stocks.categoryid,stocks.unit,stocks_no_seri.posmodule from stocks inner JOIN stocks_no_seri on stocks.id=stocks_no_seri.stockid WHERE stocks_no_seri.posmodule='staff' and stocks_no_seri.module_id='".$Instalation[0]->installerid."' GROUP BY stocks.id,stocks.stockid,stocks.stockname,stocks.categoryid,stocks.unit,stocks_no_seri.posmodule,stocks.qtytype;");
         //dd("select stocks.id,stocks.stockid,stocks.qtytype,stocks.stockname,stocks.categoryid,stocks.unit,stocks_position.posmodule from stocks inner JOIN stocks_position on stocks.id=stocks_position.stockid WHERE stocks_position.posmodule='staff' and stocks_position.module_id='".$Instalation[0]->installerid."' UNION ALL select stocks.id,stocks.stockid,stocks.qtytype,stocks.stockname,stocks.categoryid,stocks.unit,stocks_no_seri.posmodule from stocks inner JOIN stocks_no_seri on stocks.id=stocks_no_seri.stockid WHERE stocks_no_seri.posmodule='staff' and stocks_no_seri.module_id='".$Instalation[0]->installerid."' GROUP BY stocks.id,stocks.stockid,stocks.stockname,stocks.categoryid,stocks.unit,stocks_no_seri.posmodule,stocks.qtytype;");
-        return view('installasi.finish',compact('Stocks','StocksNoSeri','stockPos','mstock','Instalation','ipaddress','pops','detail'));
+        return view('installasi.finish',compact('Stocks','StocksNoSeri','stockPos','mstock','Instalation','ipaddress','pops','detail','services'));
     }
+
     public function refinish(Request $request){
-        //dd($request);
+        dd($request);
         //Change IP Allocation
         $id=$request->id;
         $olddata=Instalation::where('installation.id','=',$id)->get();
@@ -718,7 +730,7 @@ class InstallController extends Controller
         }else{
             foreach ($request->detail as  $value) {
                 // $rowID=$request->detail[$value];
-                echo "<br> ID : ".$value;
+                //echo "<br> ID : ".$value;
                 $rowID=$value;
                 if($request->qtytype[$rowID] == 1 ){
                     $instaledserial=count($request->installserial[$rowID]);
@@ -790,6 +802,7 @@ class InstallController extends Controller
                    //Set Stock Non Serial
                     //Get Current Stock from Staff and reduce
                     $current=StocksPosition::where('stockid','=',$request->stockid[$rowID])->where('posmodule','=','staff')->where('module_id','=',$installerid)->get();
+                    dd($current);
                     //dd($current[0]->id);
                     if ($current->count() > 0) {
                         $cqty=$current[0]->qty;
@@ -865,11 +878,19 @@ class InstallController extends Controller
         }
         
         //End Update
-
+        // //Set Leads
+        $data=[ 'packageid'=>$request->packageid ];
+        try {
+            $Leads=Leads::where('id','=',$leadid)->update($data);
+        }  catch (\Exception $e) {
+            $status="failed";
+            $msg=$msg." ".$e->getMessage();
+        }
         // //Set Main Instalation
         $data=[
             'ipid'=>$request->ipaddr,
             'popid'=>$request->pops,
+            'packageid'=>$request->packageid,
             'status'=>3,
             'installdate'=>$date,
             'updatedbyid'=>$request->updatebyid,
@@ -907,13 +928,15 @@ class InstallController extends Controller
 
 
     }
+    
     public function printjo($id){
         $instalation=Instalation::join('leads','leads.id','=','installation.leadid')
         ->join('users','users.id','=','installation.installerid')
         ->join('ip_address','ip_address.id','=','installation.ipid')
         ->join('pops','pops.id','=','installation.popid')
+        ->join('services','services.id','=','installation.packageid')
         ->select('installation.*','users.first_name as teknisia','users.last_name as teknisib','ip_address.ip_address as ips','pops.name as pops',
-        'leads.property_name as contact','leads.property_address as address','leads.property_city as city','leads.pic_contact as contactname','leads.pic_mobile as contactmobile')
+        'leads.property_name as contact','leads.property_address as address','leads.property_city as city','leads.pic_contact as contactname','leads.pic_mobile as contactmobile','services.services_name as services')
         ->where('installation.id','=',$id)->get();
 
         $detail=InstalationDetail::join('stocks','stocks.id','=','installationdtl.stockid')
@@ -950,8 +973,9 @@ class InstallController extends Controller
         ->join('users','users.id','=','installation.installerid')
         ->join('ip_address','ip_address.id','=','installation.ipid')
         ->join('pops','pops.id','=','installation.popid')
+        ->join('services','services.id','=','installation.packageid')
         ->select('installation.*','users.first_name as teknisia','users.last_name as teknisib','ip_address.ip_address as ips','pops.name as pops',
-        'leads.property_name as contact','leads.property_address as address','leads.property_city as city','leads.pic_contact as contactname','leads.pic_mobile as contactmobile')
+        'leads.property_name as contact','leads.property_address as address','leads.property_city as city','leads.pic_contact as contactname','leads.pic_mobile as contactmobile','services.services_name as services')
         ->where('installation.id','=',$id)->get();
 
         $detail=InstalationDetail::join('stocks','stocks.id','=','installationdtl.stockid')

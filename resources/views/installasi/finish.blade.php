@@ -97,6 +97,21 @@
               <div class="form-group col-md-6 row">
                 <label class="form-label col-3 col-form-label">POP </label>
                 <div class="col">
+                      <select class="form-select packageid" name="packageid">
+                       @foreach($services as $service)
+                        @if($Instalation[0]->packageid==$service->id)
+                          <option selected value="{{$service->id}}" data-addr="{{$service->services_name}}">{{$service->services_name}}</option>
+                        @else
+                          <option value="{{$service->id}}" data-addr="{{$service->services_name}}">{{$service->services_name}}</option>
+                        @endif
+                        
+                        @endforeach
+                      </select>
+                </div>
+              </div>   
+              <div class="form-group col-md-6 row">
+                <label class="form-label col-3 col-form-label">POP </label>
+                <div class="col">
                       <select class="form-select pops" name="pops">
                        @foreach($pops as $pop)
                         @if($Instalation[0]->ipid==$ipadd->id)
@@ -114,7 +129,6 @@
         <div class="card">
           <div class="table-responsive"  style="min-height: 150px;">
           <input type="hidden" class="form-control id" name="id" value='{{$Instalation[0]->id}}' readonly>
-          <input type="hidden" class="form-control lsprod" name="lsprod" value='<?php echo json_encode($Stocks); ?>' readonly>
           <input type="hidden" class="form-control noseri" name="noseri" value='<?php echo json_encode($StocksNoSeri); ?>' readonly>
           <input type="hidden" class="form-control stockpos" name="stockpos" value='<?php echo json_encode($stockPos); ?>' readonly>
             <table class="table card-table table-vcenter text-nowrap datatable">
@@ -148,17 +162,17 @@
                         @endif
                       @endforeach
                     </select> -->
-                    {{$details->stockid}}
-                    <input class="details detail-{{$details->id}}" type="hidden" name="stockid[]" value="{{$details->stockid}}">
+                    {{$details->stockcode}}
+                    <input class="details detail-{{$details->id}}" type="hidden" name="stockid[$details->id]" value="{{$details->stockid}}">
                   </td>
-                  <td>{{$details->stockid}}</td>
+                  <td>{{$details->stockname}}</td>
                   <td>
                     <select style="max-width: 130px;" class="form-select status" name="status[{{$details->id}}]">
                       <option value="1">Dipinjamkan</option>
                       <option value="0">Di Jual</option>
                     </select>
                   </td>
-                  <td class="onqty-{{$details->id}}"><input style="width: 75px;" class="qty-{{$details->id}}" type="text" name="qty[{{$details->id}}]"  data-ix="{{$details->id}}" value="{{$details->qty}}"><input class="qtytype-{{$details->id}}" type="hidden" name="qtytype[{{$details->id}}]" value="{{$details->qtytype}}"></td>
+                  <td class="onqty-{{$details->id}}"><input style="width: 75px;" class="qty qty-{{$details->id}}" type="text" name="qty[{{$details->id}}]"  data-ix="{{$details->id}}" value="{{$details->qty}}"><input class="qtytype qtytype-{{$details->id}}" type="hidden" name="qtytype[{{$details->id}}]" value="{{$details->qtytype}}"  data-ix="{{$details->id}}"></td>
                   <td>{{$details->unit}}</td>
                   <td>
                   <?php
@@ -246,13 +260,16 @@
     $('.pops').select2({
       placeholder: 'Select an option'
     });
+    $('.packageid').select2({
+      placeholder: 'Select an option'
+    });
    
     $('.date').datetimepicker({format: 'DD/MM/YYYY',defaultDate:'now' });
     
     $('.process').on("click",function(){
       //var mydata=$('#myform').serializeArray();
       var mydata = $('#myform').serializeArray();
-      var valid=validate();
+      var valid=checkqty();
       if(valid==true){
         console.log(mydata);
         $.ajaxSetup({
@@ -285,7 +302,7 @@
           alert('Quantity tidak boleh lebih kecil dari 1');
           return false;
         }else{
-          let valid=validate();
+          let valid=validate(ix);
           console.log('return: ' + valid);
           return false;
         }
@@ -293,13 +310,13 @@
       }
     });
 
-    function validate(){
+    function validate(ix){
       // var series=$('.qtytype-' + ix).val();
       // var count=$('.qtytype-' + ix).val();
-      
+      console.log(ix);
       let returns=true;
-      console.log($('#rows').val());
-      if($('#rows').val()>1){
+      console.log($('.qty-'+ix).val());
+      if($('.qty-'+ix).val()>=1){
         console.log('more than 1 row');
         $('.details').each(function() {
           let ix= $(this).val();
@@ -333,6 +350,57 @@
           returns=false;
         }
       }
+      return returns;
+    }
+
+    function checkqty(){
+      // var series=$('.qtytype-' + ix).val();
+      // var count=$('.qtytype-' + ix).val();
+      let ix;
+      let returns=true;
+      $('.qtytype').each(function(){
+        if(this.value == 1){
+          ix = $(this).attr('data-ix');
+          console.log($('.qty-'+ix).val());
+          if($('.qty-'+ix).val()>=1){
+            console.log('more than 1 row');
+            $('.details').each(function() {
+              let ix= $(this).val();
+              if( $('.qtytype-'+ix).val()==1){
+                let total=0;
+                let item="";
+                $('.serials-'+ix+':checkbox:checked').each(function () {
+                    total++;
+                });
+                if(total != $('.qty-'+ix).val()){
+                  returns=false;
+                }
+              }
+            
+            });
+            if  (returns == false){
+              alert('Some Instaled Qty not same with Checked Serial Number');
+            }
+            return returns;
+          }else{
+            var ix= $('.details').val();
+            let total=0;
+            if( $('.qtytype-'+ix).val()==1){
+              $('.serials-'+ix+':checkbox:checked').each(function () {
+                  // item=item + $(this).val() +',';
+                  total++;
+              });
+            }
+            if(total != $('.qty-'+ix).val()){
+              alert('Instaled Qty not same with Chacked Serial');
+              returns=false;
+            }
+          }
+        }
+      });
+      
+      
+      
       return returns;
     }
    

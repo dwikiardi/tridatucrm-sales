@@ -70,7 +70,7 @@
     }
     .page_break { page-break-before: always; }
   </style>
-  <title>Installation Job Order</title>
+  <title>Revocation Job Order</title>
 </head>
 <body>
 
@@ -95,7 +95,7 @@
       <td width="30%" style="text-align:center;vertical-align: top;">
       <table class="lside" style="margin-bottom: 10px;">
           <tr>
-            <td>Denpasar, {{ date("d/M/Y",strtotime($instalation[0]->date))}}</td>
+            <td>Denpasar, {{ date("d/M/Y",strtotime($revocation[0]->date))}}</td>
           </tr>
          
         </table>
@@ -110,8 +110,8 @@
         <table style="margin-bottom: 10px;width: 100%;">
           <tr>
             <td style="text-align: center;">
-                <u>JOB ORDER INSTALASI</u><br>
-                Nomor : {{$instalation[0]->noinstall}}<br>
+                <u>JOB ORDER REVOCATION</u><br>
+                Nomor : {{$revocation[0]->notrans}}<br>
 
             </td>
           </tr>
@@ -130,17 +130,17 @@
         <tr>
             <td width="30%">Property Name</td>
             <td width="10%">:</td>
-            <td width="30%">{{$instalation[0]->contact}}</td>
+            <td width="30%">{{$revocation[0]->contact}}</td>
           </tr>
           <tr>
             <td width="30%">Alamat</td>
             <td width="10%">:</td>
-            <td width="30%">{{$instalation[0]->address}}, {{ $instalation[0]->city }} </td>
+            <td width="30%">{{$revocation[0]->address}}, {{ $revocation[0]->city }} </td>
           </tr>
           <tr>
             <td width="30%">Contact </td>
             <td width="10%">:</td>
-            <td width="30%">{{$instalation[0]->contactname}} (mobile : {{$instalation[0]->contactmobile}})</td>
+            <td width="30%">{{$revocation[0]->contact}} (mobile : {{$revocation[0]->mobile}})</td>
           </tr>    
         </table>
       </td>
@@ -150,63 +150,75 @@
           <tr>
             <td width="30%">Teckhnisi</td>
             <td width="10%">:</td>
-            <td width="30%">{{$instalation[0]->teknisia}} {{$instalation[0]->teknisib}}</td>
+            <td width="30%">{{$revocation[0]->teknisia}} {{$revocation[0]->teknisib}}</td>
           </tr>
           <tr>
-            <td width="30%">Internet package</td>
+            <td width="30%">IP Address</td>
             <td width="10%">:</td>
-            <td width="30%">{{$instalation[0]->services}}</td>
+            <td width="30%">{{$revocation[0]->ips}}</td>
           </tr>
           <tr>
-            <td width="30%">Note</td>
+            <td width="30%">POPs</td>
             <td width="10%">:</td>
-            <td width="30%">{{$instalation[0]->note}}</td>
-          </tr>    
+            <td width="30%">{{$revocation[0]->pops}}</td>
+          </tr>
+          <tr>
+            <td width="30%">Package</td>
+            <td width="10%">:</td>
+            <td width="30%">{{$revocation[0]->services}}</td>
+          </tr>
         </table>
       </td>
-    </tr>    
-  </table>
-<!-- //List Item -->
-
-<table class="body_table " style="margin-bottom: 10px;width:100%;">
-<tr>
-        <td style=" border: solid 1px #000;">Stock Code</td>
-        <td style=" border: solid 1px #000;">Name</td>
-        <td style=" border: solid 1px #000;">Qty</td>
-        <td style=" border: solid 1px #000;">Serial Number</td>
-          
     </tr>
-    @foreach($detail as $pdf)
     <tr>
-        <td style=" border: solid 1px #000;">{{$pdf->stockcodename}}</td>
-        <td style=" border: solid 1px #000;">{{$pdf->stocknames}}</td>
-        <td style=" border: solid 1px #000;">{{$pdf->installedqty}} {{$pdf->unit}}</td>
-        
-        <td style=" border: solid 1px #000;">
-        @if($pdf->type==1)
-          List Installed Serial Number : <br>
-          <?php
-          $serial=explode(',',$pdf->instaledserial);
-          foreach($serial as $noseri){
-              echo '[V]'.$noseri.' &nbsp; &nbsp;';
-          }
-          ?>
-        @endif
-        </td>
-        
+      <td colspan=3>
+        Installed
+      </td>
+    </tr>
+    <tr>  
+      <td colspan=3>
+        <table class="body_table " style="margin-bottom: 10px;width:100%;">
+          <tr>
+            <td style=" border: solid 1px #000;">Stock Code</td>
+            <td style=" border: solid 1px #000;">Name</td>
+            <td style=" border: solid 1px #000;">Qty</td>
+          </tr>
+          @foreach($detail as $install)
+          <tr>
+              <td style=" border: solid 1px #000;">{{$install->stockcodename}}</td>
+              <td style=" border: solid 1px #000;">{{$install->stockname}}</td>
+              <td style=" border: solid 1px #000;">{{$install->qty}} {{$install->unit}}</td>
+          </tr>
+          @if($install->qtytype==1)
+          <tr>
+              
+              <td colspan="3" style=" border: solid 1px #000;">
+                  List Installed Serial Number : <br>
+                  <?php
+                  $serial=explode(',',$install->noseri);
+                  foreach($serial as $noseri){
+                      echo '[ ]'.$noseri.' &nbsp; &nbsp;';
+                  }
+                  ?>
+              </td>
+          </tr>
+          @endif
+          @endforeach        
+        </table>
+      </td>
     </tr>
     
-    @endforeach        
-</table>
-    
-<!-- //End List Item -->
+  </table>
+  
+  
+
     
     <table class="asign" style="margin-bottom: 10px;width:100%;">
         
     <tr>
       <td width="30%"></td>
       <td width="39%"></td>
-      <td width="30%">Denpasar, {{ date("d/M/Y",strtotime($instalation[0]->date))}}<br>PT. TRIDATU NETWORK <br><br><br><br>{{$instalation[0]->teknisia}} {{$instalation[0]->teknisib}}<br> (Technian)</td>
+      <td width="30%">Denpasar, {{ date("d/M/Y",strtotime($revocation[0]->date))}}<br>PT. TRIDATU NETWORK <br><br><br><br>{{$revocation[0]->teknisia}} {{$revocation[0]->teknisib}}<br> (Technian)</td>
     </tr>
     
   </table>

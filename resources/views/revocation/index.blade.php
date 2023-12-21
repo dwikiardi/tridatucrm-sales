@@ -1,5 +1,5 @@
 @extends('layouts/admin')
-@section('title','Installasi')
+@section('title','Revocation')
 @section('add_css')
 <style>
   .dataTables_filter{
@@ -28,7 +28,7 @@
         <div class="col">
           <!-- Page pre-title -->
           <div class="page-pretitle">
-          <h1 class="m-0 text-dark">Installasi </h1>
+          <h1 class="m-0 text-dark">Revocation </h1>
           </div>
           
         </div>
@@ -40,10 +40,10 @@
                 New view
               </a>
             </span>-->
-            <a href="{{ url('installasi/create')}}" class="btn btn-primary d-none d-sm-inline-block">
+            <a href="{{ url('revocation/create')}}" class="btn btn-primary d-none d-sm-inline-block">
               <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
               <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
-              New Installasi
+              New Revocation
             </a>
            
           </div>
@@ -61,12 +61,10 @@
                 <thead>
                   <tr>
                   
-                    <th>Installasi No.</th>
+                    <th>Job Order No.</th>
                     <th>Date</th>
                     <th>Customer Property</th>
                     <th>By</th>
-                    <th>Package</th>
-                    <th>Note</th>
                     <th>Status</th>
                     
                     <th>Action</th>
@@ -94,11 +92,11 @@
     var table = $('.datatable').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('installasi.index') }}",
+        ajax: "{{ route('revocation.index') }}",
         columns: [
-          {data: 'NoInstallation', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+          {data: 'notrans', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html(oData.NoInstallation);
+                $(nTd).html(oData.notrans);
               }
             },
             {data: 'Date', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
@@ -111,21 +109,12 @@
                 $(nTd).html(oData.customer);
               }
             },
-            {data: 'InstallationBy', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+            {data: 'staff', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html(oData.InstallationBy);
+                $(nTd).html(oData.staff);
               }
             },
-            {data: 'services', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
-              {
-                $(nTd).html(oData.services);
-              }
-            },
-            {data: 'Note', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
-              {
-                $(nTd).html(oData.Note);
-              }
-            },
+           
             {data: 'status', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
                 $(nTd).html(oData.status);
@@ -133,7 +122,7 @@
             },
             
             
-             {data: 'action', name: 'action', installasiable: false, searchable: false},
+             {data: 'action', name: 'action', maintenanceable: false, searchable: false},
         ]
     });
     $(document).on("click",".printjo",function(){
@@ -145,7 +134,7 @@
       // $('.process').attr("disabled", true);
 
       $.ajax({
-        url: "{{url('installasi/printjo')}}/" + id ,
+        url: "{{url('revocation/printjo')}}/" + id ,
         type: "GET",
         data: id,
         success: function( response ) {
@@ -153,7 +142,28 @@
           if(obj.status ==="success"){
             window.open(obj.file,'_blank');
           }
-          
+          table.ajax.reload();
+        }
+      });
+    });
+    $(document).on("click",".cancel",function(){
+      var id=$(this).attr("data-id");
+      console.log(id);
+      $.ajaxSetup({
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+      });
+      // $('.process').attr("disabled", true);
+
+      $.ajax({
+        url: "{{url('revocation/cancel')}}/" + id ,
+        type: "GET",
+        data: id,
+        success: function( response ) {
+          const obj = JSON.parse(response);
+          if(obj.status ==="success"){
+           alert(obj.message);
+          }
+          table.ajax.reload();
         }
       });
     });
@@ -166,7 +176,7 @@
       // $('.process').attr("disabled", true);
 
       $.ajax({
-        url: "{{url('installasi/installed')}}/" + id ,
+        url: "{{url('revocation/installed')}}/" + id ,
         type: "GET",
         data: id,
         success: function( response ) {
