@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AccountsController;
 use App\Http\Controllers\LeadController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\TransferController;
 use App\Http\Controllers\InstallController;
 use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\RevocationController;
+use App\Http\Controllers\StockReportController;
 
 use Illuminate\Support\Facades\Artisan;
 /*
@@ -266,4 +268,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('revocation/installed/{id}', [RevocationController::class, 'installed'])->name('revocation.installed');
     Route::get('revocation/cancel/{id}', [RevocationController::class, 'cancel'])->name('revocation.cancel');
     Route::get('revocation/checkCustomer/{id}', [RevocationController::class, 'checkCustomer'])->name('revocation.checkCustomer');
+
+    //Inventory Report
+    Route::get('invreport', [StockReportController::class, 'invreport'])->name('report.invreport');//All Stock Position
 });

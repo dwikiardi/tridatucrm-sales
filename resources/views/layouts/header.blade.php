@@ -193,13 +193,13 @@
                       <a class="dropdown-item" href="{{url('transfer_in')}}" >
                         Transfer In(From Puschasing)
                       </a>
-                      <a class="dropdown-item" href="{{url('installationss')}}" >
+                      <a class="dropdown-item" href="{{url('installasi')}}" >
                         Instalation
                       </a>
-                      <a class="dropdown-item" href="{{url('revocations')}}" >
+                      <a class="dropdown-item" href="{{url('revocation')}}" >
                         Revocation
                       </a>
-                      <a class="dropdown-item" href="{{url('maintenances')}}" >
+                      <a class="dropdown-item" href="{{url('maintenance')}}" >
                         Maintenance
                       </a>
                       
@@ -215,7 +215,7 @@
                       <a class="dropdown-item" href="{{url('transfer_out')}}" >
                         Transfer Out (from Storage)
                       </a> -->
-                      <a class="dropdown-item" href="{{url('report')}}" >
+                      <a class="dropdown-item" href="{{url('invreport')}}" >
                         Inventory Reports
                       </a>
                     </div>

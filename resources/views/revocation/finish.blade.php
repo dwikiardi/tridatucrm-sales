@@ -55,7 +55,7 @@
             </div>
             <div class="col-md-6">
               <div class="form-group mb-3 row">
-                <label class="form-label col-3 col-form-label">Technision</label>
+                <label class="form-label col-3 col-form-label">Technician</label>
                 <div class="col">
                 {{$revocation[0]->teknisia}} {{$revocation[0]->teknisib}}
                 </div>

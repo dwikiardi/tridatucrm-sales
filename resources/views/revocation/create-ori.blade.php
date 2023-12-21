@@ -70,7 +70,7 @@
             </div>
             <div class="col-md-6">
               <div class="form-group mb-3 row">
-                <label class="form-label col-3 col-form-label">Technision</label>
+                <label class="form-label col-3 col-form-label">Technician</label>
                 <div class="col">
                   <select class="form-select installerid" name="installerid">
                   <option >-- Select One --</option>

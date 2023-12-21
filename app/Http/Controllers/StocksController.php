@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\DataLogs;
 use App\Models\StockCategorys;
 use App\Models\Stocklist;
+use App\Models\StockLogs;
 
 use DataTables;
 
@@ -21,7 +22,7 @@ class StocksController extends Controller
         if ($request->ajax()) {
             //$data = Accounts::select('*');
             $data = Stocks::join('stock_categories','stock_categories.id','=','stocks.categoryid')
-            ->select('stocks.id as ID' , 'stocks.stockid AS StockID','stocks.stockname as Name' , 'stocks.desk AS Desk','stock_categories.category_name as Category','stocks.unit As Unit','stocks.qtytype As Type',)
+            ->select('stocks.id as ID' , 'stocks.stockid AS StockID','stocks.stockname as Name' , 'stocks.desk AS Desk','stock_categories.category_name as Category','stocks.unit As Unit','stocks.qtytype As Type')
             ->get();
             //dd($data);
             return DataTables::of($data)
@@ -81,12 +82,13 @@ class StocksController extends Controller
     }
 
     public function view($id){
-        $stocks=Stocks::join('stock_categories','stock_categories.id','=','stocks.categoryid')->select('stocks.*','stock_categories.category_name',)->where('stocks.id','=',$id)->get();
+        $stocks=Stocks::join('stock_categories','stock_categories.id','=','stocks.categoryid')->select('stocks.*','stock_categories.category_name')->where('stocks.id','=',$id)->get();
         $categorys = StockCategorys::get();
         $logs=DataLogs::where('moduleid','=',$id)->where('module','=','stocks')->orderBy('created_at', 'DESC')->join('users', 'datalogs.createbyid', '=', 'users.id')
         ->select('datalogs.*' ,'users.first_name as firstname', 'users.last_name as lastname')->get();
-        
-        return view('stocks.view',compact('stocks','categorys','logs'));
+        $stocklog=StockLogs::where('stock_logs.stockid','=',$id)->orderBy('created_at', 'asc')->join('users', 'stock_logs.createdbyid', '=', 'users.id')->join('stocks', 'stock_logs.stockid', '=', 'stocks.id')
+        ->select('stock_logs.*' ,'users.first_name as firstname', 'users.last_name as lastname','stocks.qtytype','stocks.unit','stocks.stockid','stocks.stockname')->get();
+        return view('stocks.view',compact('stocks','categorys','logs','stocklog'));
     }
 
     public function edit($id){
@@ -138,13 +140,13 @@ class StocksController extends Controller
                         return $row->Desk;
                     }
                 })
-                ->editColumn('Name', function ($row) {
-                    switch ($row->Name) {
+                ->editColumn('modules', function ($row) {
+                    switch ($row->modules) {
                         case 'leads':
                             return "Customer";
                             break;
                         case 'staff':
-                            return "Technisian/Staff";
+                            return "Technician/Staff";
                             break;
                         case 'storage':
                             return "Storage";

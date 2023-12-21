@@ -39,6 +39,9 @@
               <li class="nav-item">
                 <a href="#tabs-profile-17" class="nav-link" data-bs-toggle="tab" style="border: solid #cbd5e1 1px!important;border-radius: 15px;">Timeline</a>
               </li>
+              <li class="nav-item">
+                <a href="#tabs-profile-18" class="nav-link" data-bs-toggle="tab" style="border: solid #cbd5e1 1px!important;border-radius: 15px;">Stock History</a>
+              </li>
             </ul>
           </div>
           
@@ -133,6 +136,7 @@
                           <th>Product Code</th>
                           <th>Name</th>
                           <th>Position</th>
+                          <th></th>
                           <th>Qty</th>
                         </tr>
                       </thead>
@@ -208,7 +212,113 @@
           </div>
         </div>
         </div>
-        
+        <div class="tab-pane fade" id="tabs-profile-18">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header bg-blue-lt">
+              <h3 class="card-title"> History </h3>
+            </div>
+            <div class="card-body row">
+              <ul class="list list-timeline">
+                @foreach($stocklog as $log)
+                <li>
+                  <div class="list-timeline-icon"><!-- Download SVG icon from http://tabler-icons.io/i/brand-twitter -->
+                    <!-- SVG icon code -->
+                    @if ($log->transtype == 1) <!-- purchase -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-shopping-cart" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                      <path d="M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                      <path d="M17 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                      <path d="M17 17h-11v-14h-2" />
+                      <path d="M6 5l14 1l-1 7h-13" />
+                    </svg>
+                    <!-- <p>Purchase</p> -->
+                    @endif
+                    @if ($log->transtype == 3)<!-- transferOut to staff -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" /><path d="M6 21v-2a4 4 0 0 1 4 -4h4" /><path d="M15 19l2 2l4 -4" /></svg>
+                    <!-- <p>To Staff</p> -->
+                    @endif
+                    @if ($log->transtype == 4)<!-- transferOut to staff -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home-up" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 21v-6a2 2 0 0 1 2 -2h2c.641 0 1.212 .302 1.578 .771" /><path d="M20.136 11.136l-8.136 -8.136l-9 9h2v7a2 2 0 0 0 2 2h6.344" /><path d="M19 22v-6" /><path d="M22 19l-3 -3l-3 3" /></svg>
+                    <!-- <p>Installation</p> -->
+                    @endif
+                    @if ($log->transtype == 5)<!-- transferOut to staff -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home-share" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 21v-6a2 2 0 0 1 2 -2h2c.247 0 .484 .045 .702 .127" /><path d="M19 12h2l-9 -9l-9 9h2v7a2 2 0 0 0 2 2h5" /><path d="M16 22l5 -5" /><path d="M21 21.5v-4.5h-4.5" /></svg>
+                    <!-- <p>Revocation</p> -->
+                    @endif
+                   
+                    @if ($log->transtype == 6)<!-- transferOut to staff -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-shopping-cart-share" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 19a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M12.5 17h-6.5v-14h-2" /><path d="M6 5l14 1l-1 7h-13" /><path d="M16 22l5 -5" /><path d="M21 21.5v-4.5h-4.5" /></svg>
+                    <!-- <p>Purchase Return</p> -->
+                    @endif
+                    @if ($log->transtype == 7)<!-- transferOut to staff -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-shopping-cart-off" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M17 17a2 2 0 1 0 2 2" /><path d="M17 17h-11v-11" /><path d="M9.239 5.231l10.761 .769l-1 7h-2m-4 0h-7" /><path d="M3 3l18 18" /></svg>
+                    <!-- <p>Broken</p> -->
+                    @endif
+                    @if ($log->transtype == 8)<!-- transferOut to staff -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home-share" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 21v-6a2 2 0 0 1 2 -2h2c.247 0 .484 .045 .702 .127" /><path d="M19 12h2l-9 -9l-9 9h2v7a2 2 0 0 0 2 2h5" /><path d="M16 22l5 -5" /><path d="M21 21.5v-4.5h-4.5" /></svg>
+                    <!-- <p>Cancel Instalation</p> -->
+                    @endif
+                    @if ($log->transtype == 9)<!-- transferOut to staff -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-traffic-cone" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 20l16 0" /><path d="M9.4 10l5.2 0" /><path d="M7.8 15l8.4 0" /><path d="M6 20l5 -15h2l5 15" /></svg>
+                    <!-- <p>Maintenance</p> -->
+                    @endif
+                    @if ($log->transtype == 10)<!-- transferOut to staff -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home-share" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 21v-6a2 2 0 0 1 2 -2h2c.247 0 .484 .045 .702 .127" /><path d="M19 12h2l-9 -9l-9 9h2v7a2 2 0 0 0 2 2h5" /><path d="M16 22l5 -5" /><path d="M21 21.5v-4.5h-4.5" /></svg>
+                    <!-- <p>Cancel Maintenance</p> -->
+                    @endif
+                    @if ($log->transtype == 11)<!-- transferOut to staff -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-shopping-cart-share" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 19a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M12.5 17h-6.5v-14h-2" /><path d="M6 5l14 1l-1 7h-13" /><path d="M16 22l5 -5" /><path d="M21 21.5v-4.5h-4.5" /></svg>
+                    <!-- <p>Purchase Return</p> -->
+                    @endif
+                    
+                    
+                  </div>
+                  <div class="list-timeline-content">
+                    <div class="list-timeline-time">{{ $log->created_at }}</div>
+                    <p class="list-timeline-title">{{$log->subject}}</p>
+                    @if ($log->transtype == 1) <!-- purchase -->
+                    <p>Purchase</p>
+                    @endif
+                    @if ($log->transtype == 3)<!-- transferOut to staff -->
+                    <p>To Staff</p>
+                    @endif
+                    @if ($log->transtype == 4)<!-- transferOut to staff -->
+                    <p>Installation</p>
+                    @endif
+                    @if ($log->transtype == 5)<!-- transferOut to staff -->
+                    <p>Revocation</p>
+                    @endif
+                    @if ($log->transtype == 6)<!-- transferOut to staff -->
+                    <p>Purchase Return</p>
+                    @endif
+                    @if ($log->transtype == 7)<!-- transferOut to staff -->
+                    <p>Broken</p>
+                    @endif
+                    @if ($log->transtype == 8)<!-- transferOut to staff -->
+                    <p>Cancel Instalation</p>
+                    @endif
+                    @if ($log->transtype == 9)<!-- transferOut to staff -->
+                    <p>Maintenance</p>
+                    @endif
+                    @if ($log->transtype == 10)<!-- transferOut to staff -->
+                    <p>Cancel Maintenance</p>
+                    @endif
+                    <p class="text-muted"><b>Transaction : {{$log->transcation_number}}</b> <br>
+                    @if ($log->qtytype == 1)
+                    serial Number: {{$log->serial}}
+                    @else
+                    Qty: {{$log->qty}} {{$log->unit}}
+                    @endif
+                    <br>By : {{ $log->firstname }} {{ $log->lastname }}</p>
+                  </div>
+                </li>
+                @endforeach
+              </ul>
+            </div>
+          </div>
+        </div>
+        </div>
       </div>
         
     </div>
@@ -233,7 +343,8 @@
         columns: [
           {data: 'stockid', name:'stockid'},
           {data: 'stockname', name:'stockname'},
-          {data: 'Name', name:'Name'},
+          {data: 'modules', name:'modules'},
+          {data: 'NAME', name:'NAME'},
           {data: 'qty', name:'qty'}
         ]
     });
