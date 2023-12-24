@@ -115,7 +115,7 @@ class InstallController extends Controller
         //dd($ipaddress);
         $mstock=DB::select("select stocks.id,stocks.stockid,stocks.stockname,stocks.categoryid,stocks.unit,stocks_position.posmodule from stocks inner JOIN stocks_position on stocks.id=stocks_position.stockid WHERE stocks_position.posmodule='staff' UNION ALL select stocks.id,stocks.stockid,stocks.stockname,stocks.categoryid,stocks.unit,stocks_no_seri.posmodule from stocks inner JOIN stocks_no_seri on stocks.id=stocks_no_seri.stockid WHERE stocks_no_seri.posmodule='staff' GROUP BY stocks.id,stocks.stockid,stocks.stockname,stocks.categoryid,stocks.unit,stocks_no_seri.posmodule;");
         //return view('installasi.create-sales',compact('Users','Stocks','Customers','Category','StocksNoSeri','stockPos','mstock','ipaddress','pops'));
-        return view('installasi.create',compact('Users','Customers','ipaddress','pops','services'));
+        return view('installasi.create',compact('Users','Customers','ipaddress','pops','services','mstock'));
     }
 
     public function store(Request $request){
@@ -333,7 +333,7 @@ class InstallController extends Controller
 
     public function process($id)
     {
-        $Category=StockCategorys::get();
+        $Category=StockCategorys::select('id','category_name')->get();
         $Stocks=Stocks::select('id','stockid','stockname','qtytype','unit','categoryid')->get();
          $stockPos=StocksPosition::where('posmodule','=','storage')->get();
          $StocksNoSeri=StocksNoSeri::select('stockid','posmodule','noseri','module_id')->where('posmodule','=','storage')->get();

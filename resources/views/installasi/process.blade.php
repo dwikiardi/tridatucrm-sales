@@ -103,6 +103,7 @@
           <input type="hidden" class="form-control lsprod" name="lsprod" value='<?php echo json_encode($mstock); ?>' readonly>
           <input type="hidden" class="form-control noseri" name="noseri" value='<?php echo json_encode($StocksNoSeri); ?>' readonly>
           <input type="hidden" class="form-control stockpos" name="stockpos" value='<?php echo json_encode($stockPos); ?>' readonly>
+          <input type="hidden" class="form-control categories" name="categories" value='<?php echo json_encode($Category); ?>' readonly>
             <table class="table card-table table-vcenter text-nowrap datatable">
               <thead> 
                 <tr>
@@ -171,7 +172,6 @@
       
   </div> <!-- END Container-XL -->
 </div>
-  process blade
 <div class="container-xl">
   <!-- Page title -->
   <div class="page-header d-print-none">
@@ -247,7 +247,9 @@
     $('.pops').select2({
       placeholder: 'Select an option'
     });
-   
+    $('.stockid').select2({
+      placeholder: 'Select an option'
+    });
     $('.lsseri').select2({
       placeholder: 'Select an option'
     });
@@ -480,15 +482,26 @@
     });
     
     $('.addrows').on('click', function() {
-      let ix = $('.indexs').val();;
+      let ix = $('.indexs').val();
       $('.indexs').val(parseInt($('.indexs').val()) + 1);
       var options='';
-      var text ='<tr class="ix-'+ix+'"><td><input class="catID catID'+ix+'" type="hidden" name="catID['+ix+']" value="'+ix+'"></td><td> <select class="form-select stockid stockid-'+ix+'" name="stockid['+ix+']"><option>-- select one --</option>';
+      var category='';
+      var text ='<tr class="ix-'+ix+'"><td>';
+      //categories
+      var categories=JSON.parse($('.categories').val());
+      
+      text=text + '<select class="form-select category category-{{$i}}" name="category[{{$i}}]"><option value="--">-- select one --</option>';
+      $(categories).each(function(index, value){ //loop through your elements
+        category += '<option  data-dtl="'+ix+'" value="'+ value.id +'">'+value.category_name+'</option>'; //add the option element as a string
+      }); 
+      text=text + category +'</select><input class="catID catID'+ix+'" type="hidden" name="catID['+ix+']" value="'+ix+'"></td><td> <select class="form-select stockid stockid-'+ix+'" name="stockid['+ix+']"><option>-- select one --</option>';
+
       var series=JSON.parse($('.lsprod').val());
       $(series).each(function(index, value){ //loop through your elements
             options += '<option data-dtl="'+ix+'|'+value.stockname+'|'+value.qtytype+'|'+value.unit+'|'+value.stockid+'" value="'+ value.id +'">'+value.stockname+'</option>'; //add the option element as a string
       });                        
-      text=text + options;                      
+      text=text + options; 
+
       text=text + '</select><input type="hidden" class=" stockcode-'+ix+'" name="stockcode['+ix+']" ></td>';
       text=text + '<td><input type="text" style="min-width: 150px;" class="name name-'+ix+'" name="name['+ix+']" placeholder="Stock Name"></td>';
       text=text + '<td><select style="min-width: 150px;" class="form-select status" name="status['+ix+']"><option value="1">Dipinjamkan</option> <option value="0">Di Jual</option></select></td>';
@@ -497,9 +510,29 @@
       text=text + '<td><input type="text" style="width: 75px;" class="unit unit-'+ix+'" name="unit['+ix+']" placeholder="Unit"readonly></td>';
       text=text + '<td><div class="mnoseri-'+ix+'"></div><input class="mserial mserial-'+ix+'" type="hidden" name="mserial['+ix+']" value=""></td>';
       
+      
       $('.listItem').append(text);
     });
 
+    $(document).on("change",'.category', function () {
+      let ix = $('option:selected', this).attr('data-dtl');
+      let filter = $('option:selected', this).val();
+      var text="";
+      var series=JSON.parse($('.lsprod').val());
+      $(series).each(function(index, value){ //loop through your elements
+        if(value.categoryid == filter){
+          text=text + '<option data-dtl="'+ix+'|'+value.stockname+'|'+value.qtytype+'|'+value.unit+'|'+value.stockid+'" value="'+ value.id +'">'+value.stockname+'</option>'; //add the option element as a string
+        }
+      });
+      //console.log(text);
+      
+      $(this).find('[value="--"]').remove();
+      $('.stockid-'+ix).empty();
+      $('.stockid-'+ix).append(text);
+      $('.stockid-'+ix).select2({
+      placeholder: 'Select an option'
+    });
+    });
   });
 </script>
 <style>
