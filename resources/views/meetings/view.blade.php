@@ -52,7 +52,7 @@
         <div class="col-auto ms-auto d-print-none"> 
           <a href="{{ url('meetings')}}" class="btn btn-light">« Kembali</a>  
          
-          <a href="{{ url('meetings/edit',$meetings[0]->id)}}" class="btn btn-primary d-none d-sm-inline-block" >
+          <a href="{{ url('meetings/edit',$meetings[0]->id)}}" class="btn btn-primary  d-sm-inline-block" >
              Update Meeting
           </a>  
         </div>

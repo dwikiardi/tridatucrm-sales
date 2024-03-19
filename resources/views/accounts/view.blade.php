@@ -44,7 +44,7 @@
         <!-- Page title actions -->
         <div class="col-auto ms-auto d-print-none"> 
           <a href="{{ url('accounts')}}" class="btn btn-light">« Kembali</a>  
-          <a href="{{ url('accounts/edit',$accounts[0]->id)}}" class="btn btn-primary d-none d-sm-inline-block" >
+          <a href="{{ url('accounts/edit',$accounts[0]->id)}}" class="btn btn-primary  d-sm-inline-block" >
              Update Account
             </a>  
         </div>
@@ -179,7 +179,7 @@
                         <div class="card-header bg-blue-lt">
                           <h3 class="card-title"> Contacts/Property Detail </h3>
                           <div class="col-auto ms-auto d-print-none"> 
-                            <a href="{{url('contacts/create')}}/{{$accounts[0]->id}}" class="btn btn-success d-none d-sm-inline-block" >
+                            <a href="{{url('contacts/create')}}/{{$accounts[0]->id}}" class="btn btn-success  d-sm-inline-block" >
                               Create
                             </a>
                             <a class="btn btn-light" data-bs-toggle="collapse" href="#multiCollapseExample2" role="button" aria-expanded="false" aria-controls="multiCollapseExample2"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-layout-bottombar-collapse" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">

@@ -52,7 +52,7 @@
         <div class="col-auto ms-auto d-print-none"> 
           <a href="{{ url('contacts')}}" class="btn btn-light">« Kembali</a>  
           
-          <a href="{{ url('contacts/edit',$leads[0]->id)}}" class="btn btn-primary d-none d-sm-inline-block" >
+          <a href="{{ url('contacts/edit',$leads[0]->id)}}" class="btn btn-primary  d-sm-inline-block" >
              Update Contacts
           </a>  
         </div>
@@ -442,7 +442,7 @@
                       <div class="card-header bg-blue-lt">
                         <h3 class="card-title"> Quote History </h3>
                         <div class="col-auto ms-auto d-print-none"> 
-                            <a href="{{route('quotes.create',$leads[0]->id)}}" class="btn btn-success d-none d-sm-inline-block" >
+                            <a href="{{route('quotes.create',$leads[0]->id)}}" class="btn btn-success  d-sm-inline-block" >
                               Create Quote
                             </a>  
                             <a class="btn btn-light" data-bs-toggle="collapse" href="#c4" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
@@ -485,7 +485,7 @@
                       <div class="card-header bg-blue-lt">
                         <h3 class="card-title"> Surveys History </h3>
                         <div class="col-auto ms-auto d-print-none"> 
-                            <a href="{{route('surveys.create',$leads[0]->id)}}" class="btn btn-success d-none d-sm-inline-block" >
+                            <a href="{{route('surveys.create',$leads[0]->id)}}" class="btn btn-success  d-sm-inline-block" >
                               Request Survey
                             </a>  
                             <a class="btn btn-light" data-bs-toggle="collapse" href="#s1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">

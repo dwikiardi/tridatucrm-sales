@@ -51,10 +51,10 @@
         <!-- Page title actions -->
         <div class="col-auto ms-auto d-print-none"> 
           <a href="{{ url('leads')}}" class="btn btn-light">« Kembali</a>  
-          <a href="#" data-id="{{$leads[0]->id}}" class="btn btn-success d-none d-sm-inline-block" id="convert">
+          <a href="#" data-id="{{$leads[0]->id}}" class="btn btn-success  d-sm-inline-block" id="convert">
              Convert to Accounts
           </a>  
-          <a href="{{ url('leads/edit',$leads[0]->id)}}" class="btn btn-primary d-none d-sm-inline-block" >
+          <a href="{{ url('leads/edit',$leads[0]->id)}}" class="btn btn-primary  d-sm-inline-block" >
              Update Lead
           </a>  
         </div>
@@ -393,7 +393,12 @@
                               {{$leads[0]->gmapurl}}
                               </div>
                             </div>
-                          
+                            <div class="form-group mb-3 row">
+                              <label class="form-label col-3 col-form-label">Package Requested</label>
+                              <div class="col">
+                                    {{$service}}
+                              </div>
+                            </div>   
                             <div class="form-group mb-3 row">
                               <label class="form-label col-3 col-form-label">Lead Status</label>
                               <div class="col">
@@ -419,7 +424,7 @@
                       <div class="card-header bg-blue-lt">
                         <h3 class="card-title"> Quote History </h3>
                         <div class="col-auto ms-auto d-print-none"> 
-                            <a href="{{route('quotes.create',$leads[0]->id)}}" class="btn btn-success d-none d-sm-inline-block" >
+                            <a href="{{route('quotes.create',$leads[0]->id)}}" class="btn btn-success  d-sm-inline-block" >
                               Create Quote
                             </a>  
                             <a class="btn btn-light" data-bs-toggle="collapse" href="#c4" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
@@ -462,7 +467,7 @@
                       <div class="card-header bg-blue-lt">
                         <h3 class="card-title"> Surveys History </h3>
                         <div class="col-auto ms-auto d-print-none"> 
-                            <a href="{{route('surveys.create')}}/{{$leads[0]->id}}" class="btn btn-success d-none d-sm-inline-block" >
+                            <a href="{{route('surveys.create')}}/{{$leads[0]->id}}" class="btn btn-success  d-sm-inline-block" >
                               Request Survey
                             </a>  
                             <a class="btn btn-light" data-bs-toggle="collapse" href="#s1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">

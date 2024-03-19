@@ -46,7 +46,7 @@
         <!-- Page title actions -->
         <div class="col-auto ms-auto d-print-none"> 
           <a href="{{ url('vendors')}}" class="btn btn-light">« Kembali</a>
-          <a href="{{ url('vendors/edit',$vendors[0]->id)}}" class="btn btn-primary d-none d-sm-inline-block" >
+          <a href="{{ url('vendors/edit',$vendors[0]->id)}}" class="btn btn-primary  d-sm-inline-block" >
             Update Vendor
           </a>
         </div>
@@ -249,7 +249,7 @@
                     <!-- Page title actions -->
                     <div class="col-auto ms-auto d-print-none"> 
                     <a href="{{ url('vendors')}}" class="btn btn-light">« Kembali</a>  
-                    <a href="{{ url('vendors/edit',$vendors[0]->id)}}" class="btn btn-primary d-none d-sm-inline-block" >
+                    <a href="{{ url('vendors/edit',$vendors[0]->id)}}" class="btn btn-primary  d-sm-inline-block" >
                       Update Vendor
                     </a> 
                     </div>

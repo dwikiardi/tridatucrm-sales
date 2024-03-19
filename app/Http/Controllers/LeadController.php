@@ -11,6 +11,7 @@ use App\Models\Quotes;
 use App\Models\User;
 use App\Models\DataLogs;
 use App\Models\Surveys;
+use App\Models\Services;
 use DataTables;
 
 class LeadController extends Controller
@@ -51,7 +52,8 @@ class LeadController extends Controller
     public function create()
     {
         $Users=User::get();
-        return view('leads.create',compact('Users'));
+        $services=Services::get();
+        return view('leads.create',compact('Users','services'));
     }
     public function store(Request $request){
         /// insert setiap request dari form ke dalam database via model
@@ -76,12 +78,19 @@ class LeadController extends Controller
     public function view($id){
         $leads=Leads::where('id','=',$id)->get();
         if($leads[0]->type=="lead"){
+            $services=Services::where('id','=',$leads[0]->req_packageid)->get();
+            //dd($services);
+            if($services->count()==0){
+                $service='-';
+            }else{
+                $service=$services[0]->services_name;
+            }
             $owner=User::where('id','=',$leads[0]->ownerid)->get();
             $createbyid=User::where('id','=',$leads[0]->createbyid)->get();
             $updatebyid=User::where('id','=',$leads[0]->updatebyid)->get();
             $logs=DataLogs::where('moduleid','=',$id)->where('module','=','Leads')->orderBy('created_at', 'DESC')->join('users', 'datalogs.createbyid', '=', 'users.id')
             ->select('datalogs.*' ,'users.first_name as firstname', 'users.last_name as lastname')->get();
-            return view('leads.view',compact('leads','owner','createbyid','updatebyid','logs'));
+            return view('leads.view',compact('leads','owner','createbyid','updatebyid','logs','service'));
         }else{
             // $accounts = Accounts::where('leadid','=',$leads[0]->id)->get();
             // return view('leads.convert',compact('accounts'));
@@ -95,7 +104,8 @@ class LeadController extends Controller
     public function edit($id){
         $Users=User::get();
         $leads=Leads::where('id','=',$id)->get();
-        return view('leads.edit',compact('Users','leads'));
+        $services=Services::get();
+        return view('leads.edit',compact('Users','leads','services'));
     }
     
     public function update(Request $request){

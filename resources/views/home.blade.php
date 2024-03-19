@@ -14,12 +14,12 @@
         <!-- Page title actions -->
         <div class="col-auto ms-auto d-print-none"> 
           <div class="btn-list">
-            <!-- <span class="d-none d-sm-inline">
+            <!-- <span class=" d-sm-inline">
               <a href="#" class="btn btn-white">
                 New view
               </a>
             </span>-->
-            <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-report">
+            <a href="#" class="btn btn-primary  d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-report">
               <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
               <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
               Jadwal Instalasi Baru
@@ -180,22 +180,22 @@
                     <div class="col-auto d-flex align-items-center pe-2">
                       <span class="legend me-2 bg-primary"></span>
                       <span>Regular</span>
-                      <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">915MB</span>
+                      <span class=" d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">915MB</span>
                     </div>
                     <div class="col-auto d-flex align-items-center px-2">
                       <span class="legend me-2 bg-info"></span>
                       <span>System</span>
-                      <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">415MB</span>
+                      <span class=" d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">415MB</span>
                     </div>
                     <div class="col-auto d-flex align-items-center px-2">
                       <span class="legend me-2 bg-success"></span>
                       <span>Shared</span>
-                      <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">201MB</span>
+                      <span class=" d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">201MB</span>
                     </div>
                     <div class="col-auto d-flex align-items-center ps-2">
                       <span class="legend me-2"></span>
                       <span>Free</span>
-                      <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">612MB</span>
+                      <span class=" d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">612MB</span>
                     </div>
                   </div>
                 </div>

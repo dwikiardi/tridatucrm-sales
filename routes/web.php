@@ -20,6 +20,8 @@ use App\Http\Controllers\InstallController;
 use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\RevocationController;
 use App\Http\Controllers\StockReportController;
+use App\Http\Controllers\DepartementController;
+use App\Http\Controllers\StaffController;
 
 use Illuminate\Support\Facades\Artisan;
 /*
@@ -37,18 +39,18 @@ use Illuminate\Support\Facades\Artisan;
 //     return view('welcome');
 // });
 // Route::get('/clear', function () {
-//     Artisan::call('config:cache ');
-//     Artisan::call('config:clearr');
+//     Artisan::call('config:cache');
+//     Artisan::call('config:clear');
 //     Artisan::call('cache:clear');
 //     Artisan::call('key:generate');
 //     Artisan::call('migrate');
 //     return 'Cleared!!!';
 // });
-Route::get('/migrate', function () {
-    Artisan::call('cache:clear');
-    Artisan::call('migrate');
-    return 'Migrate Success!!!';
-});
+// Route::get('/migrate', function () {
+//     Artisan::call('cache:clear');
+//     Artisan::call('migrate');
+//     return 'Migrate Success!!!';
+// });
 // Route::get('/generate', function () {
 //     $user = new App\Models\User();
 //     $user->password = Hash::make('123456');
@@ -271,4 +273,23 @@ Route::group(['middleware' => 'auth'], function () {
 
     //Inventory Report
     Route::get('invreport', [StockReportController::class, 'invreport'])->name('report.invreport');//All Stock Position
+
+
+
+    //Departement
+
+    Route::get('departement', [DepartementController::class, 'index'])->name('departement.index');
+    Route::get('departement/create', [DepartementController::class, 'create'])->name('departement.create');
+    Route::post('departement/store', [DepartementController::class, 'store'])->name('departement.store');
+    Route::get('departement/view/{id}', [DepartementController::class, 'view'])->name('departement.view');
+    Route::get('departement/edit/{id}', [DepartementController::class, 'edit'])->name('edit');
+    Route::post('departement/update/', [DepartementController::class, 'update'])->name('departement.update');
+
+    //Staff
+    Route::get('staff', [StaffController::class, 'index'])->name('staff.index');
+    Route::get('staff/create', [StaffController::class, 'create'])->name('staff.create');
+    Route::post('staff/store', [StaffController::class, 'store'])->name('staff.store');
+    Route::get('staff/view/{id}', [StaffController::class, 'view'])->name('staff.view');
+    Route::get('staff/edit/{id}', [StaffController::class, 'edit'])->name('edit');
+    Route::post('staff/update/', [StaffController::class, 'update'])->name('staff.update');
 });

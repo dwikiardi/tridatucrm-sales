@@ -49,7 +49,7 @@
         <!-- Page title actions -->
         <div class="col-auto ms-auto d-print-none"> 
           <a href="{{ url('product')}}" class="btn btn-light">« Kembali</a>
-          <a href="{{ url('product/edit',$stocks[0]->id)}}" class="btn btn-primary d-none d-sm-inline-block" >
+          <a href="{{ url('product/edit',$stocks[0]->id)}}" class="btn btn-primary  d-sm-inline-block" >
             Update Product
           </a>
         </div>
@@ -161,7 +161,7 @@
                 <!-- Page title actions -->
                 <div class="col-auto ms-auto d-print-none"> 
                   <a href="{{ url('product')}}" class="btn btn-light">« Kembali</a>  
-                  <a href="{{ url('product/edit',$stocks[0]->id)}}" class="btn btn-primary d-none d-sm-inline-block" >
+                  <a href="{{ url('product/edit',$stocks[0]->id)}}" class="btn btn-primary  d-sm-inline-block" >
                     Update Product
                   </a> 
                 </div>

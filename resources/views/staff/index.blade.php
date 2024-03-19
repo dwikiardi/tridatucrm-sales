@@ -1,5 +1,5 @@
 @extends('layouts/admin')
-@section('title','Services')
+@section('title','Staff')
 @section('add_css')
 <style>
   .dataTables_filter{
@@ -28,22 +28,22 @@
         <div class="col">
           <!-- Page pre-title -->
           <div class="page-pretitle">
-          <h1 class="m-0 text-dark">Services </h1>
+          <h1 class="m-0 text-dark">Staff </h1>
           </div>
           
         </div>
         <!-- Page title actions -->
         <div class="col-auto ms-auto d-print-none"> 
           <div class="btn-list">
-            <!-- <span class=" d-sm-inline">
+            <!-- <span class="d-none d-sm-inline">
               <a href="#" class="btn btn-white">
                 New view
               </a>
             </span>-->
-            <a href="{{ url('services/create')}}" class="btn btn-primary  d-sm-inline-block">
+            <a href="{{ url('staff/create')}}" class="btn btn-primary  d-sm-inline-block">
               <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
               <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
-              New Services
+              New Staff
             </a>
            
           </div>
@@ -62,10 +62,13 @@
               <table class="table card-table table-vcenter text-nowrap datatable">
                 <thead>
                   <tr>
+                    <th>#</th>
                     <th>Name</th>
-                    <th>Description</th>
-                    <th>Price</th>
-                    <th>Note</th>
+                    <th>UserName</th>
+                    <th>Role</th>
+                    <th>Departement</th>
+
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody></tbody>
@@ -90,33 +93,38 @@
     var table = $('.datatable').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('services.index') }}",
+        ajax: "{{ route('staff.index') }}",
         columns: [
-            {data: 'services_name', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+            {data: 'ID', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('services/view')}}/"+oData.ID+"'>"+oData.services_name+"</a>");
+                $(nTd).html("<a href='{{ url('staff/view')}}/"+oData.ID+"'>"+oData.ID+"</a>");
               }
             },
-            {data: 'desk', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+            {data: 'name', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('services/view')}}/"+oData.ID+"'>"+oData.desk+"</a>");
-              }},
-            {data: 'price', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+                $(nTd).html("<a href='{{ url('staff/view')}}/"+oData.ID+"'>"+oData.name+"</a>");
+              }
+            },
+            {data: 'rolename', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('services/view')}}/"+oData.ID+"'>"+oData.price+"</a>");
-              }},
-            {data: 'note', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+                $(nTd).html("<a href='{{ url('staff/view')}}/"+oData.ID+"'>"+oData.rolename+"</a>");
+              }
+            },
+            {data: 'departements', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('services/view')}}/"+oData.ID+"'>"+oData.note+"</a>");
-              }},
-           
+                $(nTd).html("<a href='{{ url('staff/view')}}/"+oData.ID+"'>"+oData.departements+"</a>");
+              }
+            },
+            {data: 'status', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+              {
+                $(nTd).html(oData.status);
+              }
+            },
+            {data: 'action', name: 'action', maintenanceable: false, searchable: false},
+            
         ]
     });
-    $(document).on("click",".edit",function(){
-      var id=$(this).attr("data-id");
-      console.log("click id: " + id);
-      window.location.href = "{{ url('services/edit')}}/" + id;
-    });
+    
   });
 </script>
 @endpush

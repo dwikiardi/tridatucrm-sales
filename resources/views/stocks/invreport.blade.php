@@ -35,7 +35,7 @@
         <!-- Page title actions -->
         <div class="col-auto ms-auto d-print-none"> 
           <div class="btn-list">
-            <!-- <span class="d-none d-sm-inline">
+            <!-- <span class=" d-sm-inline">
               <a href="#" class="btn btn-white">
                 New view
               </a>

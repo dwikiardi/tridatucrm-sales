@@ -49,7 +49,7 @@
         <!-- Page title actions -->
         <div class="col-auto ms-auto d-print-none"> 
           <a href="{{ url('pops')}}" class="btn btn-light">« Kembali</a>
-          <a href="{{ url('pops/edit',$pops[0]->id)}}" class="btn btn-primary d-none d-sm-inline-block" >
+          <a href="{{ url('pops/edit',$pops[0]->id)}}" class="btn btn-primary  d-sm-inline-block" >
             Update POPS
           </a>
         </div>
@@ -108,8 +108,8 @@
                     <!-- Page title actions -->
                     <div class="col-auto ms-auto d-print-none"> 
                     <a href="{{ url('pops')}}" class="btn btn-light">« Kembali</a>  
-                    <a href="{{ url('pops/edit',$pops[0]->id)}}" class="btn btn-primary d-none d-sm-inline-block" >
-                      Update Vendor
+                    <a href="{{ url('pops/edit',$pops[0]->id)}}" class="btn btn-primary  d-sm-inline-block" >
+                      Update POP
                     </a> 
                     </div>
                   </div>

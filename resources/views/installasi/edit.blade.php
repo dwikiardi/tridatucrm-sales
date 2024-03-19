@@ -15,7 +15,7 @@
         </div>
         <!-- Page title actions -->
         <div class="col-auto ms-auto d-print-none"> 
-          <a href="#" class="btn btn-primary d-none d-sm-inline-block process">
+          <a href="#" class="btn btn-primary  d-sm-inline-block process">
              Update Installasi
           </a>
           <a href="{{ url('installasi/view')}}/{{$Instalation[0]->id}}" class="btn btn-light">« Kembali</a> 
@@ -163,7 +163,7 @@
       </div>
       <!-- Page title actions -->
       <div class="col-auto ms-auto d-print-none"> 
-      <a href="#" class="btn btn-primary d-none d-sm-inline-block process">
+      <a href="#" class="btn btn-primary  d-sm-inline-block process">
              Update Installasi
           </a>
       <a href="{{ url('installasi/view')}}/{{$Instalation[0]->id}}" class="btn btn-light">« Kembali</a> 

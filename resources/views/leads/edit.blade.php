@@ -282,7 +282,21 @@
                 <input type="text" class="form-control" name="gmapurl" aria-describedby="emailHelp" placeholder="Google Map URL" value="{{$leads[0]->gmapurl}}">
                 </div>
               </div>
-            
+              <div class="form-group mb-3 row">
+              <label class="form-label col-3 col-form-label">Package Requested</label>
+              <div class="col">
+                    <select class="form-select req_packageid" name="req_packageid">
+                      <option> </option>
+                      @foreach($services as $service)
+                        <option
+                        @if($leads[0]->req_packageid==$service->id)
+                          selected
+                        @endif 
+                        value="{{$service->id}}" data-addr="{{$service->services_name}}">{{$service->services_name}}</option>
+                      @endforeach
+                    </select>
+              </div>
+            </div>   
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Lead Status</label>
                 <div class="col">

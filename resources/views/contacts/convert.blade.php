@@ -42,7 +42,7 @@
   <div class="row row-cards">
     <div class="col-12">
       
-    <a href="{{ url('contacts/view',$leads[0]->id)}}" class="btn btn-success d-none d-sm-inline-block">Already Convert To Contacts</a>  
+    <a href="{{ url('contacts/view',$leads[0]->id)}}" class="btn btn-success  d-sm-inline-block">Already Convert To Contacts</a>  
           
     </div>
   </div>

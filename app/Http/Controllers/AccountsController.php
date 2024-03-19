@@ -17,8 +17,26 @@ class AccountsController extends Controller
     public function index(Request $request){
         if ($request->ajax()) {
             //$data = Accounts::select('*');
-            $data = Accounts::join('users', 'accounts.ownerid', '=', 'users.id')
-            ->select('accounts.id as ID','accounts.account_name as Name' , 'accounts.email AS Email','accounts.phone As Phone','accounts.website as Website','users.last_name AS Owners')
+            // $data = Accounts::join('users', 'accounts.ownerid', '=', 'users.id')->join('leads','leads.accountid','=','accounts.id')->join('pops','pops.id','=','leads.popid')
+            // ->select('accounts.id as ID','accounts.account_name as Name' , 'accounts.email AS Email','accounts.phone As Phone','accounts.website as Website','users.last_name AS Owners')
+            $data = Accounts::leftJoin('leads', 'leads.accountid', '=', 'accounts.id')
+            ->leftJoin('pops', 'pops.id', '=', 'leads.popid')
+            ->leftJoin('services', 'services.id', '=', 'leads.packageid')
+            ->join('users', 'leads.ownerid', '=', 'users.id')
+            ->select(
+                'accounts.id AS accid',
+                'accounts.account_name AS accname',
+                'leads.id AS prid',
+                'leads.property_name AS property',
+                'services.id AS svid',
+                'services.services_name AS package',
+                'services.price AS price',
+                'pops.name AS pop_name',
+                'pops.id AS popid',
+                'users.id AS uid',
+                'users.first_name AS fuid',
+                'users.last_name AS luid'
+            )
             ->get();
             //dd($data);
             return DataTables::of($data)
@@ -29,15 +47,21 @@ class AccountsController extends Controller
                 //     return $actionBtn;
                 // })
                 // ->rawColumns(['action'])
-                ->editColumn('Email', function ($row) {
-                    return $row->Email ?: '-';
+                ->editColumn('package', function ($row) {
+                    return $row->package ?: '-';
                 })
-                ->editColumn('Phone', function ($row) {
-                    return $row->Phone ?: '-';
+                ->editColumn('price', function ($row) {
+                    return $row->price ?: '0';
                 })
-                ->editColumn('Website', function ($row) {
-                    return $row->Website ?: '-';
+                ->editColumn('pop_name', function ($row) {
+                    return $row->pop_name ?: '-';
                 })
+                ->addColumn('owner', function($row){
+                    $actionBtn = $row->fuid ." ". $row->luid;
+                    //$actionBtn=$row->ID;
+                    return $actionBtn;
+                })
+                ->rawColumns(['owner'])
                 ->make(true);
         }
 

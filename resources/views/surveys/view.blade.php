@@ -49,7 +49,7 @@
         <!-- Page title actions -->
         <div class="col-auto ms-auto d-print-none"> 
           <a href="{{ url('surveys')}}" class="btn btn-light">« Kembali</a>
-          <a href="{{ url('surveys/edit',$surveys[0]->id)}}" class="btn btn-primary d-none d-sm-inline-block" >
+          <a href="{{ url('surveys/edit',$surveys[0]->id)}}" class="btn btn-primary  d-sm-inline-block" >
             Update Survey
           </a>
         </div>
@@ -215,7 +215,7 @@
                     <!-- Page title actions -->
                     <div class="col-auto ms-auto d-print-none"> 
                     <a href="{{ url('surveys')}}" class="btn btn-light">« Kembali</a>  
-                    <a href="{{ url('surveys/edit',$surveys[0]->id)}}" class="btn btn-primary d-none d-sm-inline-block" >
+                    <a href="{{ url('surveys/edit',$surveys[0]->id)}}" class="btn btn-primary  d-sm-inline-block" >
                       Update Survey
                     </a> 
                     </div>

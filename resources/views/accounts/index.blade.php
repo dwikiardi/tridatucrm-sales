@@ -33,7 +33,7 @@
         <div class="col-auto ms-auto d-print-none"> 
           <div class="btn-list">
             
-            <a href="{{ url('accounts/create')}}" class="btn btn-primary d-none d-sm-inline-block">
+            <a href="{{ url('accounts/create')}}" class="btn btn-primary  d-sm-inline-block">
               
               <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
               New Accounts
@@ -55,11 +55,12 @@
               <table class="table card-table table-vcenter text-nowrap datatable">
                 <thead>
                   <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Website</th>
-                    <th>Owners</th>
+                    <th>Account</th>
+                    <th>Property</th>
+                    <th>Package</th>
+                    <th>Price</th>
+                    <th>POP</th>
+                    <th>Owner</th>
                     <!-- <th>Action</th> -->
                   </tr>
                 </thead>
@@ -87,27 +88,46 @@
         serverSide: true,
         ajax: "{{ route('accounts.index') }}",
         columns: [
-            {data: 'Name', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+            {data: 'accname', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('accounts/view')}}/"+oData.ID+"'>"+oData.Name+"</a>");
+                $(nTd).html("<a href='{{ url('accounts/view')}}/"+oData.accid+"'>"+oData.accname+"</a>");
               }
             },
-            {data: 'Email', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+            {data: 'property', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('accounts/view')}}/"+oData.ID+"'>"+oData.Email+"</a>");
+                $(nTd).html("<a href='{{ url('contacts/view')}}/"+oData.prid+"'>"+oData.property+"</a>");
               }
             },
-            {data: 'Phone', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+            {data: 'package', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('accounts/view')}}/"+oData.ID+"'>"+oData.Phone+"</a>");
+                if(oData.package == '-'){
+                  $(nTd).html("-");
+                }else{
+                  $(nTd).html("<a href='{{ url('services/view')}}/"+oData.svid+"'>"+oData.package+"</a>");
+                }
+                
               }
             },
-            {data: 'Website', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+            {data: 'price', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('accounts/view')}}/"+oData.ID+"'>"+oData.Website+"</a>");
-              }},
-            
-            {data: 'Owners', name: 'Owners'},
+                if(oData.price <= 0){
+                  $(nTd).html("-");
+                }else{
+                  $(nTd).html("<a href='{{ url('services/view')}}/"+oData.svid+"'>"+oData.price+"</a>");
+                }
+                
+              }
+            },
+            {data: 'pop_name', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+            {
+              if(oData.pop_name == '-'){
+                $(nTd).html("-");
+              }else{
+                $(nTd).html("<a href='{{ url('pops/view')}}/"+oData.popid+"'>"+oData.pop_name+"</a>");
+              }
+              
+            }},
+            {data: 'owner', name: 'owner'},
             // {data: 'action', name: 'action', orderable: false, searchable: false},
         ]
     });

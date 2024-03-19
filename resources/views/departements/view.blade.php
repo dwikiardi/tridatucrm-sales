@@ -1,5 +1,5 @@
 @extends('layouts/admin')
-@section('title','Service Details')
+@section('title','departement Details')
 @section('add_css')
 <style>
 .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active{
@@ -45,9 +45,9 @@
         </div>
         <!-- Page title actions -->
         <div class="col-auto ms-auto d-print-none"> 
-          <a href="{{ url('services')}}" class="btn btn-light">« Kembali</a>
-          <a href="{{ url('services/edit',$services[0]->id)}}" class="btn btn-primary  d-sm-inline-block" >
-            Update Service
+          <a href="{{ url('departement')}}" class="btn btn-light">« Kembali</a>
+          <a href="{{ url('departement/edit',$departement[0]->id)}}" class="btn btn-primary  d-sm-inline-block" >
+            Update Departement
           </a>
         </div>
       </div>
@@ -67,63 +67,36 @@
                   <div class="col-12">
                     <div class="card">
                       <div class="card-header bg-blue-lt">
-                        <h3 class="card-title"> Service Information</h3>
+                        <h3 class="card-title">Departement Information</h3>
                       </div>
                       <div class="card-body row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
+                          
                           <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">Services Name</label>
+                            <label class="form-label col-3 col-form-label">Departement Name</label>
                             <div class="col">
-                              {{$services[0]->services_name}}
+                              {{$departement[0]->departement_name}}
                             </div>
                           </div>
                           
                           <div class="form-group mb-3 row">
                             <label class="form-label col-3 col-form-label">Description</label>
                             <div class="col">
-                            {{$services[0]->desk}}
+                            {{$departement[0]->desk}}
                             </div>
                           </div>
 
-                          <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">Price</label>
-                            <div class="col">
-                              {{$services[0]->price}}
-                            </div>
-                          </div>
-
-                          <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">Note</label>
-                            <div class="col">
-                            {{$services[0]->note}}
-                            </div>
-                          </div>
                           
+                          <input type="hidden" name="id" value="{{$departement[0]->id}}">
+                          <input type="hidden" name="updatebyid" value="{{Auth::user()->id}}">
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">Created By</label>
-                            <div class="col" style="padding: 10px!important;">
-                            {{ $createbyid[0]->first_name}} {{ $createbyid[0]->last_name}}
-                            <br>{{ $services[0]->created_at }}
-                            </div>
-                          </div>  
-                          <div class="form-group mb-3 row">
-                            <label class="form-label col-3 col-form-label">Last Modified By</label>
-                            <div class="col" style="padding: 10px!important;">
-                            {{ $updatebyid[0]->first_name}} {{ $updatebyid[0]->last_name}}
-                            <br>{{ $services[0]->updated_at }}
-                            </div>
-                          </div> 
-                          
-                        </div>
+                        
                       </div>
                     </div>
                   </div>
                 
                 </div> <!-- END Container-XL -->
-              </div>
-
+              
 
               <div class="container-xl">
                 <!-- Page title -->
@@ -134,9 +107,9 @@
                     </div>
                     <!-- Page title actions -->
                     <div class="col-auto ms-auto d-print-none"> 
-                    <a href="{{ url('services')}}" class="btn btn-light">« Kembali</a>  
-                    <a href="{{ url('services/edit',$services[0]->id)}}" class="btn btn-primary  d-sm-inline-block" >
-                      Update Service
+                    <a href="{{ url('departement')}}" class="btn btn-light">« Kembali</a>  
+                    <a href="{{ url('departement/edit',$departement[0]->id)}}" class="btn btn-primary  d-sm-inline-block" >
+                      Update Departement
                     </a> 
                     </div>
                   </div>
@@ -209,7 +182,7 @@
     $(document).on("click",".edit",function(){
       var id=$(this).attr("data-id");
       console.log("click id: " + id);
-      window.location.href = "{{ url('services/edit')}}/" + id;
+      window.location.href = "{{ url('departement/edit')}}/" + id;
     });
   });
 </script>

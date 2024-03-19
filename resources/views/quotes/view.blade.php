@@ -54,14 +54,14 @@ display:none!important;
         <div class="col-auto ms-auto d-print-none"> 
           <a href="{{ url('quotes')}}" class="btn btn-light">« Kembali</a>  
           @if($quotes[0]->status == 1)
-          <a href="#" data-id="{{$quotes[0]->id}}" class="btn btn-success d-none d-sm-inline-block" id="approved">
+          <a href="#" data-id="{{$quotes[0]->id}}" class="btn btn-success  d-sm-inline-block" id="approved">
              Approve
           </a>  
-          <a href="#" data-id="{{$quotes[0]->id}}" class="btn btn-danger d-none d-sm-inline-block" id="reject">
+          <a href="#" data-id="{{$quotes[0]->id}}" class="btn btn-danger  d-sm-inline-block" id="reject">
              Reject
           </a> 
           @endif
-          <a href="{{ url('quotes/edit',$quotes[0]->id)}}" class="btn btn-primary d-none d-sm-inline-block" >
+          <a href="{{ url('quotes/edit',$quotes[0]->id)}}" class="btn btn-primary  d-sm-inline-block" >
              Update Quote
           </a>  
         </div>
