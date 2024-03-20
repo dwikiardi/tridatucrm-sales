@@ -63,10 +63,9 @@
                 <thead>
                   <tr>
                     <th>Name</th>
-                    <th>Email</th>
                     <th>Phone</th>
-                    <th>Website</th>
-                    <th>Company</th>
+                    <th>Company</th>                    
+                    <th>Requested Package</th>
                     <th>Status</th>
                     <th>Owners</th>
                     <!-- <th>Action</th> -->
@@ -118,24 +117,26 @@
                 $(nTd).html("<a href='{{ url('leads/view')}}/"+oData.ID+"'>"+oData.Name+"</a>");
               }
             },
-            {data: 'Email', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
-              {
-                $(nTd).html("<a href='{{ url('leads/view')}}/"+oData.ID+"'>"+oData.Email+"</a>");
-              }
-            },
             {data: 'Phone', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
                 $(nTd).html("<a href='{{ url('leads/view')}}/"+oData.ID+"'>"+oData.Phone+"</a>");
               }
             },
-            {data: 'Website', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
-              {
-                $(nTd).html("<a href='{{ url('leads/view')}}/"+oData.ID+"'>"+oData.Website+"</a>");
-              }},
             {data: 'Company', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
                 $(nTd).html("<a href='{{ url('leads/view')}}/"+oData.ID+"'>"+oData.Company+"</a>");
-              }},
+              }
+            },
+            {data: 'package', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+              {
+                if(oData.package == null){
+                  $(nTd).html("-");
+                }else{
+                  $(nTd).html("<a href='{{ url('services/view')}}/"+oData.svid+"'>"+oData.package+"</a>");
+                }
+                
+              }
+            },
             {data: 'Status', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
                 $(nTd).html("<a href='{{ url('leads/view')}}/"+oData.ID+"'>"+oData.Status+"</a>");
