@@ -57,13 +57,13 @@
               <table class="table card-table table-vcenter text-nowrap datatable">
                 <thead>
                   <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Website</th>
-                    <th>Company</th>
+                    <th>Property</th>
+                    <th>Package</th>
+                    <th>Price</th>
+                    <th>Account</th>
+                    <th>POP</th>
                     <th>Status</th>
-                    <th>Owners</th>
+                    <th>Owner</th>
                     <!-- <th>Action</th> -->
                   </tr>
                 </thead>
@@ -86,40 +86,94 @@
 <script type="text/javascript">
   $(function () {
       
+    // var table = $('.datatable').DataTable({
+    //     processing: true,
+    //     serverSide: true,
+    //     ajax: "{{ route('contacts.index') }}",
+    //     columns: [
+    //         {data: 'Name', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+    //           {
+    //             $(nTd).html("<a href='{{ url('contacts/view')}}/"+oData.ID+"'>"+oData.Name+"</a>");
+    //           }
+    //         },
+    //         {data: 'Email', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+    //           {
+    //             $(nTd).html("<a href='{{ url('contacts/view')}}/"+oData.ID+"'>"+oData.Email+"</a>");
+    //           }
+    //         },
+    //         {data: 'Phone', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+    //           {
+    //             $(nTd).html("<a href='{{ url('contacts/view')}}/"+oData.ID+"'>"+oData.Phone+"</a>");
+    //           }
+    //         },
+    //         {data: 'Website', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+    //           {
+    //             $(nTd).html("<a href='{{ url('contacts/view')}}/"+oData.ID+"'>"+oData.Website+"</a>");
+    //           }},
+    //         {data: 'Company', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+    //           {
+    //             $(nTd).html("<a href='{{ url('contacts/view')}}/"+oData.ID+"'>"+oData.Company+"</a>");
+    //           }},
+    //         {data: 'Status', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+    //           {
+    //             $(nTd).html("<a href='{{ url('contacts/view')}}/"+oData.ID+"'>"+oData.Status+"</a>");
+    //           }
+    //         },
+    //         {data: 'Owners', name: 'Owners'},
+    //         // {data: 'action', name: 'action', orderable: false, searchable: false},
+    //     ]
+    // });
     var table = $('.datatable').DataTable({
         processing: true,
         serverSide: true,
         ajax: "{{ route('contacts.index') }}",
         columns: [
-            {data: 'Name', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+           
+            {data: 'property', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('contacts/view')}}/"+oData.ID+"'>"+oData.Name+"</a>");
+                $(nTd).html("<a href='{{ url('contacts/view')}}/"+oData.prid+"'>"+oData.property+"</a>");
               }
             },
-            {data: 'Email', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+            {data: 'package', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('contacts/view')}}/"+oData.ID+"'>"+oData.Email+"</a>");
+                if(oData.package == '-'){
+                  $(nTd).html("-");
+                }else{
+                  $(nTd).html("<a href='{{ url('services/view')}}/"+oData.svid+"'>"+oData.package+"</a>");
+                }
+                
               }
             },
-            {data: 'Phone', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+            {data: 'price', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('contacts/view')}}/"+oData.ID+"'>"+oData.Phone+"</a>");
+                if(oData.price <= 0){
+                  $(nTd).html("-");
+                }else{
+                  $(nTd).html("<a href='{{ url('services/view')}}/"+oData.svid+"'>"+oData.price+"</a>");
+                }
+                
               }
             },
-            {data: 'Website', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+            {data: 'accname', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('contacts/view')}}/"+oData.ID+"'>"+oData.Website+"</a>");
-              }},
-            {data: 'Company', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
-              {
-                $(nTd).html("<a href='{{ url('contacts/view')}}/"+oData.ID+"'>"+oData.Company+"</a>");
-              }},
+                $(nTd).html("<a href='{{ url('accounts/view')}}/"+oData.accid+"'>"+oData.accname+"</a>");
+              }
+            },
+            {data: 'pop_name', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+            {
+              if(oData.pop_name == '-'){
+                $(nTd).html("-");
+              }else{
+                $(nTd).html("<a href='{{ url('pops/view')}}/"+oData.popid+"'>"+oData.pop_name+"</a>");
+              }
+              
+            }},
             {data: 'Status', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
                 $(nTd).html("<a href='{{ url('contacts/view')}}/"+oData.ID+"'>"+oData.Status+"</a>");
               }
             },
-            {data: 'Owners', name: 'Owners'},
+            {data: 'owner', name: 'owner'},
             // {data: 'action', name: 'action', orderable: false, searchable: false},
         ]
     });

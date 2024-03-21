@@ -306,9 +306,60 @@ class LeadController extends Controller
     
     public function cindex(Request $request){
         if ($request->ajax()) {
-            $data = Leads::join('users', 'leads.ownerid', '=', 'users.id')
-            ->select('leads.id as ID','leads.leadsname as Name' , 'leads.email AS Email','leads.phone As Phone','leads.website as Website','leads.account_name as Company','leads.status AS Status','users.last_name AS Owners','leads.property_name')
-            ->where('type','=','contact')
+        //     $data = Leads::join('users', 'leads.ownerid', '=', 'users.id')
+        //     ->select('leads.id as ID','leads.leadsname as Name' , 'leads.email AS Email','leads.phone As Phone','leads.website as Website','leads.account_name as Company','leads.status AS Status','users.last_name AS Owners','leads.property_name')
+        //     ->where('type','=','contact')
+        //     ->get();
+        //     //dd($data);
+        //     return DataTables::of($data)
+        //         ->addIndexColumn()
+        //         // ->addColumn('action', function($row){
+        //         //     $actionBtn = '<a class="edit btn btn-success btn-sm" data-id="'.$row->ID.'">Edit</a> <a  class="delete btn btn-danger btn-sm" data-id="'.$row->ID.'">DeActive</a>';
+        //         //     //$actionBtn=$row->ID;
+        //         //     return $actionBtn;
+        //         // })
+        //         // ->rawColumns(['action'])
+        //         ->editColumn('Email', function ($row) {
+        //             return $row->Email ?: '-';
+        //         })
+        //         ->editColumn('Phone', function ($row) {
+        //             return $row->Phone ?: '-';
+        //         })
+        //         ->editColumn('Website', function ($row) {
+        //             return $row->Website ?: '-';
+        //         })
+        //         ->editColumn('Company', function ($row) {
+        //             return $row->Company ?: '-';
+        //         })
+        //         ->editColumn('Name', function ($row) {
+        //             if(is_null($row->Name)){
+        //                 return $row->property_name;
+        //             }else{
+        //                 return $row->Name.' - '.$row->property_name;
+        //             }
+                    
+        //         })
+        //         ->make(true);
+        // }
+            $data = Accounts::leftJoin('leads', 'leads.accountid', '=', 'accounts.id')
+            ->leftJoin('pops', 'pops.id', '=', 'leads.popid')
+            ->leftJoin('services', 'services.id', '=', 'leads.packageid')
+            ->join('users', 'leads.ownerid', '=', 'users.id')
+            ->select(
+                'accounts.id AS accid',
+                'accounts.account_name AS accname',
+                'leads.id AS prid',
+                'leads.property_name AS property',
+                'services.id AS svid',
+                'services.services_name AS package',
+                'services.price AS price',
+                'pops.name AS pop_name',
+                'pops.id AS popid',
+                'users.id AS uid',
+                'users.first_name AS fuid',
+                'leads.status AS Status',
+                'users.last_name AS luid'
+            )
             ->get();
             //dd($data);
             return DataTables::of($data)
@@ -319,29 +370,23 @@ class LeadController extends Controller
                 //     return $actionBtn;
                 // })
                 // ->rawColumns(['action'])
-                ->editColumn('Email', function ($row) {
-                    return $row->Email ?: '-';
+                ->editColumn('package', function ($row) {
+                    return $row->package ?: '-';
                 })
-                ->editColumn('Phone', function ($row) {
-                    return $row->Phone ?: '-';
+                ->editColumn('price', function ($row) {
+                    return $row->price ?: '0';
                 })
-                ->editColumn('Website', function ($row) {
-                    return $row->Website ?: '-';
+                ->editColumn('pop_name', function ($row) {
+                    return $row->pop_name ?: '-';
                 })
-                ->editColumn('Company', function ($row) {
-                    return $row->Company ?: '-';
+                ->addColumn('owner', function($row){
+                    $actionBtn = $row->fuid ." ". $row->luid;
+                    //$actionBtn=$row->ID;
+                    return $actionBtn;
                 })
-                ->editColumn('Name', function ($row) {
-                    if(is_null($row->Name)){
-                        return $row->property_name;
-                    }else{
-                        return $row->Name.' - '.$row->property_name;
-                    }
-                    
-                })
+                ->rawColumns(['owner'])
                 ->make(true);
         }
-
         return view('contacts.index');
     }
 
