@@ -95,7 +95,12 @@
             },
             {data: 'property', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
               {
-                $(nTd).html("<a href='{{ url('contacts/view')}}/"+oData.prid+"'>"+oData.property+"</a>");
+                if(oData.property == '-'){
+                  $(nTd).html("-");
+                }else{
+                  $(nTd).html("<a href='{{ url('contacts/view')}}/"+oData.prid+"'>"+oData.property+"</a>");
+                }
+                
               }
             },
             {data: 'package', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 

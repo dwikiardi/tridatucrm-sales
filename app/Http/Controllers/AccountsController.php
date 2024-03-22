@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use Illuminate\Support\Facades\DB;
+
 use App\Models\Leads;
 use App\Models\Accounts;
 use App\Models\User;
@@ -16,13 +18,14 @@ class AccountsController extends Controller
     //Index ListView
     public function index(Request $request){
         if ($request->ajax()) {
+            //DB::enableQueryLog();
             //$data = Accounts::select('*');
             // $data = Accounts::join('users', 'accounts.ownerid', '=', 'users.id')->join('leads','leads.accountid','=','accounts.id')->join('pops','pops.id','=','leads.popid')
             // ->select('accounts.id as ID','accounts.account_name as Name' , 'accounts.email AS Email','accounts.phone As Phone','accounts.website as Website','users.last_name AS Owners')
             $data = Accounts::leftJoin('leads', 'leads.accountid', '=', 'accounts.id')
             ->leftJoin('pops', 'pops.id', '=', 'leads.popid')
             ->leftJoin('services', 'services.id', '=', 'leads.packageid')
-            ->join('users', 'leads.ownerid', '=', 'users.id')
+            ->join('users', 'accounts.ownerid', '=', 'users.id')
             ->select(
                 'accounts.id AS accid',
                 'accounts.account_name AS accname',
@@ -37,6 +40,7 @@ class AccountsController extends Controller
                 'users.first_name AS fuid',
                 'users.last_name AS luid'
             )
+            //->toSql();
             ->get();
             //dd($data);
             return DataTables::of($data)
@@ -47,6 +51,9 @@ class AccountsController extends Controller
                 //     return $actionBtn;
                 // })
                 // ->rawColumns(['action'])
+                ->editColumn('property', function ($row) {
+                    return $row->property ?: '-';
+                })
                 ->editColumn('package', function ($row) {
                     return $row->package ?: '-';
                 })
