@@ -72,7 +72,7 @@ class ServicesController extends Controller
     }
 
     public function view($id){
-        $services=Services::get();
+        $services=Services::where('id','=',$id)->get();
         
         $createbyid=User::where('id','=',$services[0]->createbyid)->get();
         $updatebyid=User::where('id','=',$services[0]->updatebyid)->get();
